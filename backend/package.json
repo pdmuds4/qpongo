@@ -1,0 +1,11 @@
+{
+  "name": "qpongo-backend",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
