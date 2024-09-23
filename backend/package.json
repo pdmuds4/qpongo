@@ -1,0 +1,18 @@
+{
+  "name": "qpongo-backend",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "aws-sdk": "^2.1691.0",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
