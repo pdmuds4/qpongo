@@ -1,7 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [],
+  content: [
+    './components/**/*.vue',
+  ],
   theme: {
+    colors: {
+      primary: '#34495E',
+    },
     extend: {},
   },
   plugins: [],

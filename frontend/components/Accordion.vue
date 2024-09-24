@@ -1,0 +1,90 @@
+<!-- 
+    # オリジナルデザイン - アコーディオン
+
+    @props {boolean} reverse (optional) - 開閉ボタンの位置(false: 右, true: 左)
+    @props {string} btnSize (optional) - 開閉ボタンのサイズcss(default: 45%)
+    
+    ---
+    @slot show-contents - デフォルトで見えるコンテンツ
+    @slot hidden-contents - 開閉ボタンを押した際に表示されるコンテンツ
+    
+    ---
+    [ 使用例 ]
+    <Accordion>
+        <template #show-contents>
+            <h1>見出し</h1>
+        </template>
+        <template #hidden-contents>
+            <p>隠れた内容</p>
+        </template>
+    </Accordion>
+-->
+
+<template>
+    <div class="accordion-body" :style="{flexDirection: reverse ? 'row-reverse' : undefined}">
+        <!-- 内部コンテンツ -->
+        <div class="accordion-contents" 
+            :style="reverse ? {borderLeft: '4px dashed #34495E'} : {borderRight: '4px dashed #34495E'}"
+        >
+            <div class="accordion-show">
+                <slot name="show-contents">
+                    <h1>Show-Contents</h1>
+                </slot>
+            </div>
+            <div class="accordion-hidden" v-show="is_open ? true : false">
+                <slot name="hidden-contents">
+                    <p>Hidden-Contents</p>
+                </slot>
+            </div>
+        </div>
+
+        <!-- 開閉ボタン部分 -->
+        <div class="accordion-tab" @click="openAccordion">
+            <NuxtImg 
+                class="accordion-btn"
+                :style="{width: btnSize ? btnSize : '48px'}"
+                :src="`img/components/Accordion/${ is_open ? 'close-btn.svg' : 'open-btn.svg'}`"
+            />
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+    defineProps<{
+        reverse?: boolean,
+        btnSize?: string
+    }>()
+
+    const is_open = ref<boolean>(false)
+
+    const openAccordion = () => {
+        is_open.value = !is_open.value
+    }
+</script>
+
+<style scoped>
+    .accordion-body {
+        padding: 0px 5px;
+        color: #34495E;
+        display: flex;
+        border-radius: 15px;
+        border: 4px solid #34495E;
+    }
+
+    .accordion-contents {
+        padding: 10px 20px;
+        width: 88%;
+    }
+
+    .accordion-tab {
+        width: 12%;
+        display: flex;
+        cursor: pointer;
+        justify-content: center;
+    }
+
+    .accordion-btn {
+        height: auto;
+    }
+
+</style>
