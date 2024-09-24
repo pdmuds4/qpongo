@@ -1,12 +1,12 @@
 class BoolValueObject {
-    constructor(value, validationCallBack) {
-        this._value = this.typeCheck(value, validationCallBack);
+    constructor(value) {
+        this._value = this.typeCheck(value);
     }
 
-    typeCheck(const_value, validationCallBack) {
+    typeCheck(const_value) {
         if (typeof const_value != 'boolean') throw new Error('値が真偽値ではありません');
         
-        return validationCallBack(const_value);
+        return const_value;
     }
 }
 

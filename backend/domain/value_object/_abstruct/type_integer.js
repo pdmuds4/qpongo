@@ -1,12 +1,12 @@
 class IntegerValueObject {
-    constructor(value, validationCallBack) {
-        this._value = this.typeCheck(value, validationCallBack);
+    constructor(value) {
+        this._value = this.typeCheck(value);
     }
 
-    typeCheck(const_value, validationCallBack) {
+    typeCheck(const_value) {
         if (!Number.isInteger(const_value)) throw new Error('値が整数ではありません');
 
-        return validationCallBack(const_value);
+        return const_value;
     }
 }
 
