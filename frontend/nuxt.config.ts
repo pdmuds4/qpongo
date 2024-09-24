@@ -9,9 +9,9 @@ export default defineNuxtConfig({
     '@nuxt/image',
   ],
   alias: {
-    '@components': fileURLToPath(new URL('./components', import.meta.url)),
-    '@utils'     : fileURLToPath(new URL('./utils',      import.meta.url)),
-    '@models'    : fileURLToPath(new URL('./models',     import.meta.url)),
+    '@ui'    : fileURLToPath(new URL('./ui',    import.meta.url)),
+    '@utils' : fileURLToPath(new URL('./utils', import.meta.url)),
+    '@models': fileURLToPath(new URL('./models',import.meta.url)),
   },
   tailwindcss: {
     cssPath: ['~/assets/css/tailwind.css', { injectPosition: "first" }],
