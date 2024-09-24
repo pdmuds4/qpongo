@@ -8,6 +8,10 @@ class IntegerValueObject {
 
         return const_value;
     }
+
+    get value() {
+        return this._value;
+    }
 }
 
 module.exports = IntegerValueObject;

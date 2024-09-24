@@ -8,6 +8,10 @@ class StringValueObject {
         
         return const_value;
     }
+
+    get value() {
+        return this._value;
+    }
 }
 
 module.exports = StringValueObject;
