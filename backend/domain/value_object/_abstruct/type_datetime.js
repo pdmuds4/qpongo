@@ -1,14 +1,12 @@
 class DatetimeValueObject {
-    constructor(value) {
-        this._value = this.typeCheck(value);
+    constructor(value, validationCallBack) {
+        this._value = this.typeCheck(value, validationCallBack);
     }
 
-    typeCheck(const_value) {
-        if (const_value instanceof Date) {
-            return const_value;
-        } else {
-            throw new Error('値が日時ではありません');
-        }
+    typeCheck(const_value, validationCallBack) {
+        if (!(const_value instanceof Date)) throw new Error('値が日時ではありません');
+
+        return validationCallBack(const_value);
     }
 }
 
