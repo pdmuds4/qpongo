@@ -29,16 +29,14 @@
 <style scoped>
 .footer-body {
     width: 100%;
-    height: 20vh;
     background-color: #34495E;
     color: white;
     display: flex;
-    padding: 5vw 4vw
+    padding: 20px;
 }
 
 .footer-title {
     font-size: 36px;
-    font-weight: bold;
     color: white;
     text-decoration: none;
 } .footer-title:active {

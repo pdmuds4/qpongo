@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@nuxt/image": "^1.8.0",
+    "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/tailwindcss": "^6.12.1"
   }
 }
