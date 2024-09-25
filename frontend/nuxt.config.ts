@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@models': fileURLToPath(new URL('./models',import.meta.url)),
   },
   css: [
+    '~/assets/css/global.css',
     '~/assets/css/fonts.css',
   ],
   tailwindcss: {

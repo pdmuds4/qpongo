@@ -58,6 +58,7 @@ input {
     border: none;
     outline: 0;
     border-bottom: 3px solid #34495E;
+    background-color: inherit;
 }
 
 .textfiled-img {

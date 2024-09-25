@@ -46,6 +46,7 @@ defineProps<{
     width: 100%;
     display: flex;
     box-shadow: 0px 5px 5px 0px rgb(116, 116, 116);
+    background-color: white;
 }
 
 .header-bar {
