@@ -21,7 +21,7 @@
 
         <NuxtImg
             class="textfiled-img" 
-            :src="`/img/ui/TextFiled/${is_show ? 'show-eye.svg' : 'hide-eye.svg'}`"
+            :src="`img/components/TextFiled/${is_show ? 'show-eye.svg' : 'hide-eye.svg'}`"
             @click="changeIcon"
             v-if="inputType === 'password'"
         ></NuxtImg>
@@ -52,6 +52,7 @@ const changeIcon = () => {
 }
 
 input {
+    width: 100%;
     color: #34495E;
     padding: 0.7vh 1vw;
     border: none;
@@ -60,8 +61,7 @@ input {
 }
 
 .textfiled-img {
-    width: 3.8vh;
-    height: auto;
+    height: 100%;
     padding: 0vh 1vw;
     border-bottom: 3px solid #34495E;
 }

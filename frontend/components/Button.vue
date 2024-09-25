@@ -2,6 +2,7 @@
     # オリジナルデザイン - ボタン
 
     @props {boolean} fill (optional) - ボタンの塗りつぶし
+    @props {boolean} disabled (optional) - ボタンの無効化
     
     ---
     @emit click-handler {() => void} - ボタンクリック時のイベント
@@ -23,7 +24,13 @@
 
 <template>
     <button
-        :class = "{ fill : fill, empty : !fill }"
+        :class = "{ 
+            fill : fill, empty : !fill, 
+            disabled : disabled, 
+            fill_nodisabled : fill && !disabled,
+            empty_nodisabled : !fill && !disabled
+        }"
+        :disabled = "disabled"
         @click="$emit('click-handler')"
     >
         <slot>Button</slot>
@@ -33,7 +40,7 @@
 <script setup lang="ts">
     defineProps<{
         fill?: boolean
-        style?: string
+        disabled?: boolean
     }>()
 
     defineEmits(['click-handler'])
@@ -51,11 +58,11 @@ button {
     background-color: #ffffff;
     color: #34495E;
     transition: 0.1s;
-} .empty:hover {
+} .empty_nodisabled:hover {
     background-color: #34495E;
     color: #ffffff;
     transition: 0.1s;
-} .empty:active {
+} .empty_nodisabled:active {
     background-color: #253441;
 }
 
@@ -63,12 +70,17 @@ button {
     background-color: #34495E;
     color: #ffffff;
     transition: 0.1s;
-} .fill:hover {
+} .fill_nodisabled:hover{
     background-color: #ffffff;
     color: #34495E;
     transition: 0.1s;
-} .fill:active {
+} .fill_nodisabled:active{
     background-color: #c9c9c9;
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: auto;
 }
 
 </style>
