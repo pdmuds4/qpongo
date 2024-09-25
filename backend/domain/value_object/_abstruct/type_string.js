@@ -4,11 +4,13 @@ class StringValueObject {
     }
 
     typeCheck(const_value) {
-        if (typeof const_value == 'string') {
-            return const_value;
-        } else {
-            throw new Error('値が文字列ではありません');
-        }
+        if (typeof const_value != 'string') throw new Error('値が文字列ではありません');
+        
+        return const_value;
+    }
+
+    get value() {
+        return this._value;
     }
 }
 

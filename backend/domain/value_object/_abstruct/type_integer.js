@@ -4,11 +4,13 @@ class IntegerValueObject {
     }
 
     typeCheck(const_value) {
-        if (Number.isInteger(const_value)) {
-            return const_value;
-        } else {
-            throw new Error('値が整数ではありません');
-        }
+        if (!Number.isInteger(const_value)) throw new Error('値が整数ではありません');
+
+        return const_value;
+    }
+
+    get value() {
+        return this._value;
     }
 }
 

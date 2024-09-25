@@ -4,11 +4,13 @@ class DatetimeValueObject {
     }
 
     typeCheck(const_value) {
-        if (const_value instanceof Date) {
-            return const_value;
-        } else {
-            throw new Error('値が日時ではありません');
-        }
+        if (!(const_value instanceof Date)) throw new Error('値が日時ではありません');
+
+        return const_value;
+    }
+
+    get value() {
+        return this._value;
     }
 }
 

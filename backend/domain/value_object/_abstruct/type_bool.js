@@ -4,11 +4,13 @@ class BoolValueObject {
     }
 
     typeCheck(const_value) {
-        if (typeof const_value == 'boolean') {
-            return const_value;
-        } else {
-            throw new Error('値が真偽値ではありません');
-        }
+        if (typeof const_value != 'boolean') throw new Error('値が真偽値ではありません');
+        
+        return const_value;
+    }
+
+    get value() {
+        return this._value;
     }
 }
 
