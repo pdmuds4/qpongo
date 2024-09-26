@@ -70,6 +70,7 @@ const menu_data = ref<MenuContent[]>([
 .sidebar-body {
     text-align: center;
     position: absolute;
+    background-color: white;
 
     /* 430px 以上 */
     padding: 1vw 1vw;
