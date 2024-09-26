@@ -35,6 +35,7 @@
 <style scoped>
 .bottombar-body {
     color: #34495E;
+    background-color: white;
     font-weight: bold;
     position: fixed;
     display: flex;
@@ -59,6 +60,8 @@
 .focus {
     width: 28vw;
     position: relative;
+    justify-content: center;
+    align-items: center;
 }
 
 .bottombar-item {
@@ -81,8 +84,8 @@
     position: absolute;
     flex-direction: column;
     top: -4vh;
-    width: 28vw;
-    height: 28vw;
+    width: 120px;
+    height: 120px;
     border-radius: 100%;
     background-color: #34495E;
     color: white;
