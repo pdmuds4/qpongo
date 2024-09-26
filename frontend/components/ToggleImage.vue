@@ -41,7 +41,6 @@ const toggleImage = () => {
 
 <style scoped>
 .toggleimage-body {
-    width: 30%; /* 任意の横幅を指定 */
     position: relative;
 }
 
