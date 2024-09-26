@@ -66,7 +66,7 @@ onUnmounted(() => {
 
 @media screen and (max-width: 580px) {
     .drawer-content {
-        padding: 20px;
+        padding: 15px;
         margin-left: 0;
         height: 88vh;
     }
