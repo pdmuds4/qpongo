@@ -2,7 +2,6 @@
     # オリジナルデザイン - アコーディオン
 
     @props {boolean} reverse (optional) - 開閉ボタンの位置(false: 右, true: 左)
-    @props {string} btnSize (optional) - 開閉ボタンのサイズcss(default: 45%)
     
     ---
     @slot show-contents - デフォルトで見えるコンテンツ
@@ -42,7 +41,6 @@
         <div class="accordion-tab" @click="openAccordion">
             <NuxtImg 
                 class="accordion-btn"
-                :style="{width: btnSize ? btnSize : '48px'}"
                 :src="`img/components/Accordion/${ is_open ? 'close-btn.svg' : 'open-btn.svg'}`"
             />
         </div>
@@ -52,7 +50,6 @@
 <script setup lang="ts">
     defineProps<{
         reverse?: boolean,
-        btnSize?: string
     }>()
 
     const is_open = ref<boolean>(false)
@@ -64,11 +61,12 @@
 
 <style scoped>
     .accordion-body {
-        padding: 0px 5px;
+        
         color: #34495E;
         display: flex;
         border-radius: 15px;
         border: 4px solid #34495E;
+        background-color: white;
     }
 
     .accordion-contents {
@@ -77,7 +75,7 @@
     }
 
     .accordion-tab {
-        width: 12%;
+        width: 15%;
         display: flex;
         cursor: pointer;
         justify-content: center;
@@ -85,6 +83,14 @@
 
     .accordion-btn {
         height: auto;
+        aspect-ratio: 1/1;
+        width: 40px;
+    }
+
+    @media screen and (max-width: 580px) {
+        .accordion-btn {
+            width: 30px;
+        }
     }
 
 </style>
