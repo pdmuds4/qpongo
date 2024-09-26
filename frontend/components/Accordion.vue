@@ -61,7 +61,6 @@
 
 <style scoped>
     .accordion-body {
-        
         color: #34495E;
         display: flex;
         border-radius: 15px;
@@ -72,6 +71,9 @@
     .accordion-contents {
         padding: 10px 20px;
         width: 88%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
 
     .accordion-tab {
@@ -86,5 +88,12 @@
         aspect-ratio: 1/1;
         width: 30px;
     }
+
+@media screen and (max-width: 580px) {
+    .accordion-contents {
+        padding: 10px;
+    }
+
+}
 
 </style>
