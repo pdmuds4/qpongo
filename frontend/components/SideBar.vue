@@ -114,6 +114,8 @@ const menu_data = ref<MenuContent[]>([
 
 .sidebar-icon {
     padding: 1vh;
+    aspect-ratio: 1/1;
+    width: 50px;
 }
 
 .sidebar-name {
