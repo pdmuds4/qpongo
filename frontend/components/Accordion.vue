@@ -84,13 +84,7 @@
     .accordion-btn {
         height: auto;
         aspect-ratio: 1/1;
-        width: 40px;
-    }
-
-    @media screen and (max-width: 580px) {
-        .accordion-btn {
-            width: 30px;
-        }
+        width: 30px;
     }
 
 </style>
