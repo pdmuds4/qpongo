@@ -1,8 +1,8 @@
 <template>
-    <div class="register-main">
-        <Header setBtn="register" />
-        <div class="register-body">
+    <ProviderLandingContent>
+        <div class="register-content">
             <div class="register-section left">
+                <Heading class="register-title">アカウント登録</Heading>
                 <form class="register-form-body">
                     <TextField
                         class="register-form"
@@ -37,8 +37,7 @@
                 <NuxtImg class="register-logo" src="img/logo.svg" alt="logo" />
             </div>
         </div>
-        <Footer />
-    </div>
+    </ProviderLandingContent>
 </template>
 
 <script setup lang="ts">
@@ -46,22 +45,23 @@
 </script>
 
 <style scoped>
-.register-body {
+.register-content {
     display: flex;
-    padding-top: 70px;
 }
 
 .register-section {
     width: 50%;
 }
 
-
 .left {
     display: flex;
     justify-content: center;
     gap: 50px;
     flex-direction: column;
-    padding: 30px;
+}
+
+.register-title {
+    text-align: center;
 }
 
 .register-form-body {
@@ -85,7 +85,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px;
 }
 
 .register-to-login {
