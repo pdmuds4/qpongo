@@ -41,6 +41,8 @@ const toggleImage = () => {
 
 <style scoped>
 .toggleimage-body {
+    width: 200px;
+    height: 133px;
     position: relative;
 }
 
@@ -49,14 +51,12 @@ const toggleImage = () => {
     display: block;
 }
 
-.toggleimage-body .toggleimage-front,
-.toggleimage-body .toggleimage-back {
+.toggleimage-front, .toggleimage-back {
+    z-index: 1;
     transition: all 0.3s;
     position: absolute;
     left: 0;
     top: 0;
-    height: 100%;
-    width: 100%;
     backface-visibility: hidden;
 }
 
@@ -84,13 +84,14 @@ const toggleImage = () => {
     display: flex;
     top: 0;
     right: 0;
-    width: 50px;
-    height: 50px;
-    padding: 10px;
+    width: 40px;
+    aspect-ratio: 1/1;
+    padding: 5px;
     background-color: white;
     border-radius: 50%;
     border: 3px solid #34495E;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    z-index: 2;
 } .toggleimage-btn:hover {
     background-color: #c9c9c9;
     transition: 0.1s;
