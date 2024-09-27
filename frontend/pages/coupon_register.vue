@@ -1,7 +1,6 @@
 <template>
-    <ProviderDrawer>
+    <ProviderHomeContent pageTitle="クーポン登録">
         <div class="register-content">
-            <Heading class="register-title">クーポン登録</Heading>
             <div class="register-photos">
                 <NuxtImg 
                     class="register-img front"
@@ -32,26 +31,18 @@
                 <Button class="register-btn register" fill>登録する</Button>
             </div>
         </div>
-    </ProviderDrawer>
+    </ProviderHomeContent>
 </template>
 
 <script setup lang="ts">
-import CouponInfoListItem from '~/components/ui/CouponInfoListItem.vue';
-
-
 
 </script>
 
 <style scoped>
-.register-title {
-    font-size: 28px;
-}
-
 .register-content {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 10px;
 }
 
 .register-photos {
@@ -95,10 +86,6 @@ import CouponInfoListItem from '~/components/ui/CouponInfoListItem.vue';
 }
 
 @media screen and (max-width: 580px) {
-    .register-content {
-        padding: 0px;
-    }
-
     .register-message {
         font-size: 20px;
     }

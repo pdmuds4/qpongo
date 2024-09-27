@@ -1,7 +1,6 @@
 <template>
-    <ProviderDrawer>
+    <ProviderHomeContent pageTitle="クーポン編集">
         <div class="edit-content">
-            <Heading class="edit-title">クーポン編集</Heading>
             <div class="edit-photos">
                 <NuxtImg 
                     class="edit-img front"
@@ -31,22 +30,17 @@
                 <Button class="edit-btn update"  fill>更新する</Button>
             </div>
         </div>
-    </ProviderDrawer>
+    </ProviderHomeContent>
 </template>
 
 <script setup lang="ts">
 </script>
 
 <style scoped>
-.edit-title {
-    font-size: 28px;
-}
-
 .edit-content {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 10px;
 }
 
 .edit-photos {
@@ -90,10 +84,6 @@
 }
 
 @media screen and (max-width: 580px) {
-    .edit-content {
-        padding: 0px;
-    }
-
     .edit-message {
         font-size: 20px;
     }
