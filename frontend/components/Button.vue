@@ -3,6 +3,7 @@
 
     @props {boolean} fill (optional) - ボタンの塗りつぶし
     @props {boolean} disabled (optional) - ボタンの無効化
+    @props {boolean} error (optional) - ボタンの色を赤にする
     
     ---
     @emit click-handler {() => void} - ボタンクリック時のイベント
@@ -27,8 +28,11 @@
         :class = "{ 
             fill : fill, empty : !fill, 
             disabled : disabled, 
+            error: error,
             fill_nodisabled : fill && !disabled,
-            empty_nodisabled : !fill && !disabled
+            empty_nodisabled : !fill && !disabled,
+            fill_error : fill && error,
+            empty_error : !fill && error
         }"
         :disabled = "disabled"
         @click="$emit('click-handler')"
@@ -41,6 +45,7 @@
     defineProps<{
         fill?: boolean
         disabled?: boolean
+        error?: boolean
     }>()
 
     defineEmits(['click-handler'])
@@ -81,6 +86,27 @@ button {
 .disabled {
     opacity: 0.5;
     cursor: auto;
+}
+
+
+.error {
+    border-color: #E74C3C;
+}
+
+.empty_error {
+    color: #E74C3C;
+} .empty_error:hover {
+    background-color: #E74C3C;
+} .empty_error:active {
+    background-color: #C0392B;
+}
+
+.fill_error {
+    background-color: #E74C3C;
+} .fill_error:hover {
+    color: #E74C3C;
+} .fill_error:active {
+    background-color: #C0392B;
 }
 
 </style>

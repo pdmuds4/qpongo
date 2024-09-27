@@ -1,13 +1,13 @@
 <!-- 
     # オリジナルデザイン - チップタグ
 
-    @props {"error" | "info"} status - エラーか情報か
+    @props {"info" | "alert" | "done"} status - チップのステータス
     @props {string} chip - チップに入るテキスト
     @props {string} text - 一番右側のテキスト
     
     ---
     [ 使用例 ]
-    <Chiptag status="error" chip="エラー" text="エラーが発生しました" />
+    <Chiptag status="alert" chip="エラー" text="エラーが発生しました" />
 -->
 
 <template>
@@ -15,18 +15,20 @@
         <div class="chiptag-icon-wrapper">
             <NuxtImg 
                 class="chiptag-icon"
-                :src="`img/components/Chiptag/${status === 'error' ? 'error.svg' : 'info.svg'}`"
+                v-if="status_data[status].icon"
+                :src="`img/components/Chiptag/${status_data[status].icon}`"
             />
         </div>
         <div 
-            class="chiptag-chip" 
-            :style="`background-color: ${status === 'error' ? '#f24e1e' : '#699bf7' }`"
+            class="chiptag-chip"
+            v-if="status_data[status].icon"
+            :style="`background-color: ${status_data[status].color}`"
         >
             <h1>{{ chip }}</h1>
         </div>
         <div 
             class="chiptag-text"
-            :style="`color: ${status === 'error' ? '#f24e1e' : '#699bf7' }`"
+            :style="`color: ${status_data[status].color}`"
         >
             <h1>{{ text }}</h1>
         </div>
@@ -35,16 +37,32 @@
 
 <script setup lang="ts">
 defineProps<{
-    status: "error" | "info"
+    status: "info" | "alert" | "done"
     chip?: string
     text?: string
 }>()
+
+const status_data = {
+    info : {
+        color: '#00AC30',
+        icon: null
+    },
+    alert : {
+        color: '#f24e1e',
+        icon: 'alert.svg'
+    },
+    done : {
+        color: '#699bf7',
+        icon: 'done.svg'
+    }
+};
+
 </script>
 
 <style scoped>
 .chiptag-body {
     display: flex;
-    gap: 5px;
+    gap: 7px;
 }
 
 .chiptag-icon-wrapper {
@@ -60,11 +78,24 @@ defineProps<{
     border-radius: 5px;
     font-weight: bold;
     color: white;
-    padding: 0 10px;
+    padding: 3px 10px;
+    margin: auto 0;
 }
 
 .chiptag-text {
     font-weight: bold;
+    margin: auto 0;
+}
+
+@media screen and (max-width: 580px) {
+    .chiptag-chip {
+        padding: 3px 5px;
+        font-size: 12px;
+    }
+
+    .chiptag-text {
+        font-size: 12px;
+    }
 }
 
 </style>

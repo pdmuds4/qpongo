@@ -39,12 +39,13 @@
     font-weight: bold;
     position: fixed;
     display: flex;
-    box-shadow: 0px 0px 3px 3px rgb(116, 116, 116);
+    box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.7);
     width: 100%;
     height: 12vh;
     bottom: 0;
     left: 0;
     right: 0;
+    z-index: 1000;
 }
 
 .bottombar-content {
@@ -92,6 +93,7 @@
     text-align: center;
     text-decoration: none;
     color: white;
+    z-index: 1001;
 } .bottombar-btn:hover {
     cursor: pointer;
 } .bottombar-btn:active {

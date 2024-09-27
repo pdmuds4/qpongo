@@ -16,8 +16,8 @@
 
 <template>
     <div>
-        <SideBar class="drawer-side" />
-        <BottomBar class="drawer-bottom"/>
+        <SideBar   v-if     ="screen_width &&  screen_width >  580" class="drawer-side"  />
+        <BottomBar v-else-if="screen_width &&  screen_width <= 580" class="drawer-bottom"/>
         <div class="drawer-content">
             <slot>
                 Drawer Provider
@@ -27,16 +27,27 @@
 </template>
 
 <script setup lang="ts">
+const screen_width = ref<number|null>(null);
+
+const handleResize = () => {
+    screen_width.value = window.innerWidth
+}
+
+onMounted(() => {
+    screen_width.value = window.innerWidth;
+    window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+});
+
 
 </script>
 
 <style scoped>
 .drawer-side {
     position: fixed;
-}
-
-.drawer-bottom {
-    display: none;
 }
 
 .drawer-content {
@@ -54,16 +65,8 @@
 }
 
 @media screen and (max-width: 580px) {
-    .drawer-side {
-        display: none;
-    }
-
-    .drawer-bottom {
-        display: flex;
-    }
-
     .drawer-content {
-        padding: 20px;
+        padding: 15px;
         margin-left: 0;
         height: 88vh;
     }
