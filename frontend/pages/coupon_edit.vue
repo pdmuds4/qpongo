@@ -1,19 +1,18 @@
 <template>
     <ProviderDrawer>
-        <div class="register-content">
-            <Heading class="register-title">クーポン登録</Heading>
-            <div class="register-photos">
+        <div class="edit-content">
+            <Heading class="edit-title">クーポン編集</Heading>
+            <div class="edit-photos">
                 <NuxtImg 
-                    class="register-img front"
+                    class="edit-img front"
                     src="https://thumb.photo-ac.com/9a/9a7f0b2c38647151d0d9ea27fa1afe70_t.jpeg"
                 />
                 <NuxtImg 
-                    class="register-img back"
+                    class="edit-img back"
                     src="https://thumb.photo-ac.com/9a/9a7f0b2c38647151d0d9ea27fa1afe70_t.jpeg"
                 />
             </div>
-            <Heading class="register-message">登録内容をご確認ください</Heading>
-            <div class="register-card">
+            <div class="edit-card">
                 <UiCouponInfoListItem title="有効期限">
                     <TextField inputType="text" placeHolder="ここに入力" />
                 </UiCouponInfoListItem>
@@ -27,40 +26,36 @@
                     <TextField inputType="text" placeHolder="ここに入力" />
                 </UiCouponInfoListItem>
             </div>
-            <div class="register-btngroup">
-                <Button class="register-btn retake" error>撮り直す</Button>
-                <Button class="register-btn register" fill>登録する</Button>
+            <div class="edit-btngroup">
+                <Button class="edit-btn cancel" error>キャンセル</Button>
+                <Button class="edit-btn update"  fill>更新する</Button>
             </div>
         </div>
     </ProviderDrawer>
 </template>
 
 <script setup lang="ts">
-import CouponInfoListItem from '~/components/ui/CouponInfoListItem.vue';
-
-
-
 </script>
 
 <style scoped>
-.register-title {
+.edit-title {
     font-size: 28px;
 }
 
-.register-content {
+.edit-content {
     display: flex;
     flex-direction: column;
     gap: 20px;
     padding: 10px;
 }
 
-.register-photos {
+.edit-photos {
     display: flex;
     gap: 20px;
     justify-content: center;
 }
 
-.register-img {
+.edit-img {
     max-width: 200px;
     width:45%;
     aspect-ratio: 1/1;
@@ -69,11 +64,11 @@ import CouponInfoListItem from '~/components/ui/CouponInfoListItem.vue';
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
 }
 
-.register-message {
+.edit-message {
     text-align: center;
 }
 
-.register-card {
+.edit-card {
     background-color: white;
     border-radius: 10px;
     border: 3px solid #34495E;
@@ -83,31 +78,31 @@ import CouponInfoListItem from '~/components/ui/CouponInfoListItem.vue';
     padding: 20px;
 }
 
-.register-btngroup {
+.edit-btngroup {
     display: flex;
     gap: 20px;
     justify-content: center;
 }
 
-.register-btn {
+.edit-btn {
     width: 40%;
     padding: 5px 0;
 }
 
 @media screen and (max-width: 580px) {
-    .register-content {
+    .edit-content {
         padding: 0px;
     }
 
-    .register-message {
+    .edit-message {
         font-size: 20px;
     }
 
-    .register-card {
+    .edit-card {
         padding: 10px;
     }
 
-    .register-btn {
+    .edit-btn {
         width: 50%;
     }
 }
