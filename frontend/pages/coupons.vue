@@ -1,7 +1,6 @@
 <template>
-    <ProviderDrawer>
+    <ProviderHomeContent pageTitle="クーポン一覧">
         <div class="coupons-content">
-            <Heading class="coupons-title">クーポン一覧</Heading>
             <div class="coupons-filter">
                 <Selector 
                     class="coupons-filter-selector"
@@ -28,7 +27,7 @@
                 <UiCouponListItem />
             </div>
         </div>
-    </ProviderDrawer>
+    </ProviderHomeContent>
 </template>
 
 <script setup lang="ts">
@@ -36,15 +35,10 @@
 </script>
 
 <style scoped>
-.coupons-title {
-    font-size: 28px;
-}
-
 .coupons-content {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 10px;
 }
 
 .coupons-list {
@@ -66,10 +60,6 @@
 }
 
 @media screen and (max-width: 580px) {
-    .coupons-content {
-        padding: 0px;
-    }
-
     .coupons-filter {
         width: 80%;
         margin-left: auto;
