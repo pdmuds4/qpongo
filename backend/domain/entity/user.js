@@ -19,13 +19,13 @@ class UserEntity {
 
     toJson() {
         return {
-            id: this._id,
-            name: this.name,
-            password: this.password,
-            e_mail: this.e_mail,
-            gender: this.gender,
-            age: this.age,
-            create_date: this.create_date
+            id: this._id.value,
+            name: this.name.value,
+            password: this.password.value,
+            e_mail: this.e_mail.value,
+            gender: this.gender.value,
+            age: this.age.value,
+            create_date: this.create_date.value
         };
     }
 }
