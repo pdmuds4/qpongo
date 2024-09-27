@@ -24,8 +24,9 @@
 
 <template>
     <select 
-        :style="`background-image: url(${bgImage || 'img/components/Selector/selector-default.svg'});`"
-        @change="$emit('change-handler', $event)"
+        :class="{ 'non-default': selectedValue !== '' }"
+        :style="`background-image: url(${selectorIcon});`"
+        @change="handleChange($event)"
     >
         <slot>
             <option value="" disabled>Selector</option>
@@ -36,11 +37,27 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
     bgImage?: string
 }>()
+const emit = defineEmits(['change-handler'])
 
-defineEmits(['change-handler'])
+
+const selectedValue = ref('');
+const handleChange = (event: Event) => {
+    const target = event.target as HTMLSelectElement;
+    selectedValue.value = target.value;
+    emit('change-handler', event)
+};
+
+
+const selectorIcon = computed(() => {
+    const image_src = props.bgImage || `img/components/Selector/selector-default.svg`;
+    
+    return selectedValue.value === '' ? 
+        image_src :
+        image_src.replace('.svg', '-selected.svg');
+})
 
 </script>
 
@@ -50,6 +67,7 @@ select {
     border-radius: 2vh;
     border: 3px solid #34495E;
     color: #34495E;
+    outline: none;
 
     -webkit-appearance: none;
     appearance: none;
@@ -60,6 +78,11 @@ select {
 
 select::-ms-expand {
     display: none;
+}
+
+.non-default {
+    background-color: #34495E;
+    color: white;
 }
 
 
