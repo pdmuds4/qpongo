@@ -14,18 +14,18 @@
             </div>
             <Heading class="register-message">登録内容をご確認ください</Heading>
             <div class="register-card">
-                <CouponInfoListItem title="有効期限">
+                <UiCouponInfoListItem title="有効期限">
                     <TextField inputType="text" placeHolder="ここに入力" />
-                </CouponInfoListItem>
-                <CouponInfoListItem title="発行店名">
+                </UiCouponInfoListItem>
+                <UiCouponInfoListItem title="発行店名">
                     <TextField inputType="text" placeHolder="ここに入力" />
-                </CouponInfoListItem>
-                <CouponInfoListItem title="割引内容">
+                </UiCouponInfoListItem>
+                <UiCouponInfoListItem title="割引内容">
                     <TextField inputType="text" placeHolder="ここに入力" />
-                </CouponInfoListItem>
-                <CouponInfoListItem title="対象商品">
+                </UiCouponInfoListItem>
+                <UiCouponInfoListItem title="対象商品">
                     <TextField inputType="text" placeHolder="ここに入力" />
-                </CouponInfoListItem>
+                </UiCouponInfoListItem>
             </div>
             <div class="register-btngroup">
                 <Button class="register-btn retake" error>撮り直す</Button>
