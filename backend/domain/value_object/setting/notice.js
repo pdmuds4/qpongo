@@ -1,6 +1,6 @@
 const BaseInteger = require('../_abstruct/type_integer');
 
-class Notice extends BaseInteger {
+class NoticeValueObject extends BaseInteger {
     constructor(value) {
         super(value);
         this._value = this.valueCheck(this._value);
@@ -13,4 +13,4 @@ class Notice extends BaseInteger {
     }
 }
 
-module.exports = Notice;
+module.exports = NoticeValueObject;
