@@ -1,10 +1,10 @@
 class InQuiryEntity {
-    constructor(id, user_id, title, content, is_suppotr, sending_date) {
+    constructor(id, user_id, title, content, is_support, sending_date) {
         this._id = id;
         this._user_id = user_id;
         this.title = title;
         this.content = content;
-        this.is_support = is_suppotr;
+        this.is_support = is_support;
         this.sending_date = sending_date;
 
         if (!(this._id && this._user_id && this.title && this.content && this.is_support && this.sending_date)) {
