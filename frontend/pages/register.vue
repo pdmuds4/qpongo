@@ -1,5 +1,5 @@
 <template>
-    <ProviderLandingContent>
+    <ProviderLandingContent headerBtn="register">
         <div class="register-content">
             <div class="register-section left">
                 <Heading class="register-title">アカウント登録</Heading>

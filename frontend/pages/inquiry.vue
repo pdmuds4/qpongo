@@ -1,5 +1,5 @@
 <template>
-    <ProviderLandingContent >
+    <ProviderLandingContent headerBtn="register">
         <div class="inquiry-content">
             <div class="inquiry-section left">
                 <Heading class="inquiry-title">お問い合わせ</Heading>
@@ -16,7 +16,11 @@
                         defaultValue=""
                         placeHolder="メールアドレス" 
                     />
-                    <!-- TextAreaコンポーネントを使う -->
+                    <TextArea 
+                        class="inquiry-form"
+                        defaultValue=""
+                        placeHolder="お問い合わせ内容"
+                    />
                     <Button class="inquiry-form-submit">
                         送信
                     </Button>
@@ -30,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-
 </script>
 
 <style scoped>
