@@ -62,6 +62,7 @@ defineProps<{
 }
 
 .header-logo {
+    aspect-ratio: 1/1;
     width: 60px;
     height: 60px;
 }
@@ -83,7 +84,7 @@ defineProps<{
 /* slot */
 .header-slot-btn {
     font-size: 15px;
-    padding: 5px 30px;
+    padding: 5px 10px;
     margin: 0px 1vw
 }
 
@@ -93,7 +94,6 @@ defineProps<{
     }
 
     .header-logo {
-        padding: 0px 0.7vw;
         width: 9vw;
         height:9vw;
     }
@@ -110,8 +110,7 @@ defineProps<{
 
     /* slot */
     .header-slot-btn {
-        font-size: 2vh;
-        padding: 0.7vh 4vw;
+        font-size: 12px;
     }
 }
 </style>

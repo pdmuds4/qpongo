@@ -92,7 +92,6 @@
 
 .inquiry-to-login-btn {
     width: 50%;
-    padding: 10px;
     margin: 0 auto;
 }
 

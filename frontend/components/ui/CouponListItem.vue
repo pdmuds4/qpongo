@@ -94,12 +94,11 @@
 }
 
 .coupon-edit-contents {
-    max-width: 320px;
+    width: 100%;
 }
 
 .coupon-edit-btn {
     width: 50%;
-    padding: 5px 0;
 }
 
 .coupon-delete-modal {
@@ -122,6 +121,7 @@
     gap: 20px;
     width: 70%;
     margin: 0 auto;
+    justify-content: center;
 }
 
 .coupon-modal-title {
@@ -155,6 +155,10 @@
 
     .coupon-goods-text {
         font-size: 12px;
+    }
+
+    .coupon-edit-contents {
+        justify-content: center;
     }
 
     .coupon-delete-modal {

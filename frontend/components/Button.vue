@@ -57,6 +57,8 @@ button {
     border-radius: 2vh;
     border: 3px solid #34495E;
     cursor: pointer;
+    max-width: 200px;
+    padding: 5px 0;
 }
 
 .empty {

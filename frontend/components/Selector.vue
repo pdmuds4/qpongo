@@ -68,6 +68,8 @@ select {
     border: 3px solid #34495E;
     color: #34495E;
     outline: none;
+    max-width: 200px;
+    padding: 5px 10px;
 
     -webkit-appearance: none;
     appearance: none;

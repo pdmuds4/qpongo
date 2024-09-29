@@ -51,18 +51,18 @@
     width: 50%;
     display: flex;
     gap: 10px;
+    justify-content: flex-end;
     margin-left: auto;
 }
 
+
 .coupons-filter-selector {
-    padding: 2px 10px;
-    width: 50%;
+    width: 100%;
 }
 
 @media screen and (max-width: 580px) {
     .coupons-filter {
         width: 80%;
-        margin-left: auto;
     }
 }
 

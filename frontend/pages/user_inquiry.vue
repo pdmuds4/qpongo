@@ -41,9 +41,7 @@
 
 .user-inquiry-btn {
     margin: 0 auto;
-    max-width: 300px;
     width: 80%;
-    padding: 15px 0px;
 }
 
 </style>

@@ -82,7 +82,6 @@
 
 .register-btn {
     width: 40%;
-    padding: 5px 0;
 }
 
 @media screen and (max-width: 580px) {
