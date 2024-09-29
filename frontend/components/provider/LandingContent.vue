@@ -1,6 +1,7 @@
 <!-- 
     # プロバイダー LandingContent
 
+    @props {'register | login'} headerBtn - ヘッダーのボタンの種類
     ---
     @slot - コンテンツの中身
 
@@ -11,7 +12,7 @@
 
 <template>
     <div class="landingcontent-main">
-        <Header setBtn="register" />
+        <Header :setBtn="headerBtn" />
         <div class="landingcontent-body">
             <slot>Landing Content</slot>
         </div>
@@ -20,6 +21,9 @@
 </template>
 
 <script setup lang="ts">
+defineProps<{
+    headerBtn: 'register' | 'login'
+}>()
 </script>
 
 <style scoped>
