@@ -48,7 +48,7 @@ const menu_data = ref<MenuContent[]>([
         id: 1,
         name: 'クーポン登録',
         icon: 'img/components/SideBar/coupon-register.svg',
-        link: '/'
+        link: '/coupon_camera/front'
     },
     {
         id: 2,

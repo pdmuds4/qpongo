@@ -28,7 +28,7 @@
                 </form>
                 <div class="register-to-login">
                     <p>アカウントをお持ちの方はこちら</p>
-                    <Button class="register-to-login-btn" fill>
+                    <Button class="register-to-login-btn" fill @click="navigateTo('/login')">
                         ログイン
                     </Button>
                 </div>

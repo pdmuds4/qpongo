@@ -7,10 +7,10 @@
             </div>
             <img class="front-modal-image" :src="takeSrc" alt="表面の画像" />
             <div class="front-modal-btngroup">
-                <Button class="front-modal-btn">
+                <Button class="front-modal-btn" @click="navigateTo('/coupon/register')">
                     表面だけ
                 </Button>
-                <Button class="front-modal-btn" fill>
+                <Button class="front-modal-btn" fill @click="navigateTo('/coupon_camera/back')">
                     裏面も撮る
                 </Button>
             </div>

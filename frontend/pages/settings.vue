@@ -10,10 +10,10 @@
                     </div>
                 </div>
                 <!-- [TODO]: UIを用意していないので今回は割愛、そのうちモーダルで編集できるように実装 -->
-                <div class="settings-user-edit">
+                <!-- <div class="settings-user-edit">
                     <Button class="settings-user-btn">変更</Button>
                     <Button class="settings-user-btn" fill>パスワード変更</Button>
-                </div>
+                </div> -->
             </div>
 
             <UiSettingsDivider />

@@ -7,10 +7,10 @@
             </div>
             <img class="back-modal-image" :src="takeSrc" alt="裏面の画像" />
             <div class="back-modal-btngroup">
-                <Button class="back-modal-btn" error>
+                <Button class="back-modal-btn" error @click="navigateTo('/coupons')">
                     登録しない
                 </Button>
-                <Button class="back-modal-btn" fill>
+                <Button class="back-modal-btn" fill @click="navigateTo('/coupon/register')">
                     読み取る
                 </Button>
             </div>
