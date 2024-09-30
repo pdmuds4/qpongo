@@ -27,23 +27,27 @@
             </template>
             <template #hidden-contents>
                 <div class="coupon-edit-contents">
-                    <Button class="coupon-edit-btn isuse">
-                        使用済みにする
+                    <Button class="coupon-edit-btn" fill>
+                        使用済み
                     </Button>
-                    <Button class="coupon-edit-btn delete" error>
+                    <Button class="coupon-edit-btn" @click="navigateTo('/coupon/edit')">
+                        編集
+                    </Button>
+                    <Button class="coupon-edit-btn" error @click="toggleModal">
                         削除
                     </Button>
                 </div>
             </template>
         </Accordion>
-        <Modal :open="false">
+
+        <Modal :open="modal_open">
             <div class="coupon-delete-modal">
                 <div class="coupon-modal-text">
                     <h1 class="coupon-modal-title">クーポンを削除しますか？</h1>
                     <p class="coupon-modal-subtitle">※この操作は戻せません</p>
                 </div>
                 <div class="coupon-modal-btngroup">
-                    <Button class="coupon-modal-btn">
+                    <Button class="coupon-modal-btn" @click="toggleModal">
                         キャンセル
                     </Button>
                     <Button class="coupon-modal-btn" error>
@@ -56,6 +60,9 @@
 </template>
 
 <script setup lang="ts">
+const modal_open = ref(false);
+
+const toggleModal = () => modal_open.value = !modal_open.value;
 
 </script>
 
