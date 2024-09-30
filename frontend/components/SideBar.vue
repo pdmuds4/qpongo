@@ -14,9 +14,9 @@
 
 <template>
     <div class="sidebar-body">
-        <NuxtLink class="sidebar-img-wrapper" to="/">
+        <div class="sidebar-img-wrapper">
             <NuxtImg class="sidebar-img" src="img/logo.svg" />
-        </NuxtLink>
+        </div>
         <div class="sidebar-list">
             <NuxtLink v-for="content in menu_data"
                 :style="selected === content.id ? {border: '2px solid #34495E'} : {}"
@@ -54,13 +54,13 @@ const menu_data = ref<MenuContent[]>([
         id: 2,
         name: 'クーポン一覧',
         icon: 'img/components/SideBar/coupon-list.svg',
-        link: '/'
+        link: '/coupons'
     },
     {
         id: 3,
         name: '設定',
         icon: 'img/components/SideBar/setting.svg',
-        link: '/'
+        link: '/settings'
     }
 ]);
 
@@ -83,10 +83,6 @@ const menu_data = ref<MenuContent[]>([
     display: flex;
     justify-content: center;
     border-radius: 10px;
-} .sidebar-img-wrapper:hover {
-    cursor: pointer;
-} .sidebar-img-wrapper:active {
-    background-color: #e5e5e5;
 }
 
 .sidebar-img {

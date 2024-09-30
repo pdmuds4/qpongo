@@ -9,7 +9,7 @@
 <template>
     <div class="bottombar-body">
         <div class="bottombar-content left">
-            <NuxtLink class="bottombar-item" to="/">
+            <NuxtLink class="bottombar-item" to="/coupons">
                 <NuxtImg class="bottombar-item-img" src="img/components/SideBar/coupon-list.svg" />
                 <span class="bottomber-item-text">クーポン一覧</span>
             </NuxtLink>
@@ -21,7 +21,7 @@
             </NuxtLink>
         </div>
         <div class="bottombar-content right">
-            <NuxtLink class="bottombar-item" to="/">
+            <NuxtLink class="bottombar-item" to="/settings">
                 <NuxtImg class="bottombar-item-img" src="img/components/SideBar/setting.svg" />
                 <span class="bottomber-item-text">設定</span>
             </NuxtLink>

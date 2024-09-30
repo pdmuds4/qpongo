@@ -27,9 +27,9 @@
             <UiSettingsDivider />
 
             <div class="settings-footer">
-                <NuxtLink class="settings-link" to="/">お問い合わせ</NuxtLink>
-                <NuxtLink class="settings-link" to="/">利用規約</NuxtLink>
-                <NuxtLink class="settings-link" to="/">プライバシーポリシー</NuxtLink>
+                <NuxtLink class="settings-link" to="/user_inquiry">お問い合わせ</NuxtLink>
+                <NuxtLink class="settings-link" to="/terms">利用規約</NuxtLink>
+                <NuxtLink class="settings-link" to="/privacy">プライバシーポリシー</NuxtLink>
             </div>
         </div>
     </ProviderHomeContent>
