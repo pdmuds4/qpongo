@@ -1,7 +1,7 @@
 <!-- 
     # オリジナルデザイン - モーダル
 
-    @props {boolean} oepn - モーダルの表示状態
+    @props {boolean} open - モーダルの表示状態
     
     ---
     @slot - モーダルの中身
@@ -34,7 +34,8 @@ defineProps<{
 <style scoped>
 .modal-bg {
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    background-color: rgba(0, 0, 0, 0.4);
     top: 0;
     left: 0;
     width: 100%;

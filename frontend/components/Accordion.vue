@@ -2,7 +2,6 @@
     # オリジナルデザイン - アコーディオン
 
     @props {boolean} reverse (optional) - 開閉ボタンの位置(false: 右, true: 左)
-    @props {string} btnSize (optional) - 開閉ボタンのサイズcss(default: 45%)
     
     ---
     @slot show-contents - デフォルトで見えるコンテンツ
@@ -23,9 +22,7 @@
 <template>
     <div class="accordion-body" :style="{flexDirection: reverse ? 'row-reverse' : undefined}">
         <!-- 内部コンテンツ -->
-        <div class="accordion-contents" 
-            :style="reverse ? {borderLeft: '4px dashed #34495E'} : {borderRight: '4px dashed #34495E'}"
-        >
+        <div class="accordion-contents">
             <div class="accordion-show">
                 <slot name="show-contents">
                     <h1>Show-Contents</h1>
@@ -39,10 +36,13 @@
         </div>
 
         <!-- 開閉ボタン部分 -->
-        <div class="accordion-tab" @click="openAccordion">
+        <div 
+            class="accordion-tab" 
+            @click="openAccordion"
+            :style="reverse ? {borderRight: '4px dashed #34495E'} : {borderLeft: '4px dashed #34495E'}"
+        >
             <NuxtImg 
                 class="accordion-btn"
-                :style="{width: btnSize ? btnSize : '48px'}"
                 :src="`img/components/Accordion/${ is_open ? 'close-btn.svg' : 'open-btn.svg'}`"
             />
         </div>
@@ -52,7 +52,6 @@
 <script setup lang="ts">
     defineProps<{
         reverse?: boolean,
-        btnSize?: string
     }>()
 
     const is_open = ref<boolean>(false)
@@ -64,27 +63,38 @@
 
 <style scoped>
     .accordion-body {
-        padding: 0px 5px;
         color: #34495E;
         display: flex;
         border-radius: 15px;
         border: 4px solid #34495E;
+        background-color: white;
     }
 
     .accordion-contents {
+        width: 100%;
         padding: 10px 20px;
-        width: 88%;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
 
     .accordion-tab {
-        width: 12%;
+        width: 50px;
         display: flex;
         cursor: pointer;
         justify-content: center;
+        padding: 10px 0;
     }
 
     .accordion-btn {
-        height: auto;
+        height: 30px;
+        width: 30px;
     }
+
+@media screen and (max-width: 580px) {
+    .accordion-contents {
+        padding: 10px;
+    }
+}
 
 </style>

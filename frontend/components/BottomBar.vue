@@ -9,7 +9,7 @@
 <template>
     <div class="bottombar-body">
         <div class="bottombar-content left">
-            <NuxtLink class="bottombar-item" to="/">
+            <NuxtLink class="bottombar-item" to="/coupons">
                 <NuxtImg class="bottombar-item-img" src="img/components/SideBar/coupon-list.svg" />
                 <span class="bottomber-item-text">クーポン一覧</span>
             </NuxtLink>
@@ -21,7 +21,7 @@
             </NuxtLink>
         </div>
         <div class="bottombar-content right">
-            <NuxtLink class="bottombar-item" to="/">
+            <NuxtLink class="bottombar-item" to="/settings">
                 <NuxtImg class="bottombar-item-img" src="img/components/SideBar/setting.svg" />
                 <span class="bottomber-item-text">設定</span>
             </NuxtLink>
@@ -35,15 +35,17 @@
 <style scoped>
 .bottombar-body {
     color: #34495E;
+    background-color: white;
     font-weight: bold;
     position: fixed;
     display: flex;
-    box-shadow: 0px 0px 3px 3px rgb(116, 116, 116);
+    box-shadow: 0px 0px 10px 10px rgba(255, 255, 255, 0.7);
     width: 100%;
     height: 12vh;
     bottom: 0;
     left: 0;
     right: 0;
+    z-index: 1000;
 }
 
 .bottombar-content {
@@ -59,6 +61,8 @@
 .focus {
     width: 28vw;
     position: relative;
+    justify-content: center;
+    align-items: center;
 }
 
 .bottombar-item {
@@ -81,14 +85,15 @@
     position: absolute;
     flex-direction: column;
     top: -4vh;
-    width: 28vw;
-    height: 28vw;
+    width: 120px;
+    height: 120px;
     border-radius: 100%;
     background-color: #34495E;
     color: white;
     text-align: center;
     text-decoration: none;
     color: white;
+    z-index: 1001;
 } .bottombar-btn:hover {
     cursor: pointer;
 } .bottombar-btn:active {

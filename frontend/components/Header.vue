@@ -14,20 +14,29 @@
 
         <!-- setBtn propsがない場合 -->
         <div class="header-btn-group" v-if="!setBtn">
-            <Button class="header-slot-btn">
+            <Button class="header-slot-btn" @click="toHref('/register')">
                 新規登録
             </Button>
-            <Button class="header-slot-btn" fill>
+            <Button class="header-slot-btn" fill @click="toHref('/login')">
                 ログイン
             </Button>
         </div>
 
         <!-- setBtn propsがある場合 -->
         <div class="header-btn-group" v-else>
-            <Button class="header-slot-btn" v-if="setBtn === 'register'">
+            <Button 
+                class="header-slot-btn" 
+                v-if="setBtn === 'register'"
+                @click="toHref('/register')"
+            >
                 アカウント登録こちら→
             </Button>
-            <Button class="header-slot-btn" v-if="setBtn === 'login'" fill>
+            <Button 
+                class="header-slot-btn" 
+                v-if="setBtn === 'login'" 
+                fill
+                @click="toHref('/login')"
+            >
                 ログインはこちら→
             </Button>
         </div>
@@ -35,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+import toHref from '@utils/toHref';
+
 defineProps<{
     setBtn?: 'login' | 'register'
 }>();
@@ -42,10 +53,12 @@ defineProps<{
 
 <style scoped>
 .header-body {
-    position: absolute;
+    position: fixed;
+    top: 0;
     width: 100%;
     display: flex;
     box-shadow: 0px 5px 5px 0px rgb(116, 116, 116);
+    background-color: white;
 }
 
 .header-bar {
@@ -60,6 +73,7 @@ defineProps<{
 }
 
 .header-logo {
+    aspect-ratio: 1/1;
     width: 60px;
     height: 60px;
 }
@@ -81,7 +95,7 @@ defineProps<{
 /* slot */
 .header-slot-btn {
     font-size: 15px;
-    padding: 5px 30px;
+    padding: 5px 10px;
     margin: 0px 1vw
 }
 
@@ -91,7 +105,6 @@ defineProps<{
     }
 
     .header-logo {
-        padding: 0px 0.7vw;
         width: 9vw;
         height:9vw;
     }
@@ -108,8 +121,7 @@ defineProps<{
 
     /* slot */
     .header-slot-btn {
-        font-size: 2vh;
-        padding: 0.7vh 4vw;
+        font-size: 12px;
     }
 }
 </style>

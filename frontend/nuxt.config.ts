@@ -7,12 +7,17 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/image',
+    '@nuxtjs/google-fonts'
   ],
   alias: {
-    '@components': fileURLToPath(new URL('./components', import.meta.url)),
-    '@utils'     : fileURLToPath(new URL('./utils',      import.meta.url)),
-    '@models'    : fileURLToPath(new URL('./models',     import.meta.url)),
+    '@ui'    : fileURLToPath(new URL('./ui',    import.meta.url)),
+    '@utils' : fileURLToPath(new URL('./utils', import.meta.url)),
+    '@models': fileURLToPath(new URL('./models',import.meta.url)),
   },
+  css: [
+    '~/assets/css/global.css',
+    '~/assets/css/fonts.css',
+  ],
   tailwindcss: {
     cssPath: ['~/assets/css/tailwind.css', { injectPosition: "first" }],
     configPath: 'tailwind.config',
@@ -21,5 +26,10 @@ export default defineNuxtConfig({
     },
     config: {},
     viewer: true,
-  }
+  },
+  googleFonts: {
+    families: {
+      Jost: [500, 600, 700],
+    }
+  },
 })

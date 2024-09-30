@@ -8,13 +8,13 @@
     <footer class="footer-body">
         <NuxtLink class="footer-title" to="/">qpON→GO!</NuxtLink>
         <div class="footer-link-group">
-            <NuxtLink class="footer-link" to="/">
+            <NuxtLink class="footer-link" to="/inquiry">
                 お問い合わせ
             </NuxtLink>
-            <NuxtLink class="footer-link" to="/">
+            <NuxtLink class="footer-link" to="/terms">
                 利用規約
             </NuxtLink>
-            <NuxtLink class="footer-link" to="/">
+            <NuxtLink class="footer-link" to="/privacy">
                 プライバシーポリシー
             </NuxtLink>
         </div>
@@ -29,16 +29,14 @@
 <style scoped>
 .footer-body {
     width: 100%;
-    height: 20vh;
     background-color: #34495E;
     color: white;
     display: flex;
-    padding: 5vw 4vw
+    padding: 20px;
 }
 
 .footer-title {
     font-size: 36px;
-    font-weight: bold;
     color: white;
     text-decoration: none;
 } .footer-title:active {
