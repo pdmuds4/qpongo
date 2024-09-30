@@ -14,10 +14,10 @@
 
         <!-- setBtn propsがない場合 -->
         <div class="header-btn-group" v-if="!setBtn">
-            <Button class="header-slot-btn" @click="toHref('/register')">
+            <Button class="header-slot-btn" @click="navigateTo('/register')">
                 新規登録
             </Button>
-            <Button class="header-slot-btn" fill @click="toHref('/login')">
+            <Button class="header-slot-btn" fill @click="navigateTo('/login')">
                 ログイン
             </Button>
         </div>
@@ -27,7 +27,7 @@
             <Button 
                 class="header-slot-btn" 
                 v-if="setBtn === 'register'"
-                @click="toHref('/register')"
+                @click="navigateTo('/register')"
             >
                 アカウント登録こちら→
             </Button>
@@ -35,7 +35,7 @@
                 class="header-slot-btn" 
                 v-if="setBtn === 'login'" 
                 fill
-                @click="toHref('/login')"
+                @click="navigateTo('/login')"
             >
                 ログインはこちら→
             </Button>
@@ -44,8 +44,6 @@
 </template>
 
 <script setup lang="ts">
-import toHref from '@utils/toHref';
-
 defineProps<{
     setBtn?: 'login' | 'register'
 }>();
