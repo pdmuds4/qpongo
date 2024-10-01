@@ -14,7 +14,7 @@ class UserRepository {
     async addUser(user) {
         const params = {
             TableName: 'user',
-            Item: { ...user.toJson(), create_date: new Date().toISOString()}
+            Item: { ...user.toJson(), create_date: user.create_date.value.toISOString()}
         };
 
         try {
