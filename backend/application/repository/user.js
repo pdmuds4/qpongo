@@ -2,6 +2,9 @@ const {PutCommand} = require('@aws-sdk/lib-dynamodb');
 const {GetCommand} = require('@aws-sdk/lib-dynamodb');
 const {UpdateCommand} = require('@aws-sdk/lib-dynamodb');
 const {DeleteCommand} = require('@aws-sdk/lib-dynamodb');
+const {IDValueObject, RegistrationDateValueObject} = require('../../domain/value_object/_base');
+const {NameValueObject, PasswordValueObject, EmailValueObject, AgeValueObject, GenderValueObject} = require('../../domain/value_object/user');
+const UserEntity = require('../../domain/entity/user');
 
 class UserRepository {
     constructor(dynamoDBDocumentClient) {
@@ -33,7 +36,15 @@ class UserRepository {
 
         try {
             const data = await this.dynamoDB.send(new GetCommand(params));
-            return data.Item;
+            return new UserEntity(
+                new IDValueObject(data.Item.id),
+                new NameValueObject(data.Item.name),
+                new PasswordValueObject(data.Item.password),
+                new EmailValueObject(data.Item.e_mail),
+                new GenderValueObject(data.Item.gender),
+                new AgeValueObject(data.Item.age),
+                new RegistrationDateValueObject(new Date(data.Item.create_date))
+            );
         } catch (error) {
             throw new Error(error);
         }
