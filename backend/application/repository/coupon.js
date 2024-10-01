@@ -35,7 +35,8 @@ class CouponRepository {
         };
 
         try {
-            const data = await this.dynamoDB.send(new GetCommand(params));
+            const command = new GetCommand(params);
+            const data = await this.dynamoDB.send(command);
             return new CouponEntity(
                 new IDValueObject(data.Item.id),
                 new IDValueObject(data.Item.user_id),
@@ -86,7 +87,8 @@ class CouponRepository {
         };
 
         try {
-            await this.dynamoDB.send(new UpdateCommand(params));
+            const command = new UpdateCommand(params);
+            await this.dynamoDB.send(command);
             return coupon;
         } catch (error) {
             throw new Error(error);
@@ -102,7 +104,8 @@ class CouponRepository {
         };
 
         try {
-            await this.dynamoDB.send(new DeleteCommand(params));
+            const command = new DeleteCommand(params);
+            await this.dynamoDB.send(command);
         } catch (error) {
             throw new Error(error);
         }
