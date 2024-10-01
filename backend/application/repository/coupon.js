@@ -5,6 +5,7 @@ const {DeleteCommand} = require('@aws-sdk/lib-dynamodb');
 const {IDValueObject, RegistrationDateValueObject} = require('../../domain/value_object/_base');
 const {GoodsValueObject, DiscountValueObject, StoreValueObject, DeadlineValueObject, PhotoValueObject, IsUseValueObject, CategoryValueObject} = require('../../domain/value_object/coupon');
 const CouponEntity = require('../../domain/entity/coupon');
+const DeleteFromS3 = require('../../application/service/delete_from_s3');
 
 class CouponRepository {
     constructor(dynamoDBDocumentClient) {
@@ -106,6 +107,10 @@ class CouponRepository {
         try {
             const command = new DeleteCommand(params);
             await this.dynamoDB.send(command);
+
+            const deleteFromS3 = new DeleteFromS3();
+            await deleteFromS3.deleteFileFromS3(coupon.photo_front.value);
+            await deleteFromS3.deleteFileFromS3(coupon.photo_back.value);
         } catch (error) {
             throw new Error(error);
         }
