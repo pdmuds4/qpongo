@@ -1,10 +1,9 @@
-const s3Client = require('../../client/aws/s3');
 const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 require('dotenv').config();
 
 class DeleteFromS3Service {
-    constructor(url) {
-        this.s3Client = s3Client;
+    constructor(s3Client, url) {
+        this.s3 = s3Client;
         this.url = url;
     }
 
@@ -19,7 +18,7 @@ class DeleteFromS3Service {
 
         try {
             const command = new DeleteObjectCommand(params);
-            await this.s3Client.send(command);
+            await this.s3.send(command);
         } catch (error) {
             throw new Error(error);
         }
