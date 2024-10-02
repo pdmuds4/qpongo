@@ -1,6 +1,6 @@
 const { ScanCommand } = require("@aws-sdk/lib-dynamodb");
 
-class CreateNewID {
+class CreateNewIDService {
     constructor(dynamoDBDocumentClient, table_name, partition_key_name) {
         this.dynamoDB = dynamoDBDocumentClient;
         this.table_name = table_name;
@@ -25,4 +25,4 @@ class CreateNewID {
     }
 }
 
-module.exports = CreateNewID;
+module.exports = CreateNewIDService;

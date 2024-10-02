@@ -1,4 +1,4 @@
-class UserRegister {
+class UserRegisterUseCase {
     constructor(repository, user) {
         this.repository = repository;
         this.user = user;
@@ -10,4 +10,4 @@ class UserRegister {
     }
 }
 
-module.exports = UserRegister;
+module.exports = UserRegisterUseCase;
