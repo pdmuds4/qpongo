@@ -50,7 +50,6 @@ class UserRepository {
         }
     }
 
-    // userデータを更新する
     async updateUserData(user) {
         const params = {
             TableName: 'user',
