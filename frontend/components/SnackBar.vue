@@ -1,3 +1,15 @@
+<!-- 
+    # オリジナルデザイン - スナックバー
+
+    @props {string} message - スナックバーに表示するメッセージ
+    @props {boolean} is_open - スナックバーを表示するかどうか
+    
+    ---
+    [ 使用例 ]
+    <SnackBar message="メッセージ" is_open />
+-->
+
+
 <template>
     <div class="snackbar-body" v-if="is_open">
         <NuxtImg class="snackbar-icon" src="img/components/SnackBar/error.svg" alt="icon" />
