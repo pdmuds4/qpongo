@@ -5,8 +5,8 @@ class UserRegister {
     }
 
     async execute() {
-        await this.repository.addUser(this.user);
-            return this.user;
+        const user_data = await this.repository.addUser(this.user);
+        return user_data;
     }
 }
 
