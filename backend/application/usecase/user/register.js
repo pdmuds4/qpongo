@@ -1,4 +1,4 @@
-class RegisterUser {
+class UserRegister {
     constructor(repository, user) {
         this.repository = repository;
         this.user = user;
@@ -10,4 +10,4 @@ class RegisterUser {
     }
 }
 
-module.exports = RegisterUser;
+module.exports = UserRegister;
