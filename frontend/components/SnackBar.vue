@@ -28,6 +28,7 @@ defineProps<{
     gap: 5px;
     border-radius: 10px;
     box-shadow: 4px 3px 4px 0px rgba(0, 0, 0, 0.4);
+    z-index: 3000;
 }
 
 .snackbar-icon {
