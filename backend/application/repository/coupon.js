@@ -87,7 +87,7 @@ class CouponRepository {
         } catch (error) {
             throw new Error(error);
         }
-    }    
+    }
 
     async updateCouponData(coupon) {
         const params = {
