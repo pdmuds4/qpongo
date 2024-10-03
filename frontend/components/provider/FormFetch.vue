@@ -1,19 +1,20 @@
 <!-- 
     # プロバイダー - FormFetch
 
-    @props {string} endpoint - データ取得のエンドポイント
-    @props {'GET' | 'POST' | 'PUT' | 'DELETE'} method - リクエストメソッド
-    @props {Record<string, any>} query - クエリパラメータ
-    
+
     ---
     @slot - コンテンツの中身(input要素+submitボタン)
 
     ---
-    @emit {(response) => void} data-getter - データ取得後の処理
+    @emit {() => Promise<any>} submit - submit時に実行する関数
 
     ---
     [ 使用例 ]
-    
+    <FormFetch @submit="fetchData">
+        <input type="text" name="name" />
+        <button type="submit">送信</button>
+    </FormFetch>
+
 -->
 
 <template>
@@ -27,13 +28,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-    endpoint: string;
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE';
-    body?: Record<string, any>;
+const emit = defineEmits<{
+    submit: []
 }>()
-
-const emit = defineEmits(['data-getter'])
 
 const error_message = ref('');
 const loading_open = ref(false);
@@ -43,19 +40,14 @@ const onSubmitEvent = async (event: Event) => {
     event.preventDefault();
     loading_open.value = true;
     try {
-        await $fetch(
-            props.endpoint,
-            {
-                method: props.method,
-                body: props.body,
-                onResponse: (response) => {
-                    emit('data-getter', response.response._data);
-                },
-                onResponseError: (error) => {
-                    error_message.value = error.response?._data.message;
-                },
-            }
-        );
+        const response = await emit('submit');
+        return response
+    } catch (error) {
+        if (error instanceof customError) {
+            error_message.value = error.message;
+        } else {
+            error_message.value = '不明なエラーが発生しました'
+        }
     } finally {
         loading_open.value = false;
     }
