@@ -32,4 +32,9 @@ export default defineNuxtConfig({
       Jost: [500, 600, 700],
     }
   },
+  imports: {
+    dirs: [
+      'models/**'
+    ]
+  }
 })
