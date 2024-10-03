@@ -2,6 +2,7 @@ const {PutCommand} = require('@aws-sdk/lib-dynamodb');
 const {GetCommand} = require('@aws-sdk/lib-dynamodb');
 const {UpdateCommand} = require('@aws-sdk/lib-dynamodb');
 const {DeleteCommand} = require('@aws-sdk/lib-dynamodb');
+const {ScanCommand} = require("@aws-sdk/lib-dynamodb");
 const {IDValueObject, RegistrationDateValueObject} = require('../../domain/value_object/_base');
 const {GoodsValueObject, DiscountValueObject, StoreValueObject, DeadlineValueObject, PhotoValueObject, IsUseValueObject, CategoryValueObject} = require('../../domain/value_object/coupon');
 const CouponEntity = require('../../domain/entity/coupon');
@@ -50,6 +51,39 @@ class CouponRepository {
                 new CategoryValueObject(data.Item.category),
                 new RegistrationDateValueObject(new Date(data.Item.create_date))
             );
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
+    async getUserCouponData(user_id) {
+        const params = {
+            TableName: 'coupon',
+            FilterExpression: '#user_id = :user_id',
+            ExpressionAttributeNames: {
+                '#user_id': 'user_id'
+            },
+            ExpressionAttributeValues: {
+                ':user_id': user_id.value
+            }
+        };
+    
+        try {
+            const command = new ScanCommand(params);
+            const data = await this.dynamoDB.send(command);
+            return data.Items.map(item => new CouponEntity(
+                new IDValueObject(item.id),
+                new IDValueObject(item.user_id),
+                new GoodsValueObject(item.goods),
+                new DiscountValueObject(item.discount),
+                new StoreValueObject(item.store),
+                new DeadlineValueObject(new Date(item.deadline)),
+                new PhotoValueObject(item.photo_front),
+                new PhotoValueObject(item.photo_back),
+                new IsUseValueObject(item.is_use),
+                new CategoryValueObject(item.category),
+                new RegistrationDateValueObject(new Date(item.create_date))
+            ));
         } catch (error) {
             throw new Error(error);
         }
