@@ -1,5 +1,5 @@
 import AbsValueObject from "~/models/_abstruct/value_object";
-import ValueObjectError from "../error";
+import ValueObjectError from "~/models/value_object/value_object_error";
 
 export default class InquirySender extends AbsValueObject<string> {
     validate(const_val: string) {
