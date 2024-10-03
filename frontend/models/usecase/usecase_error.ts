@@ -1,6 +1,4 @@
-import CustomError from "@utils/custom-error";
-
-export default class ValueObjectError extends CustomError {
+export default class UseCaseError extends customError {
     constructor(message: string) {
         super(
             message,
