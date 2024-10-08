@@ -16,8 +16,13 @@ class CreateNewIDService {
         try {
             const data = await this.dynamoDB.send(new ScanCommand(params));
             const partition_keys = data.Items.map(item => item[this.partition_key_name]);
-            const last_id = Math.max(...partition_keys);
-            const new_id = last_id + 1;
+            let new_id = 0;
+            if (partition_keys.length === 0) {
+                new_id = 1;
+            } else {
+                const last_id = Math.max(...partition_keys);
+                new_id = last_id + 1;
+            }
             return new_id;
         } catch (error) {
             throw new Error(error);

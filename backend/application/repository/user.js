@@ -11,7 +11,7 @@ class UserRepository {
         this.dynamoDB = dynamoDBDocumentClient;
     }
 
-    async addUser(user) {
+    async addUserData(user) {
         const params = {
             TableName: 'user',
             Item: { ...user.toJson(), create_date: user.create_date.value.toISOString()}
