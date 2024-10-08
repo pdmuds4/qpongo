@@ -5,8 +5,7 @@ class DeleteCouponUseCase {
     }
 
     async execute() {
-        const coupon = await this.repository.deleteCouponData(this.coupon);
-        return coupon;
+        await this.repository.deleteCouponData(this.coupon);
     }
 }
 
