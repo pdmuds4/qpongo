@@ -1,7 +1,6 @@
 <template>
-    <div class="login-main">
-        <Header setBtn="login" />
-        <div class="login-body">
+    <ProviderLandingContent headerBtn="login">
+        <div class="login-content">
             <div class="login-section left">
                 <Heading class="login-title">ログイン</Heading>
                 <form class="login-form-body">
@@ -22,18 +21,17 @@
                     </Button>
                 </form>
                 <div class="login-to-register">
-                    <p>まだアカウントをお持ちでない方</p>
-                    <button class="login-to-register-btn" fill @click="navigateTo('/register')">
+                    <p>アカウントをお持ちでない方</p>
+                    <Button class="login-to-register-btn" fill @click="navigateTo('/register')">
                         アカウント登録
-                    </button>
+                    </Button>
                 </div>
             </div>
             <div class="login-section right">
                 <NuxtImg class="login-logo" src="img/logo.svg" alt="logo" />
             </div>
         </div>
-        <Footer />
-    </div>
+    </ProviderLandingContent>
 </template>
 
 <script setup lang="ts">
@@ -41,26 +39,19 @@
 </script>
 
 <style scoped>
-.login-body {
+.login-content {
     display: flex;
-    gap: 20px;
-    padding-top: 70px;
-    width: 100%;
 }
 
 .login-section {
     width: 50%;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    display: flex;
-    justify-content: center;
-    background-color: #FFF5C1;
 }
 
 .left {
-    flex-direction: column;
     display: flex;
     justify-content: center;
+    gap: 50px;
+    flex-direction: column;
 }
 
 .login-title {
@@ -74,14 +65,19 @@
 }
 
 .login-form {
-    display: flex;
-    flex-direction: column;
-    padding: 0 36%;
+    padding: 0 12%;
 }
 
 .login-form-submit {
     width: 50%;
     margin: 0 auto;
+}
+
+
+.right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .login-to-register {
@@ -91,14 +87,13 @@
     gap: 10px;
 }
 
+.login-logo {
+    aspect-ratio: 1 / 1;
+}
+
 .login-to-register-btn {
     width: 50%;
     margin: 0 auto;
-    background-color: #ffffff;
-    color: #34495e;
-    padding: 10px 0;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
 @media screen and (max-width: 580px) {
