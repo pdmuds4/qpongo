@@ -2,8 +2,8 @@ const {PutCommand} = require('@aws-sdk/lib-dynamodb');
 const {GetCommand} = require('@aws-sdk/lib-dynamodb');
 const {UpdateCommand} = require('@aws-sdk/lib-dynamodb');
 const {DeleteCommand} = require('@aws-sdk/lib-dynamodb');
-const {IDValueObject, RegistrationDateValueObject} = require('../../domain/value_object/_base');
-const {TitleValueObject, ContentValueObject, IsSupportValueObject} = require('../../domain/value_object/inquiry');
+const {IDValueObject, CreateDateValueObject} = require('../../domain/value_object/_base');
+const {SenderValueObject, IsSupportValueObject, EmailValueObject, ContentValueObject} = require('../../domain/value_object/inquiry');
 const InquiryEntity = require('../../domain/entity/inquiry');
 
 class InquiryRepository {
@@ -11,7 +11,7 @@ class InquiryRepository {
         this.dynamoDB = dynamoDBDocumentClient;
     }
 
-    async addInquiry(inquiry) {
+    async addInquiryData(inquiry) {
         const params = {
             TableName: 'inquiry',
             Item: { ...inquiry.toJson(), sending_date: inquiry.sending_date.value.toISOString() }
@@ -39,11 +39,11 @@ class InquiryRepository {
             const data = await this.dynamoDB.send(command);
             return new InquiryEntity(
                 new IDValueObject(data.Item.id),
-                new IDValueObject(data.Item.user_id),
-                new TitleValueObject(data.Item.title),
-                new ContentValueObject(data.Item.content),
+                new SenderValueObject(data.Item.name),
                 new IsSupportValueObject(data.Item.is_support),
-                new RegistrationDateValueObject(new Date(data.Item.sending_date))
+                new EmailValueObject(data.Item.e_mail),
+                new ContentValueObject(data.Item.content),
+                new CreateDateValueObject(new Date(data.Item.sending_date))
             );
         } catch (error) {
             throw new Error(error);
@@ -56,17 +56,19 @@ class InquiryRepository {
             Key: {
                 id: inquiry.id.value
             },
-            UpdateExpression: 'set #title = :title, #content = :content, #is_support = :is_support, #sending_date = :sending_date',
+            UpdateExpression: 'set #name = :name, #is_support = :is_support, #e_mail = :e_mail, #content = :content, #sending_date = :sending_date',
             ExpressionAttributeNames: {
-                '#title': 'title',
-                '#content': 'content',
+                '#name': 'name',
                 '#is_support': 'is_support',
+                '#e_mail': 'e_mail',
+                '#content': 'content',
                 '#sending_date': 'sending_date'
             },
             ExpressionAttributeValues: {
-                ':title': inquiry.title.value,
-                ':content': inquiry.content.value,
+                ':name': inquiry.name.value,
                 ':is_support': inquiry.is_support.value,
+                ':e_mail': inquiry.e_mail.value,
+                ':content': inquiry.content.value,
                 ':sending_date': inquiry.sending_date.value.toISOString()
             }
         };
