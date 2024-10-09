@@ -1,9 +1,11 @@
-const TitleValueObject = require('./title');
-const ContentValueObject = require('./content');
+const SenderValueObject = require('./sender');
 const IsSupportValueObject = require('./is_support');
+const EmailValueObject = require('./e_mail');
+const ContentValueObject = require('./content');
 
 module.exports = {
-    TitleValueObject,
-    ContentValueObject,
-    IsSupportValueObject
+    SenderValueObject,
+    IsSupportValueObject,
+    EmailValueObject,
+    ContentValueObject
 };
