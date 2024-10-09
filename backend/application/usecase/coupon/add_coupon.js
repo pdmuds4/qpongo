@@ -1,13 +1,13 @@
-class CreateCouponUseCase {
+class AddCouponUseCase {
     constructor(repository, coupon) {
         this.repository = repository;
         this.coupon = coupon;
     }
 
     async execute() {
-        const coupon = await this.repository.addCoupon(this.coupon);
+        const coupon = await this.repository.addCouponData(this.coupon);
         return coupon;
     }
 }
 
-module.exports = CreateCouponUseCase;
+module.exports = AddCouponUseCase;

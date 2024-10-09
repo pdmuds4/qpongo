@@ -12,7 +12,7 @@ class CouponRepository {
         this.dynamoDB = dynamoDBDocumentClient;
     }
 
-    async addCoupon(coupon) {
+    async addCouponData(coupon) {
         const params = {
             TableName: 'coupon',
             Item: { ...coupon.toJson(), deadline: coupon.deadline.value.toISOString(), create_date: coupon.create_date.value.toISOString() }
