@@ -11,7 +11,7 @@ class InquiryRepository {
         this.dynamoDB = dynamoDBDocumentClient;
     }
 
-    async addInquiry(inquiry) {
+    async addInquiryData(inquiry) {
         const params = {
             TableName: 'inquiry',
             Item: { ...inquiry.toJson(), sending_date: inquiry.sending_date.value.toISOString() }
