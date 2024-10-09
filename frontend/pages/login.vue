@@ -1,5 +1,5 @@
 <template>
-    <ProviderLandingContent headerBtn="login">
+    <ProviderLandingContent headerBtn="register">
         <div class="login-content">
             <div class="login-section left">
                 <Heading class="login-title">ログイン</Heading>
