@@ -3,7 +3,7 @@ const {GetCommand} = require('@aws-sdk/lib-dynamodb');
 const {UpdateCommand} = require('@aws-sdk/lib-dynamodb');
 const {DeleteCommand} = require('@aws-sdk/lib-dynamodb');
 const {ScanCommand} = require("@aws-sdk/lib-dynamodb");
-const {IDValueObject, RegistrationDateValueObject} = require('../../domain/value_object/_base');
+const {IDValueObject, CreateDateValueObject} = require('../../domain/value_object/_base');
 const {GoodsValueObject, DiscountValueObject, StoreValueObject, DeadlineValueObject, PhotoValueObject, IsUseValueObject, CategoryValueObject} = require('../../domain/value_object/coupon');
 const CouponEntity = require('../../domain/entity/coupon');
 
@@ -49,7 +49,7 @@ class CouponRepository {
                 new PhotoValueObject(data.Item.photo_back),
                 new IsUseValueObject(data.Item.is_use),
                 new CategoryValueObject(data.Item.category),
-                new RegistrationDateValueObject(new Date(data.Item.create_date))
+                new CreateDateValueObject(new Date(data.Item.create_date))
             );
         } catch (error) {
             throw new Error(error);
@@ -82,7 +82,7 @@ class CouponRepository {
                 new PhotoValueObject(item.photo_back),
                 new IsUseValueObject(item.is_use),
                 new CategoryValueObject(item.category),
-                new RegistrationDateValueObject(new Date(item.create_date))
+                new CreateDateValueObject(new Date(item.create_date))
             ));
         } catch (error) {
             throw new Error(error);

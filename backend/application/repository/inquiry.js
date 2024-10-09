@@ -2,7 +2,7 @@ const {PutCommand} = require('@aws-sdk/lib-dynamodb');
 const {GetCommand} = require('@aws-sdk/lib-dynamodb');
 const {UpdateCommand} = require('@aws-sdk/lib-dynamodb');
 const {DeleteCommand} = require('@aws-sdk/lib-dynamodb');
-const {IDValueObject, RegistrationDateValueObject} = require('../../domain/value_object/_base');
+const {IDValueObject, CreateDateValueObject} = require('../../domain/value_object/_base');
 const {TitleValueObject, ContentValueObject, IsSupportValueObject} = require('../../domain/value_object/inquiry');
 const InquiryEntity = require('../../domain/entity/inquiry');
 
@@ -43,7 +43,7 @@ class InquiryRepository {
                 new TitleValueObject(data.Item.title),
                 new ContentValueObject(data.Item.content),
                 new IsSupportValueObject(data.Item.is_support),
-                new RegistrationDateValueObject(new Date(data.Item.sending_date))
+                new CreateDateValueObject(new Date(data.Item.sending_date))
             );
         } catch (error) {
             throw new Error(error);

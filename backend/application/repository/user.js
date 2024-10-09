@@ -2,7 +2,7 @@ const {PutCommand} = require('@aws-sdk/lib-dynamodb');
 const {GetCommand} = require('@aws-sdk/lib-dynamodb');
 const {UpdateCommand} = require('@aws-sdk/lib-dynamodb');
 const {DeleteCommand} = require('@aws-sdk/lib-dynamodb');
-const {IDValueObject, RegistrationDateValueObject} = require('../../domain/value_object/_base');
+const {IDValueObject, CreateDateValueObject} = require('../../domain/value_object/_base');
 const {NameValueObject, PasswordValueObject, EmailValueObject, AgeValueObject, GenderValueObject} = require('../../domain/value_object/user');
 const UserEntity = require('../../domain/entity/user');
 
@@ -43,7 +43,7 @@ class UserRepository {
                 new EmailValueObject(data.Item.e_mail),
                 new GenderValueObject(data.Item.gender),
                 new AgeValueObject(data.Item.age),
-                new RegistrationDateValueObject(new Date(data.Item.create_date))
+                new CreateDateValueObject(new Date(data.Item.create_date))
             );
         } catch (error) {
             throw new Error(error);
