@@ -7,7 +7,8 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/image',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    '@nuxt/test-utils/module'
   ],
   alias: {
     '@ui'    : fileURLToPath(new URL('./ui',    import.meta.url)),
