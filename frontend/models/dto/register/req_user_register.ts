@@ -1,21 +1,29 @@
 import AbsDTO from "~/models/_abstruct/dto";
-import type Id from "~/models/value_object/id";
+import type UserEmail from "~/models/value_object/user/e_mail";
+import type UserPassword from "~/models/value_object/user/password";
 
 export type UserRegisterReqJson = {
-    user_id: Id;
+    e_mail: string;
+    password: string;
 }
 
 export default class UserRegisterReqDTO extends AbsDTO<UserRegisterReqJson> {
-    user_id: Id;
+    e_mail: UserEmail;
+    password: UserPassword;
 
-    constructor(user_id: Id) {
+    constructor(
+        e_mail: UserEmail,
+        password: UserPassword
+    ) {
         super();
-        this.user_id = user_id;
+        this.e_mail = e_mail;
+        this.password = password;
     }
 
     toJson(): UserRegisterReqJson {
         return {
-            user_id: this.user_id,
+            e_mail: this.e_mail.value,
+            password: this.password.value
         }
     }
 }
