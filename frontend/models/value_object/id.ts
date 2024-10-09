@@ -1,5 +1,5 @@
 import AbsValueObject from "~/models/_abstruct/value_object";
-import ValueObjectError from "./error";
+import ValueObjectError from "./value_object_error";
 
 export default class Id extends AbsValueObject<number> {
     validate(const_val: number) {

@@ -1,13 +1,21 @@
 import AbsDTO from "~/models/_abstruct/dto";
+import type Message from "~/models/value_object/message";
 
 export type ToggleUsedResJson = {
-    none: null
+    message: string;
 }
 
 export default class ToggleUsedResDTO extends AbsDTO<ToggleUsedResJson> {
+    message: Message;
+
+    constructor(message: Message) {
+        super();
+        this.message = message;
+    }
+
     toJson(): ToggleUsedResJson {
         return {
-            none: null
+            message: this.message.value
         }
     }
 }
