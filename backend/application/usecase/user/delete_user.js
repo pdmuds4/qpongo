@@ -1,4 +1,4 @@
-class DleteUserData {
+class DeleteUseCase {
     constructor(repository, user) {
         this.repository = repository;
         this.user = user;
@@ -9,4 +9,4 @@ class DleteUserData {
     }
 }
 
-module.exports = DleteUserData;
+module.exports = DeleteUseCase;
