@@ -1,4 +1,4 @@
-class UserLoginUseCase {
+class GetUserUseCase {
     constructor(repository, id) {
         this.repository = repository;
         this.id = id;
@@ -10,4 +10,4 @@ class UserLoginUseCase {
     }
 }
 
-module.exports = UserLoginUseCase;
+module.exports = GetUserUseCase;
