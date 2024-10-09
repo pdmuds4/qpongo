@@ -8,13 +8,13 @@
     <footer class="footer-body">
         <NuxtLink class="footer-title" to="/">qpON→GO!</NuxtLink>
         <div class="footer-link-group">
-            <NuxtLink class="footer-link" to="/">
+            <NuxtLink class="footer-link" to="/inquiry">
                 お問い合わせ
             </NuxtLink>
-            <NuxtLink class="footer-link" to="/">
+            <NuxtLink class="footer-link" to="/terms">
                 利用規約
             </NuxtLink>
-            <NuxtLink class="footer-link" to="/">
+            <NuxtLink class="footer-link" to="/privacy">
                 プライバシーポリシー
             </NuxtLink>
         </div>

@@ -7,14 +7,11 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/image',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    '@nuxt/test-utils/module'
   ],
-  alias: {
-    '@ui'    : fileURLToPath(new URL('./ui',    import.meta.url)),
-    '@utils' : fileURLToPath(new URL('./utils', import.meta.url)),
-    '@models': fileURLToPath(new URL('./models',import.meta.url)),
-  },
   css: [
+    '~/assets/css/global.css',
     '~/assets/css/fonts.css',
   ],
   tailwindcss: {
@@ -31,4 +28,20 @@ export default defineNuxtConfig({
       Jost: [500, 600, 700],
     }
   },
+  imports: {
+    dirs: [
+      'models/**'
+    ]
+  },
+  // vite: {
+  //   server: {
+  //     proxy: {
+  //       '/api' : {
+  //         target: 'http://localhost:3000',
+  //         changeOrigin: true,
+  //         rewrite: (path) => path.replace(/^\/api/, '')
+  //       }
+  //     }
+  //   }
+  // }
 })
