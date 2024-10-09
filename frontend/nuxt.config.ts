@@ -10,11 +10,6 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@nuxt/test-utils/module'
   ],
-  alias: {
-    '@ui'    : fileURLToPath(new URL('./ui',    import.meta.url)),
-    '@utils' : fileURLToPath(new URL('./utils', import.meta.url)),
-    '@models': fileURLToPath(new URL('./models',import.meta.url)),
-  },
   css: [
     '~/assets/css/global.css',
     '~/assets/css/fonts.css',
