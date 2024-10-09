@@ -11,7 +11,7 @@ class SettingRepository {
         this.dynamoDB = dynamoDBDocumentClient;
     }
 
-    async addSetting(setting) {
+    async addSettingData(setting) {
         const params = {
             TableName: 'setting',
             Item: { ...setting.toJson()}
