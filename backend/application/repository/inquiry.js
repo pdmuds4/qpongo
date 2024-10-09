@@ -56,7 +56,7 @@ class InquiryRepository {
             Key: {
                 id: inquiry.id.value
             },
-            UpdateExpression: '#name = :name, #is_support = :is_support, set #e_mail = :e_mail, #content = :content, #sending_date = :sending_date',
+            UpdateExpression: 'set #name = :name, #is_support = :is_support, #e_mail = :e_mail, #content = :content, #sending_date = :sending_date',
             ExpressionAttributeNames: {
                 '#name': 'name',
                 '#is_support': 'is_support',
@@ -65,6 +65,7 @@ class InquiryRepository {
                 '#sending_date': 'sending_date'
             },
             ExpressionAttributeValues: {
+                ':name': inquiry.name.value,
                 ':is_support': inquiry.is_support.value,
                 ':e_mail': inquiry.e_mail.value,
                 ':content': inquiry.content.value,
