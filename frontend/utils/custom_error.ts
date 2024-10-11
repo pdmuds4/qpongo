@@ -1,10 +1,10 @@
 export default class CustomError extends Error {
-    level: 'valueObject'|'dto'|'usecase';
+    level: 'valueObject'|'dto'|'usecase'|'service';
     status_code: number;
 
     constructor(
         message: string, 
-        level: 'valueObject'|'dto'|'usecase',
+        level: 'valueObject'|'dto'|'usecase'|'service',
         status_code: number
     ) {
         super(message);

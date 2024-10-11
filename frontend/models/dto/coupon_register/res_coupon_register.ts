@@ -1,13 +1,23 @@
 import AbsDTO from "~/models/_abstruct/dto";
+import type Message from "~/models/value_object/message";
 
 export type CouponRegisterResJson = {
-    none: null
+    message: string;
 }
 
 export default class CouponRegisterResDTO extends AbsDTO<CouponRegisterResJson> {
+    message: Message;
+
+    constructor(
+        message: Message
+    ) {
+        super();
+        this.message = message;
+    }
+    
     toJson(): CouponRegisterResJson {
         return {
-            none: null
+            message: this.message.value
         }
     }
 }
