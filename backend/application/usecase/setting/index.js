@@ -1,11 +1,7 @@
-const AddSettingUseCase = require('./add_setting');
-const GetSettingUseCase = require('./get_setting');
-const UpdateSettingUseCase = require('./update_setting');
-const DeleteSettingUseCase = require('./delete_setting');
+const SettingGetUserUseCase = require('./get_user_settings');
+const SettingUpdateSettingsUseCase = require('./update_settings');
 
 module.exports = {
-    AddSettingUseCase,
-    GetSettingUseCase,
-    UpdateSettingUseCase,
-    DeleteSettingUseCase
+    SettingGetUserUseCase,
+    SettingUpdateSettingsUseCase
 };
