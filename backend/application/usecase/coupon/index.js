@@ -1,13 +1,15 @@
-const AddCouponUseCase = require('./add_coupon');
-const GetCouponUseCase = require('./get_coupon');
-const GetUserCouponUseCase = require('./get_user_coupon');
-const UpdateCouponUseCase = require('./update_coupon');
-const DeleteCouponUseCase = require('./delete_coupon');
+const CouponPhotosDeleteUseCase = require('./delete_photos');
+const CouponTextExtractUseCase = require('./text_extract');
+const CouponEditUseCase = require('./coupon_edit');
+const CouponRegisterUseCase = require('./coupon_register');
+const CouponGetUserCouponsUseCase = require('./get_user_coupons');
+const CouponDeleteUseCase = require('./delete_coupon');
 
 module.exports = {
-    AddCouponUseCase,
-    GetCouponUseCase,
-    GetUserCouponUseCase,
-    UpdateCouponUseCase,
-    DeleteCouponUseCase
+    CouponPhotosDeleteUseCase,
+    CouponTextExtractUseCase,
+    CouponEditUseCase,
+    CouponRegisterUseCase,
+    CouponGetUserCouponsUseCase,
+    CouponDeleteUseCase
 };
