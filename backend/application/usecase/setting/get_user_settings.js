@@ -1,16 +1,16 @@
 const {IDValueObject} = require('../../../domain/value_object/_base');
 
-class CouponDeleteUseCase {
+class SettingGetUserUseCase {
     constructor(repository, request) {
         this.repository = repository;
         this.request = request;
     }
 
     async execute() {
-        const coupon_id = new IDValueObject(this.request.coupon_id);
-        const response = await this.repository.deleteCoupon(coupon_id.value);
+        const user_id = new IDValueObject(this.request.user_id);
+        const response = await this.repository.getSettingData(user_id.value);
         return response;
     }
 }
 
-module.exports = CouponDeleteUseCase;
+module.exports = SettingGetUserUseCase;
