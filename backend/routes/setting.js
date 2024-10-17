@@ -15,4 +15,17 @@ setting_route.get('/:user_id', async(req, res) => {
     return res.send(setting_json);
 });
 
+setting_route.put('/', async(req, res) => {
+    const repository = new SettingRepository(dynamoDBDocumentClient);
+
+    const setting = {
+        user_id: req.body.user_id,
+        notice: req.body.notice
+    }
+
+    const setting_update = new SettingUpdateSettingsUseCase(repository, setting);
+    const setting_updated = await setting_update.execute();
+    return res.send(setting_updated);
+});
+
 module.exports = setting_route;
