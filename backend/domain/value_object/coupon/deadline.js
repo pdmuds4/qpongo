@@ -7,7 +7,8 @@ class DeadlineValueObject extends BaseDatetime {
     }
 
     valueCheck(const_value) {
-        if (!(new Date() <= const_value)) throw new Error('期限は過去ではいけません');
+        const japan_time = new Date().toLocaleString("ja-JP", {timeZone: "Asia/Tokyo"});
+        if (!(new Date(japan_time) <= const_value)) throw new Error('期限は過去ではいけません');
 
         return const_value;
     }

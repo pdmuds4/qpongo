@@ -8,7 +8,7 @@ class UserGetInfoUseCase {
 
     async execute() {
         const user_id = new IDValueObject(this.request.user_id);
-        const response = await this.repository.getUserData(user_id.value);
+        const response = await this.repository.getUserData(user_id);
         return response;
     }
 }

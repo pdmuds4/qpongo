@@ -38,19 +38,20 @@ class CouponRepository {
         try {
             const command = new GetCommand(params);
             const data = await this.dynamoDB.send(command);
-            return new CouponEntity(
+            const result_data = new CouponEntity(
                 new IDValueObject(data.Item.id),
                 new IDValueObject(data.Item.user_id),
                 new GoodsValueObject(data.Item.goods),
                 new DiscountValueObject(data.Item.discount),
                 new StoreValueObject(data.Item.store),
-                new DeadlineValueObject(new Date(data.Item.deadline)),
+                new CreateDateValueObject(new Date(data.Item.deadline)),
                 new PhotoValueObject(data.Item.photo_front),
                 new PhotoValueObject(data.Item.photo_back),
                 new IsUseValueObject(data.Item.is_use),
                 new CategoryValueObject(data.Item.category),
                 new CreateDateValueObject(new Date(data.Item.create_date))
             );
+            return result_data;
         } catch (error) {
             throw new Error(error);
         }
@@ -71,19 +72,20 @@ class CouponRepository {
         try {
             const command = new ScanCommand(params);
             const data = await this.dynamoDB.send(command);
-            return data.Items.map(item => new CouponEntity(
+            const return_data = data.Items.map(item => new CouponEntity(
                 new IDValueObject(item.id),
                 new IDValueObject(item.user_id),
                 new GoodsValueObject(item.goods),
                 new DiscountValueObject(item.discount),
                 new StoreValueObject(item.store),
-                new DeadlineValueObject(new Date(item.deadline)),
+                new CreateDateValueObject(new Date(item.deadline)),
                 new PhotoValueObject(item.photo_front),
                 new PhotoValueObject(item.photo_back),
                 new IsUseValueObject(item.is_use),
                 new CategoryValueObject(item.category),
                 new CreateDateValueObject(new Date(item.create_date))
             ));
+            return return_data;
         } catch (error) {
             throw new Error(error);
         }
@@ -133,7 +135,7 @@ class CouponRepository {
         const params = {
             TableName: 'coupon',
             Key: {
-                id: coupon.id.value
+                id: coupon.value
             }
         };
 

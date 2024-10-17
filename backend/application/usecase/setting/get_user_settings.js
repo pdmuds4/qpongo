@@ -8,7 +8,7 @@ class SettingGetUserUseCase {
 
     async execute() {
         const user_id = new IDValueObject(this.request.user_id);
-        const response = await this.repository.getSettingData(user_id.value);
+        const response = await this.repository.getSettingData(user_id);
         return response;
     }
 }

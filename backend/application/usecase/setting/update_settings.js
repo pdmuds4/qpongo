@@ -15,8 +15,9 @@ class SettingUpdateSettingsUseCase {
             new NoticeValueObject(this.request.notice)
         );
 
-        const response = await this.repository.updateSettingData(setting);
-        return response.user_id;
+        await this.repository.updateSettingData(setting);
+        const return_json = {'massage': 'データを修正しました。'}
+        return return_json;
     }
 }
 
