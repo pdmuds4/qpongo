@@ -15,7 +15,8 @@ coupon_route.get('/:user_id', async(req, res) => {
 
     const user_coupons = new CouponGetUserCouponsUseCase(repository, request_json);
     const coupons = await user_coupons.execute();
-    return res.send(coupons);
+    const coupons_json = coupons.map(coupon => coupon.toJson());
+    return res.send(coupons_json);
 });
 
 coupon_route.post('/', async(req, res) => {
@@ -61,6 +62,15 @@ coupon_route.put('/', async(req, res) => {
     const coupon_edit = new CouponEditUseCase(repository, coupon);
     const coupon_edited = await coupon_edit.execute();
     return res.send(coupon_edited);
+});
+
+coupon_route.delete('/', async(req, res) => {
+    const repository = new CouponRepository(dynamoDBDocumentClient);
+    const request_json = req.body
+
+    const coupon_delete = new CouponDeleteUseCase(repository, request_json);
+    const coupon_deleted = await coupon_delete.execute();
+    return res.send(coupon_deleted);
 });
 
 photos_route.post('/', async(req, res) => {

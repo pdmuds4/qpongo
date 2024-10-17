@@ -8,8 +8,9 @@ class CouponDeleteUseCase {
 
     async execute() {
         const coupon_id = new IDValueObject(this.request.coupon_id);
-        const response = await this.repository.deleteCoupon(coupon_id.value);
-        return response;
+        await this.repository.deleteCouponData(coupon_id);
+        const return_json = {'message': 'クーポンを削除しました。'}
+        return return_json;
     }
 }
 

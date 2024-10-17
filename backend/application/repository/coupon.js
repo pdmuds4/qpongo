@@ -31,7 +31,7 @@ class CouponRepository {
         const params = {
             TableName: 'coupon',
             Key: {
-                id: id
+                id: id.value
             }
         };
 
@@ -65,7 +65,7 @@ class CouponRepository {
                 '#user_id': 'user_id'
             },
             ExpressionAttributeValues: {
-                ':user_id': user_id
+                ':user_id': user_id.value
             }
         };
     
@@ -135,7 +135,7 @@ class CouponRepository {
         const params = {
             TableName: 'coupon',
             Key: {
-                id: coupon.id.value
+                id: coupon.value
             }
         };
 
