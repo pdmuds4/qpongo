@@ -12,6 +12,8 @@ app.get('/', (req, res) => {
 
 app.use('/user', user_route)
 
+app.use('/coupons', coupon_route)
+
 app.use('/photos', photos_route)
 
 app.listen(port, () => {
