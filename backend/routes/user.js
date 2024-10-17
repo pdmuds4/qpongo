@@ -1,10 +1,20 @@
-const {UserRegisterUseCase} = require('../application/usecase/user');
+const {UserRegisterUseCase, UserGetInfoUseCase} = require('../application/usecase/user');
 const {UserRepository} = require('../application/repository');
 const {CreateNewIDService} = require('../application/service');
 const dynamoDBDocumentClient = require('../client/aws/dynamodb');
 
 const express = require('express');
 const user_route = express.Router();
+
+user_route.get('/:user_id', async(req, res) => {
+    const repository = new UserRepository(dynamoDBDocumentClient);
+    const request_json = {"user_id": Number(req.params.user_id)}
+
+    const user = new UserGetInfoUseCase(repository, request_json);
+    const user_data = await user.execute();
+    const user_json = user_data.toJson();
+    return res.send(user_json);
+});
 
 user_route.post('/', async(req, res) => {
     const repository = new UserRepository(dynamoDBDocumentClient);
