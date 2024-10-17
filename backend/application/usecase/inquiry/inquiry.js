@@ -1,7 +1,7 @@
 const InQuiryEntity = require('../../../domain/entity/inquiry');
 
 const {IDValueObject, CreateDateValueObject} = require('../../../domain/value_object/_base');
-const {SenderValueObject, EmailValueObject, ContentValueObject} = require('../../../domain/value_object/inquiry');
+const {SenderValueObject, IsSupportValueObject, EmailValueObject, ContentValueObject} = require('../../../domain/value_object/inquiry');
 
 class InquiryUseCase {
     constructor(repository, request) {
@@ -13,13 +13,15 @@ class InquiryUseCase {
         const inquiry = new InQuiryEntity(
             new IDValueObject(this.request.id),
             new SenderValueObject(this.request.sender),
+            new IsSupportValueObject(this.request.is_support),
             new EmailValueObject(this.request.e_mail),
             new ContentValueObject(this.request.content),
             new CreateDateValueObject(new Date())
         );
 
-        const response = await this.repository.addInquiryData(inquiry);
-        return response.id;
+        await this.repository.addInquiryData(inquiry);
+        const return_json = {'massage': 'メッセージを送信しました。'};
+        return return_json;
     }
 }
 
