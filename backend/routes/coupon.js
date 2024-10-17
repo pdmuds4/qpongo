@@ -9,6 +9,15 @@ const express = require('express');
 const coupon_route = express.Router();
 const photos_route = express.Router();
 
+coupon_route.get('/:user_id', async(req, res) => {
+    const repository = new CouponRepository(dynamoDBDocumentClient);
+    const request_json = {"user_id": Number(req.params.user_id)}
+
+    const user_coupons = new CouponGetUserCouponsUseCase(repository, request_json);
+    const coupons = await user_coupons.execute();
+    return res.send(coupons);
+});
+
 coupon_route.post('/', async(req, res) => {
     const repository = new CouponRepository(dynamoDBDocumentClient);
 
