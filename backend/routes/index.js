@@ -1,5 +1,5 @@
-const register = require('./user');
+const user_route = require('./user');
 
 module.exports = {
-    register
+    user_route
 }

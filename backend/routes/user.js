@@ -4,9 +4,9 @@ const {CreateNewIDService} = require('../application/service');
 const dynamoDBDocumentClient = require('../client/aws/dynamodb');
 
 const express = require('express');
-const register = express.Router();
+const user_route = express.Router();
 
-register.post('/', async(req, res) => {
+user_route.post('/', async(req, res) => {
     const repository = new UserRepository(dynamoDBDocumentClient);
 
     const user_id = await new CreateNewIDService(dynamoDBDocumentClient, 'user', 'id').execute();
@@ -29,4 +29,4 @@ register.post('/', async(req, res) => {
     return res.send(user_registered);
 });
 
-module.exports = register;
+module.exports = user_route;
