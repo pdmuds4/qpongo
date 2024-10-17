@@ -38,7 +38,7 @@ class CouponRepository {
         try {
             const command = new GetCommand(params);
             const data = await this.dynamoDB.send(command);
-            return new CouponEntity(
+            const result_data = new CouponEntity(
                 new IDValueObject(data.Item.id),
                 new IDValueObject(data.Item.user_id),
                 new GoodsValueObject(data.Item.goods),
@@ -51,6 +51,7 @@ class CouponRepository {
                 new CategoryValueObject(data.Item.category),
                 new CreateDateValueObject(new Date(data.Item.create_date))
             );
+            return result_data;
         } catch (error) {
             throw new Error(error);
         }
@@ -71,7 +72,7 @@ class CouponRepository {
         try {
             const command = new ScanCommand(params);
             const data = await this.dynamoDB.send(command);
-            return data.Items.map(item => new CouponEntity(
+            const return_data = data.Items.map(item => new CouponEntity(
                 new IDValueObject(item.id),
                 new IDValueObject(item.user_id),
                 new GoodsValueObject(item.goods),
@@ -84,6 +85,7 @@ class CouponRepository {
                 new CategoryValueObject(item.category),
                 new CreateDateValueObject(new Date(item.create_date))
             ));
+            return return_data;
         } catch (error) {
             throw new Error(error);
         }
