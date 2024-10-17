@@ -10,6 +10,7 @@ class UserRegisterUseCase {
     }
 
     async execute() {
+        const japan_time = new Date().toLocaleString("ja-JP", {timeZone: "Asia/Tokyo"});
         // ユーザIDを生成するサービスはユースケースクラスの外で行う
         const user = new UserEntity(
             new IDValueObject(this.request.id),
@@ -18,7 +19,7 @@ class UserRegisterUseCase {
             new EmailValueObject(this.request.e_mail),
             new GenderValueObject(this.request.gender),
             new AgeValueObject(this.request.age),
-            new CreateDateValueObject(new Date())
+            new CreateDateValueObject(new Date(japan_time))
         );
 
         const response = await this.repository.addUserData(user);
