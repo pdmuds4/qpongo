@@ -31,7 +31,7 @@ class CouponRepository {
         const params = {
             TableName: 'coupon',
             Key: {
-                id: id.value
+                id: id
             }
         };
 
@@ -44,7 +44,7 @@ class CouponRepository {
                 new GoodsValueObject(data.Item.goods),
                 new DiscountValueObject(data.Item.discount),
                 new StoreValueObject(data.Item.store),
-                new DeadlineValueObject(new Date(data.Item.deadline)),
+                new CreateDateValueObject(new Date(data.Item.deadline)),
                 new PhotoValueObject(data.Item.photo_front),
                 new PhotoValueObject(data.Item.photo_back),
                 new IsUseValueObject(data.Item.is_use),
@@ -64,7 +64,7 @@ class CouponRepository {
                 '#user_id': 'user_id'
             },
             ExpressionAttributeValues: {
-                ':user_id': user_id.value
+                ':user_id': user_id
             }
         };
     
@@ -77,7 +77,7 @@ class CouponRepository {
                 new GoodsValueObject(item.goods),
                 new DiscountValueObject(item.discount),
                 new StoreValueObject(item.store),
-                new DeadlineValueObject(new Date(item.deadline)),
+                new CreateDateValueObject(new Date(item.deadline)),
                 new PhotoValueObject(item.photo_front),
                 new PhotoValueObject(item.photo_back),
                 new IsUseValueObject(item.is_use),
