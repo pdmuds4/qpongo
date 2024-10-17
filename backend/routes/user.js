@@ -1,5 +1,7 @@
 const {UserRegisterUseCase, UserGetInfoUseCase} = require('../application/usecase/user');
+const {SettingsRegisterUseCase} = require('../application/usecase/setting');
 const {UserRepository} = require('../application/repository');
+const {SettingRepository} = require('../application/repository');
 const {CreateNewIDService} = require('../application/service');
 const dynamoDBDocumentClient = require('../client/aws/dynamodb');
 
@@ -35,6 +37,17 @@ user_route.post('/', async(req, res) => {
 
     const user_register = new UserRegisterUseCase(repository, user);
     const user_registered = await user_register.execute();
+
+    const setting_repository = new SettingRepository(dynamoDBDocumentClient);
+    const default_notice = 7
+
+    const setting = {
+        user_id: user_id,
+        notice: default_notice
+    }
+
+    const setting_register = new SettingsRegisterUseCase(setting_repository, setting);
+    await setting_register.execute();
 
     return res.send(user_registered);
 });
