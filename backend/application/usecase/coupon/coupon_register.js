@@ -27,8 +27,9 @@ class CouponRegisterUseCase {
             new CreateDateValueObject(new Date(japan_time))
         );
 
-        const response = await this.repository.addCouponData(coupon);
-        return response.id;
+        await this.repository.addCouponData(coupon);
+        const return_json = {'massage': 'クーポンを登録しました。'};
+        return return_json;
     }
 }
 

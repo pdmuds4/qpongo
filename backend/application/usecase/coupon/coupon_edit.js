@@ -26,8 +26,9 @@ class CouponEditUseCase {
             new CreateDateValueObject(new Date(japan_time))
         );
 
-        const response = await this.repository.updateCouponData(coupon);
-        return response.id;
+        await this.repository.updateCouponData(coupon);
+        const return_json = {'massage': 'データを修正しました。'}
+        return return_json;
     }
 }
 
