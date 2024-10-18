@@ -1,0 +1,114 @@
+【user関係】
+
+dto : req_user_register / res_user_register
+
+メソッド : post
+ルート : /user
+
+req : {e_mail(str), password()str}
+res : {user_id}
+
+修正あり
+
+---
+
+dto : req_get_user_info / res_get_user_info
+
+メソッド : get
+ルート : /user
+
+req : {user_id(パスパラメータ)}
+res : {id(num), name(str), password(str), e_mail(str), gender(str), age(num), create_date(date)}
+
+--------------------------------------------------------------------------------------------
+【coupon関係】
+
+dto : req_text_extract / res_text_extract
+
+メソッド : post
+ルート : /photos
+
+req : {photo_front(str), photo_back(str)}
+res : {goods(str), discount(str), store(str), deadline(date), category(str)}
+
+---
+
+dto : req_delete_photos / res_delete_photos
+
+メソッド : delete
+ルート : /photos
+
+req : {photo_front(str), photo_back(str)}
+res : {message(str)}
+
+---
+
+dto : req_coupon_register / res_coupon_register
+
+メソッド : post
+ルート : /coupons
+
+req : {user_id(num), goods(str), discount(str), deadline(date), photo_front(str), photo_back(str), category(str)}
+res : {massage(str)}
+
+---
+
+dto : req_get_user_coupons / res_get_user_coupons
+
+メソッド : get
+ルート : /coupons
+
+req : {user_id(パスパラメータ)}
+res : {{id(num), user_id(num), goods(str), discount(str), store(str), deadline(date), photo_front(str), photo_back(str), is_use(boolian), category(str), create_date(date)}, ×枚数分}
+
+---
+
+dto : req_coupon_edit / res_coupon_edit, req_toggle_used / res_toggle_used
+
+メソッド : put
+ルート : /coupons
+
+req : {id(num), user_id(num), goods(str), discount(str), store(str), deadline(date), photo_front(str), photo_back(str), is_use(boolian), category(str)}
+res : {massage(str)}
+
+---
+
+dto : req_delete_coupon / res_delete_coupon
+
+メソッド : delete
+ルート : /coupons
+
+req : {coupon_id(int)}
+res : {message(str)}
+
+--------------------------------------------------------------------------------------------
+【setting関係】
+
+dto : req_get_user_settings / res_get_user_settings
+
+メソッド : get
+ルート : /settings
+
+req : {user_id(パスパラメータ)}
+res : {user_id(num), notice(num)}
+
+---
+
+dto : req_update_settings / res_update_settings
+
+メソッド : put
+ルート : /settings
+
+req : {user_id(num), notice(num)}
+res : {massage(str)}
+
+--------------------------------------------------------------------------------------------
+【inquiry関係】
+
+dto : req_inquiry / res_inquiry
+
+メソッド : post
+ルート : /inquiry
+
+req : {sender(str), e_mail(str), content(str)}
+res : {massage(str)}
