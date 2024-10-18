@@ -23,7 +23,8 @@ class UserRegisterUseCase {
         );
 
         const response = await this.repository.addUserData(user);
-        return response.id;
+        const return_json = {'user_id': response.id.value}
+        return return_json;
     }
 }
 
