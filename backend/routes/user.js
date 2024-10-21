@@ -1,4 +1,4 @@
-const {UserRegisterUseCase, UserGetInfoUseCase} = require('../application/usecase/user');
+const {UserRegisterUseCase, UserGetInfoUseCase, UserLoginUseCase} = require('../application/usecase/user');
 const {SettingsRegisterUseCase} = require('../application/usecase/setting');
 const {UserRepository} = require('../application/repository');
 const {SettingRepository} = require('../application/repository');
@@ -50,6 +50,18 @@ user_route.post('/', async(req, res) => {
     await setting_register.execute();
 
     return res.send(user_registered);
+});
+
+user_route.post('/login', async(req, res) => {
+    const repository = new UserRepository(dynamoDBDocumentClient);
+    const request_json = {
+        "e_mail": req.body.e_mail,
+        "password": req.body.password
+    }
+
+    const user = new UserLoginUseCase(repository, request_json);
+    const user_id = await user.execute();
+    return res.send(user_id);
 });
 
 module.exports = user_route;
