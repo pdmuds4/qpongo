@@ -14,7 +14,9 @@
     <div class="landingcontent-main">
         <Header :setBtn="headerBtn" />
         <div class="landingcontent-body">
-            <slot>Landing Content</slot>
+            <div class="landingcontent-content">
+                <slot>Landing Content</slot>
+            </div>
         </div>
         <Footer />
     </div>
@@ -30,6 +32,14 @@ defineProps<{
 .landingcontent-body {
     margin-top: 70px;
     padding: 30px;
+    height: 71vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.landingcontent-content {
+    width: 100%;
 }
 
 @media screen and (max-width: 580px) {
