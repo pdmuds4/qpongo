@@ -26,6 +26,10 @@
 defineProps<{
     pageTitle: string
 }>()
+
+onBeforeMount(() => {
+    authManager.getToken()
+})
 </script>
 
 <style scoped>

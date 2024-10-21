@@ -6,7 +6,7 @@ export default class AuthManager {
     static getToken() {
         const auth_info = localStorage.getItem('auth_info')
         if (auth_info) {
-            return JSON.parse(auth_info);
+            return auth_info
         } else {
             navigateTo('/login');
         }
