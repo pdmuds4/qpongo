@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import UserLoginUseCase from '~/models/usecase/login/userLogin';
-import { UserLoginReqDTO, UserLoginResDTO } from '~/models/dto/login';
+import { UserLoginReqDTO } from '~/models/dto/login';
 import { UserEmail, UserPassword } from '~/models/value_object/user';
 
 const fetcher = useFetcher().value;
@@ -55,12 +55,12 @@ const loginHandler = async () => {
     fetcher.loading = true;
     try {
         console.log(formValues);
-        const req = new UserLoginReqDTO(
+        const request = new UserLoginReqDTO(
             new UserEmail   (formValues.e_mail),
             new UserPassword(formValues.password)
         );
 
-        const response = await new UserLoginUseCase(req).execute();
+        const response = await new UserLoginUseCase(request).execute();
         authManager.setToken(JSON.stringify(response.toJson()));
         navigateTo('/coupons');
     } catch (e) {
