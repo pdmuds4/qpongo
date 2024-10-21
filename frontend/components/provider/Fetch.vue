@@ -7,12 +7,7 @@
 </template>
 
 <script setup lang="ts">
-const fetch_context = useState('fetch-provider-context', ()=>({
-    loading: false,
-    error: false,
-    error_message: ''
-}));
-
+const fetch_context = useFetcher();
 </script>
 
 <style scoped>

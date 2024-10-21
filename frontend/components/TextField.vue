@@ -13,10 +13,9 @@
 <template>
     <div class="textfield-body">
         <input 
-            v-model="input_value"
             :type="is_show ? 'text' : inputType"
             :placeholder="placeHolder"
-            :value="input_value"
+            :value="props.defaultValue"
         />
 
         <NuxtImg
@@ -35,8 +34,6 @@ const props = defineProps<{
     placeHolder?: string,
 }>()
 
-// 属性状態
-const input_value = ref<string | undefined>(props.defaultValue)
 
 // passwordの場合の可視化
 const is_show = ref<boolean>(false)

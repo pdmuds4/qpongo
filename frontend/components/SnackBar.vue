@@ -31,8 +31,8 @@ defineProps<{
     bottom: 10px;
     right: 10px;
     width: 100%;
-    max-width: 300px;
-    padding: 5px;
+    max-width: 400px;
+    padding: 10px 5px;
     
     background-color: #f44336;
     color: white;
