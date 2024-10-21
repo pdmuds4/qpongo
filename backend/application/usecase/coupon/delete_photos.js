@@ -10,7 +10,7 @@ class CouponPhotosDeleteUseCase {
 
     async execute() {
         const bucketName = process.env.AWS_S3_BUCKET_NAME;
-        const region = process.env.AWS_REGION;
+        const region = process.env.AWS_REGION_QPONGO;
 
         try{
             for (const photo_key in this.request) {
