@@ -3,7 +3,7 @@ const UserEntity = require('../../../domain/entity/user');
 const {IDValueObject, CreateDateValueObject} = require('../../../domain/value_object/_base');
 const {NameValueObject, PasswordValueObject, EmailValueObject, AgeValueObject, GenderValueObject} = require('../../../domain/value_object/user');
 
-const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 class UserRegisterUseCase {
     constructor(repository, request) {
@@ -12,7 +12,7 @@ class UserRegisterUseCase {
     }
 
     async execute() {
-        const hashed_password = bcrypt.hashSync(this.request.password, 10);
+        const hashed_password = crypto.createHash('sha256').update(this.request.password).digest('hex');
         const japan_time = new Date().toLocaleString("ja-JP", {timeZone: "Asia/Tokyo"});
         // ユーザIDを生成するサービスはユースケースクラスの外で行う
         const user = new UserEntity(
