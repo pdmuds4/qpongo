@@ -33,15 +33,15 @@ export default defineNuxtConfig({
       'models/**'
     ]
   },
-  // vite: {
-  //   server: {
-  //     proxy: {
-  //       '/api' : {
-  //         target: 'http://localhost:3000',
-  //         changeOrigin: true,
-  //         rewrite: (path) => path.replace(/^\/api/, '')
-  //       }
-  //     }
-  //   }
-  // }
+  runtimeConfig: {
+    public: {
+      apiKey: process.env.API_KEY
+    }
+  },
+  routeRules: {
+    '/api/**' : {
+      cors: true,
+      proxy: { to: `${process.env.API_BASE}/**`}
+    }
+  }
 })

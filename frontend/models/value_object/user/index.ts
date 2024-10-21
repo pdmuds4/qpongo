@@ -1,0 +1,5 @@
+export {default as UserAge} from './age'
+export {default as UserEmail} from './e_mail'
+export {default as UserGender} from './gender'
+export {default as UserName} from './name'
+export {default as UserPassword} from './password'
