@@ -13,7 +13,7 @@ export default async function <ReqT>(
                 'X-API-Key': process.env.API_KEY,
             },
             method: method,
-            url: endpoint,
+            url: process.env.BACKEND_DOMAIN + endpoint,
             data: req_body,
         });
 
