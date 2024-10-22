@@ -1,6 +1,7 @@
-import DeletePhotosReqDTO from "~/models/dto/coupon_camera/req_delete_photos";
-import DeletePhotosResDTO from "~/models/dto/coupon_camera/res_delete_photos";
+import { DeletePhotosReqDTO, DeletePhotosResDTO, type DeletePhotosResJson } from "~/models/dto/coupon_camera";
 import type AbsUsecase from "~/models/_abstruct/usecase";
+
+import Message from "~/models/value_object/message";
 
 export default class DeletePhotosUseCase implements AbsUsecase<DeletePhotosReqDTO, DeletePhotosResDTO> {
     request: DeletePhotosReqDTO;
@@ -10,6 +11,14 @@ export default class DeletePhotosUseCase implements AbsUsecase<DeletePhotosReqDT
     }
 
     async execute() {
-        return;
+        const response = await callApi(
+            'DELETE',
+            '/api/photos',
+            this.request.toJson()
+        ) as DeletePhotosResJson;
+
+        return new DeletePhotosResDTO(
+            new Message(response.message)
+        );
     }
 }

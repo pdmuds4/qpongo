@@ -19,11 +19,7 @@
 </template>
 
 <script setup lang="ts">
-// import { SavePhotosUseCase } from '~/models/usecase/coupon_camera';
-
 import { Buffer } from 'buffer';
-// import AwsS3Client from '~/models/client/awsS3';
-// import UploadToS3Service from '~/models/service/uploadToS3';
 
 const props = defineProps<{
     open: boolean,
@@ -32,14 +28,6 @@ const props = defineProps<{
 
 const fetcher = useFetcher().value;
 const buffer_saver = useBufferSaver();
-// const config = useRuntimeConfig();
-
-// const client = new AwsS3Client(
-//     config.public.awsRegion,
-//     config.public.awsAccessKeyId,
-//     config.public.awsSecretAccessKey,
-//     config.public.awsS3Bucket
-// );
 
 const saveHandler = async (navigate_to: string) => {
     fetcher.loading = true;
@@ -49,9 +37,6 @@ const saveHandler = async (navigate_to: string) => {
         if (!matches || matches.length !== 3) throw new Error('写真のバイナリデータが不正です');
         const front_photo_buffer = Buffer.from(matches[2], 'base64');
 
-        // const request = new SavePhotosReqDTO(front_photo_buffer, null);
-        // const response = await new SavePhotosUseCase(new UploadToS3Service(client), request).execute();
-        
         buffer_saver.value.photo_front_buffer = front_photo_buffer
         navigateTo(navigate_to);
     } catch (e) {

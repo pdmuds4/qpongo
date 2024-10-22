@@ -5,24 +5,27 @@ import ServiceError from "./service_error";
 
 export default class UploadToS3Service implements AbsService<string>{
     client: AwsS3Client;
+    s3_baseurl: string;
 
     constructor(
         client: AwsS3Client,
+        s3_baseurl: string
     ){
         this.client = client;
+        this.s3_baseurl = s3_baseurl;
     }
 
     async execute(file_buffer: Buffer){
         try {
-            const save_path = `${Date.now()}.png`;
+            const filename = `${Date.now()}.png`;
             const command = new PutObjectCommand({
                 Bucket: this.client.bucketName,
-                Key:    save_path,
+                Key:    filename,
                 Body:   file_buffer,
             });
 
             await this.client.send(command);
-            return `/source/${save_path}`;
+            return `${this.s3_baseurl}/${filename}`;
         } catch (error) {
             if (error instanceof Error) {
                 throw new ServiceError(error.message, 500)
