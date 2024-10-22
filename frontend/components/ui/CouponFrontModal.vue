@@ -7,10 +7,10 @@
             </div>
             <img class="front-modal-image" :src="takeSrc" alt="表面の画像" />
             <div class="front-modal-btngroup">
-                <Button class="front-modal-btn" @click="onlyFrontHandler">
+                <Button class="front-modal-btn" @click="saveHandler('/coupon/register')">
                     表面だけ
                 </Button>
-                <Button class="front-modal-btn" fill @click="navigateTo('/coupon_camera/back')">
+                <Button class="front-modal-btn" fill @click="saveHandler('/coupon_camera/back')">
                     裏面も撮る
                 </Button>
             </div>
@@ -19,12 +19,12 @@
 </template>
 
 <script setup lang="ts">
-import { SavePhotosUseCase } from '~/models/usecase/coupon_camera';
-import { SavePhotosReqDTO, type TextExtractReqJson } from '~/models/dto/coupon_camera';
+// import { SavePhotosUseCase } from '~/models/usecase/coupon_camera';
+import { SavePhotosReqDTO, type SavePhotosReqJson } from '~/models/dto/coupon_camera';
 
 import { Buffer } from 'buffer';
-import AwsS3Client from '~/models/client/awsS3';
-import UploadToS3Service from '~/models/service/uploadToS3';
+// import AwsS3Client from '~/models/client/awsS3';
+// import UploadToS3Service from '~/models/service/uploadToS3';
 
 const props = defineProps<{
     open: boolean,
@@ -32,16 +32,17 @@ const props = defineProps<{
 }>();
 
 const fetcher = useFetcher().value;
-const config = useRuntimeConfig();
-const photo_src = useState<TextExtractReqJson>('coupon-photo-src')
-const client = new AwsS3Client(
-    config.public.awsRegion,
-    config.public.awsAccessKeyId,
-    config.public.awsSecretAccessKey,
-    config.public.awsS3Bucket
-);
+// const config = useRuntimeConfig();
 
-const onlyFrontHandler = async() => {
+// const client = new AwsS3Client(
+//     config.public.awsRegion,
+//     config.public.awsAccessKeyId,
+//     config.public.awsSecretAccessKey,
+//     config.public.awsS3Bucket
+// );
+
+const photo_buffer = useState<SavePhotosReqJson>('coupon-photo-buffer');
+const saveHandler = async (navigate_to: string) => {
     fetcher.loading = true;
     try {
         if (!props.takeSrc) throw new Error('写真の撮影に失敗しました');
@@ -49,15 +50,11 @@ const onlyFrontHandler = async() => {
         if (!matches || matches.length !== 3) throw new Error('写真のバイナリデータが不正です');
         const front_photo_buffer = Buffer.from(matches[2], 'base64');
 
-        const request = new SavePhotosReqDTO(front_photo_buffer, null);
-        const response = await new SavePhotosUseCase(new UploadToS3Service(client), request).execute();
+        // const request = new SavePhotosReqDTO(front_photo_buffer, null);
+        // const response = await new SavePhotosUseCase(new UploadToS3Service(client), request).execute();
         
-        photo_src.value = {
-            photo_front: response.photo_front.value,
-            photo_back:  response.photo_back ? response.photo_back.value : response.photo_front.value
-        };
-
-        navigateTo('/coupon/register');
+        photo_buffer.value.photo_front_buffer = front_photo_buffer
+        navigateTo(navigate_to);
     } catch (e) {
         fetcher.error = true;
         fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
@@ -65,7 +62,6 @@ const onlyFrontHandler = async() => {
         fetcher.loading = false;
     }
 }
-
 
 </script>
 
