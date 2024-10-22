@@ -8,6 +8,13 @@
 
 <script setup lang="ts">
 const fetch_context = useFetcher();
+
+watch(() => fetch_context.value.error, (error) => {
+    if (error) {
+        setTimeout(() => fetch_context.value.error = false, 5000);
+    }
+});
+
 </script>
 
 <style scoped>
