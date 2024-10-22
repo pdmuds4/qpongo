@@ -20,7 +20,6 @@
 
 <script setup lang="ts">
 // import { SavePhotosUseCase } from '~/models/usecase/coupon_camera';
-import { SavePhotosReqDTO, type SavePhotosReqJson } from '~/models/dto/coupon_camera';
 
 import { Buffer } from 'buffer';
 // import AwsS3Client from '~/models/client/awsS3';
@@ -32,6 +31,7 @@ const props = defineProps<{
 }>();
 
 const fetcher = useFetcher().value;
+const buffer_saver = useBufferSaver();
 // const config = useRuntimeConfig();
 
 // const client = new AwsS3Client(
@@ -41,7 +41,6 @@ const fetcher = useFetcher().value;
 //     config.public.awsS3Bucket
 // );
 
-const photo_buffer = useState<SavePhotosReqJson>('coupon-photo-buffer');
 const saveHandler = async (navigate_to: string) => {
     fetcher.loading = true;
     try {
@@ -53,7 +52,7 @@ const saveHandler = async (navigate_to: string) => {
         // const request = new SavePhotosReqDTO(front_photo_buffer, null);
         // const response = await new SavePhotosUseCase(new UploadToS3Service(client), request).execute();
         
-        photo_buffer.value.photo_front_buffer = front_photo_buffer
+        buffer_saver.value.photo_front_buffer = front_photo_buffer
         navigateTo(navigate_to);
     } catch (e) {
         fetcher.error = true;
