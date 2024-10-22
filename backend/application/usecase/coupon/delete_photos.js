@@ -24,7 +24,7 @@ class CouponPhotosDeleteUseCase {
                 const command = new DeleteObjectCommand(params);
                 await this.client.send(command);
             }
-            const return_json = {message: '写真を削除しました。'};
+            const return_json = {'message': '写真を削除しました。'};
             return return_json;
         } catch (error) {
             throw new Error(error);

@@ -27,7 +27,7 @@ class CouponEditUseCase {
         );
 
         await this.repository.updateCouponData(coupon);
-        const return_json = {'massage': 'データを修正しました。'}
+        const return_json = {'message': 'データを修正しました。'}
         return return_json;
     }
 }

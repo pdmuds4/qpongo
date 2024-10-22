@@ -28,7 +28,7 @@ class CouponRegisterUseCase {
         );
 
         await this.repository.addCouponData(coupon);
-        const return_json = {'massage': 'クーポンを登録しました。'};
+        const return_json = {'message': 'クーポンを登録しました。'};
         return return_json;
     }
 }

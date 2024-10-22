@@ -16,7 +16,7 @@ class SettingUpdateSettingsUseCase {
         );
 
         await this.repository.updateSettingData(setting);
-        const return_json = {'massage': 'データを修正しました。'}
+        const return_json = {'message': 'データを修正しました。'}
         return return_json;
     }
 }

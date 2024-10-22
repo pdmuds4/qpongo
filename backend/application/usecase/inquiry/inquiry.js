@@ -20,7 +20,7 @@ class InquiryUseCase {
         );
 
         await this.repository.addInquiryData(inquiry);
-        const return_json = {'massage': 'メッセージを送信しました。'};
+        const return_json = {'message': 'メッセージを送信しました。'};
         return return_json;
     }
 }
