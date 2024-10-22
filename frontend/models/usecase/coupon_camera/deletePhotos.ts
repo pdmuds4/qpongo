@@ -1,11 +1,11 @@
-import SavePhotosReqDTO from "~/models/dto/coupon_camera/req_save_photos";
-import SavePhotosResDTO from "~/models/dto/coupon_camera/res_save_photos";
+import DeletePhotosReqDTO from "~/models/dto/coupon_camera/req_delete_photos";
+import DeletePhotosResDTO from "~/models/dto/coupon_camera/res_delete_photos";
 import type AbsUsecase from "~/models/_abstruct/usecase";
 
-export default class SavePhotosUseCase implements AbsUsecase<SavePhotosReqDTO, SavePhotosResDTO> {
-    request: SavePhotosReqDTO;
+export default class DeletePhotosUseCase implements AbsUsecase<DeletePhotosReqDTO, DeletePhotosResDTO> {
+    request: DeletePhotosReqDTO;
 
-    constructor(request: SavePhotosReqDTO) {
+    constructor(request: DeletePhotosReqDTO) {
         this.request = request;
     }
 
