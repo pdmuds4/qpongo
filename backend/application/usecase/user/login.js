@@ -14,8 +14,11 @@ class UserLoginUseCase {
         const password = new PasswordValueObject(hash_password);
 
         const user_id = await this.repository.getUserId(password, e_mail);
-        const return_json = {"user_id": user_id.value}
-        return return_json;
+        if (user_id) {
+            return {"user_id": user_id.value};
+        } else {
+            return {"user_id": user_id};
+        }
     }
 }
 
