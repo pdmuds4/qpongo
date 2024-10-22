@@ -4,21 +4,22 @@
             <div class="coupon-photos">
                 <NuxtImg 
                     class="coupon-img"
+                    alt="front"
                     :src="formValue.photo_front"
                 />
                 <NuxtImg 
+                    v-if="formValue.photo_back !== formValue.photo_front"
                     class="coupon-img"
+                    alt="back"
                     :src="formValue.photo_back"
                 />
             </div>
             <Heading v-if="method=='register'" class="coupon-message">登録内容をご確認ください</Heading>
             <div class="coupon-card">
                 <UiCouponInfoListItem title="有効期限">
-                    <TextField 
-                        inputType="text" 
-                        placeHolder="ここに入力"
-                        
-                        
+                    <Calendar 
+                        :default-value="formValue.deadline"
+                        @change="(e) => formValue.deadline = new Date(e.target.value)"
                     />
                 </UiCouponInfoListItem>
                 <UiCouponInfoListItem title="発行店名">
@@ -47,8 +48,20 @@
                 </UiCouponInfoListItem>
             </div>
             <div class="coupon-btngroup">
-                <Button class="coupon-btn" error>{{method==='register' ? "撮り直す" : "キャンセル"}}</Button>
-                <Button class="coupon-btn" fill >{{method==='register' ? "登録する" : "更新する"  }}</Button>
+                <Button 
+                    class="coupon-btn" 
+                    error 
+                    @click="() => method==='register' ? toRetakeHandler() : navigateTo('/coupos')"
+                >
+                    {{method==='register' ? "撮り直す" : "キャンセル"}}
+                </Button>
+                <Button 
+                    class="coupon-btn" 
+                    fill
+                    @click="registerHandler"
+                >
+                    {{method==='register' ? "登録する" : "更新する"  }}
+                </Button>
             </div>
         </div>
     </ProviderHomeContent>
@@ -79,7 +92,12 @@ import type { CouponRegisterReqJson } from '~/models/dto/coupon_register/req_cou
 
 import AwsS3Client from '~/models/client/awsS3';
 import UploadToS3Service from '~/models/service/uploadToS3';
-import { CouponPhoto } from '~/models/value_object/coupon';
+
+import CouponRegisterUseCase from '~/models/usecase/coupon/couponRegister';
+import CouponRegisterReqDTO from '~/models/dto/coupon_register/req_coupon_register';
+import Id from '~/models/value_object/id';
+import { CouponDiscount, CouponGoods, CouponPhoto, CouponStore, CouponDeadline, CouponCategory } from '~/models/value_object/coupon';
+
 
 const fetcher = useFetcher().value;
 const buffer_saver = useBufferSaver();
@@ -95,49 +113,84 @@ const client = new AwsS3Client(
 
 const formValue = reactive<CouponRegisterReqJson>({} as CouponRegisterReqJson)
 
-// onBeforeMount(async ()=>{
-//     if (method == 'register' && buffer_saver.value.photo_front_buffer) {
-//         fetcher.loading = true;
-//         try {
-//             const save_photos_request = new SavePhotosReqDTO(buffer_saver.value.photo_front_buffer, buffer_saver.value.photo_back_buffer);
-//             const save_photos_response = await new SavePhotosUseCase(new UploadToS3Service(client, config.public.S3Base), save_photos_request).execute();
-//             formValue.photo_front = save_photos_response.photo_front.value;
-//             formValue.photo_back = save_photos_response.photo_back ? save_photos_response.photo_back.value : '';
-//             buffer_saver.value = {} as SavePhotosReqJson;
+onBeforeMount(async ()=>{
+    const auth_info = authManager.getToken()
+    if (auth_info) formValue.user_id = auth_info.user_id;
 
-//             const text_extract_request = new TextExtractReqDTO(
-//                 save_photos_response.photo_front,
-//                 save_photos_response.photo_back ? save_photos_response.photo_back : save_photos_response.photo_front
-//             );
-//             const text_extract_response = await new TextExtractUseCase(text_extract_request).execute();
+    if (method == 'register' && buffer_saver.value.photo_front_buffer) {
+        fetcher.loading = true;
+        try {
+            const save_photos_request = new SavePhotosReqDTO(buffer_saver.value.photo_front_buffer, buffer_saver.value.photo_back_buffer);
+            const save_photos_response = await new SavePhotosUseCase(new UploadToS3Service(client, config.public.S3Base), save_photos_request).execute();
+            formValue.photo_front = save_photos_response.photo_front.value;
+            formValue.photo_back = save_photos_response.photo_back ? save_photos_response.photo_back.value : save_photos_response.photo_front.value;
+            buffer_saver.value = {} as SavePhotosReqJson;
 
-//             formValue.goods = text_extract_response.goods.value;
-//             formValue.discount = text_extract_response.discount.value;
-//             formValue.store = text_extract_response.store.value;
-//             formValue.deadline = text_extract_response.deadline.value;
-//             formValue.category = text_extract_response.category.value;
+            const text_extract_request = new TextExtractReqDTO(
+                save_photos_response.photo_front,
+                save_photos_response.photo_back ? save_photos_response.photo_back : save_photos_response.photo_front
+            );
+            const text_extract_response = await new TextExtractUseCase(text_extract_request).execute();
 
-//             console.log(formValue);
+            formValue.goods = text_extract_response.goods.value;
+            formValue.discount = text_extract_response.discount.value;
+            formValue.store = text_extract_response.store.value;
+            formValue.deadline = text_extract_response.deadline.value;
+            formValue.category = text_extract_response.category.value;
+        } catch (e) {
+            fetcher.error = true;
+            fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
 
-//         } catch (e) {
-//             fetcher.error = true;
-//             fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
+            if (formValue.photo_front && formValue.photo_back) {
+                await toRetakeHandler();
+            }
+        } finally {
+            fetcher.loading = false;
+        }
+    } else {
+        navigateTo('/coupon_camera/front');
+    }
+})
 
-//             if (formValue.photo_front && formValue.photo_back) {
-//                 const delete_photos_request = new DeletePhotosReqDTO(
-//                     new CouponPhoto(formValue.photo_front),
-//                     new CouponPhoto(formValue.photo_back),
-//                 );
-//                 await new DeletePhotosUseCase(delete_photos_request).execute();
-//                 navigateTo('/coupons');
-//             }
-//         } finally {
-//             fetcher.loading = false;
-//         }
-//     } else {
-//         navigateTo('/coupon_camera/front');
-//     }
-// })
+
+const toRetakeHandler = async () => {
+    try {
+        const delete_photos_request = new DeletePhotosReqDTO(
+            new CouponPhoto(formValue.photo_front),
+            new CouponPhoto(formValue.photo_back),
+        );
+        await new DeletePhotosUseCase(delete_photos_request).execute();
+        navigateTo('/coupon_camera/front')
+    } catch (e) {
+        fetcher.error = true;
+        fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
+    } finally {
+        fetcher.loading = false;
+    }
+}
+
+const registerHandler = async () => {
+    try {
+        const request = new CouponRegisterReqDTO(
+            new Id            (formValue.user_id),
+            new CouponGoods   (formValue.goods),
+            new CouponDiscount(formValue.discount),
+            new CouponStore   (formValue.store),
+            new CouponDeadline(formValue.deadline),
+            new CouponPhoto   (formValue.photo_front),
+            new CouponPhoto   (formValue.photo_back),
+            new CouponCategory(formValue.category)
+        )
+        const response = await new CouponRegisterUseCase(request).execute();
+        if (!response.message) throw new Error('クーポンの登録に失敗しました');
+        navigateTo('/coupons');
+    } catch (e) {
+        fetcher.error = true;
+        fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
+    } finally {
+        fetcher.loading = false;
+    }
+}
 
 </script>
 

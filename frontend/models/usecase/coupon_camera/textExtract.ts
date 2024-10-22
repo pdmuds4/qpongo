@@ -16,11 +16,12 @@ export default class TextExtractUseCase implements AbsUseCase<TextExtractReqDTO,
             this.request.toJson()
         ) as TextExtractResJson;
 
+
         return new TextExtractResDTO(
             new CouponGoods(response.goods),
             new CouponDiscount(response.discount),
             new CouponStore(response.store),
-            new CouponDeadline(response.deadline),
+            new CouponDeadline(new Date(response.deadline)),
             new CouponCategory(response.category)
         );
     }

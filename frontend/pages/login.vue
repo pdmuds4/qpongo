@@ -54,7 +54,6 @@ const formValues = reactive({
 const loginHandler = async () => {
     fetcher.loading = true;
     try {
-        console.log(formValues);
         const request = new UserLoginReqDTO(
             new UserEmail   (formValues.e_mail),
             new UserPassword(formValues.password)

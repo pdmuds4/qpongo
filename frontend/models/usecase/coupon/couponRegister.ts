@@ -1,6 +1,6 @@
+import { CouponRegisterReqDTO, CouponRegisterResDTO, type CouponRegisterResJson } from "~/models/dto/coupon_register";
 import type AbsUseCase from "~/models/_abstruct/usecase";
-import type CouponRegisterReqDTO from "~/models/dto/coupon_register/req_coupon_register";
-import type CouponRegisterResDTO from "~/models/dto/coupon_register/res_coupon_register";
+import Message from "~/models/value_object/message";
 
 export default class CouponRegisterUseCase implements AbsUseCase<CouponRegisterReqDTO, CouponRegisterResDTO> {
     request: CouponRegisterReqDTO;
@@ -10,6 +10,14 @@ export default class CouponRegisterUseCase implements AbsUseCase<CouponRegisterR
     }
 
     async execute() {
-        return;
+        const response = await callApi(
+            'POST',
+            '/api/coupons',
+            this.request.toJson()
+        ) as CouponRegisterResJson;
+
+        return new CouponRegisterResDTO(
+            new Message(response.message)
+        );
     }
 }

@@ -59,7 +59,6 @@ const formValues = reactive({
 const registerHandler = async () => {
     fetcher.loading = true;
     try {
-        console.log(formValues);
         if (formValues.e_mail !== formValues.secondly_e_mail) throw new Error('メールアドレスが一致しません');
 
         const request = new UserRegisterReqDTO(
