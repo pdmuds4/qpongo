@@ -74,31 +74,33 @@ onMounted(() => {
 
 // 写真の撮影
 const capturePhoto = () => {
-    if (canvas.value && video.value && frame.value) {
+    if (canvas.value && video.value && frame.value) {    
         const context = canvas.value.getContext('2d') as CanvasRenderingContext2D;
         canvas.value.width = video.value.videoWidth
         canvas.value.height = video.value.videoHeight
         context.drawImage(video.value, 0, 0, canvas.value.width, canvas.value.height)
+        photo_src.value = canvas.value.toDataURL('image/png')
         
-        const cropX      = frame.value.getBoundingClientRect().left;
-        const cropY      = frame.value.getBoundingClientRect().top;
-        const cropWidth  = frame.value.offsetWidth;
-        const cropHeight = frame.value.offsetHeight;
+        // [TODO] カメラの映像をキャンバスに描画し、クリップする //
+        // const cropX      = frame.value.getBoundingClientRect().left;
+        // const cropY      = frame.value.getBoundingClientRect().top;
+        // const cropWidth  = frame.value.offsetWidth;
+        // const cropHeight = frame.value.offsetHeight;
 
-        // 切り取った部分を新しいキャンバスに描画
-        const croppedCanvas = document.createElement('canvas')
-        croppedCanvas.width = cropWidth
-        croppedCanvas.height = cropHeight
-        const croppedContext = croppedCanvas.getContext('2d') as CanvasRenderingContext2D;
+        // // 切り取った部分を新しいキャンバスに描画
+        // const croppedCanvas = document.createElement('canvas')
+        // croppedCanvas.width = cropWidth
+        // croppedCanvas.height = cropHeight
+        // const croppedContext = croppedCanvas.getContext('2d') as CanvasRenderingContext2D;
         
-        croppedContext.drawImage(
-            canvas.value,
-            cropX, cropY, cropWidth, cropHeight, // 元画像の切り取る位置とサイズ
-            0, 0, cropWidth, cropHeight // 新しいキャンバス上での描画位置とサイズ
-        )
+        // croppedContext.drawImage(
+        //     canvas.value,
+        //     cropX, cropY, cropWidth, cropHeight, // 元画像の切り取る位置とサイズ
+        //     0, 0, cropWidth, cropHeight // 新しいキャンバス上での描画位置とサイズ
+        // )
 
-        // 切り取った画像をbase64形式に変換して表示
-        photo_src.value = croppedCanvas.toDataURL('image/png')
+        // // 切り取った画像をbase64形式に変換して表示
+        // photo_src.value = croppedCanvas.toDataURL('image/png')
     }
 }
 
