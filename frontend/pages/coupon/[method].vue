@@ -99,7 +99,7 @@ import Id from '~/models/value_object/id';
 import { CouponDiscount, CouponGoods, CouponPhoto, CouponStore, CouponDeadline, CouponCategory } from '~/models/value_object/coupon';
 
 
-const fetcher = useFetcher().value;
+const {fetcher, fetcherHandler} = useFetcher()
 const buffer_saver = useBufferSaver();
 
 const config = useRuntimeConfig();
@@ -118,79 +118,57 @@ onBeforeMount(async ()=>{
     if (auth_info) formValue.user_id = auth_info.user_id;
 
     if (method == 'register' && buffer_saver.value.photo_front_buffer) {
-        fetcher.loading = true;
-        try {
-            const save_photos_request = new SavePhotosReqDTO(buffer_saver.value.photo_front_buffer, buffer_saver.value.photo_back_buffer);
-            const save_photos_response = await new SavePhotosUseCase(new UploadToS3Service(client, config.public.S3Base), save_photos_request).execute();
-            formValue.photo_front = save_photos_response.photo_front.value;
-            formValue.photo_back = save_photos_response.photo_back ? save_photos_response.photo_back.value : save_photos_response.photo_front.value;
-            buffer_saver.value = {} as SavePhotosReqJson;
-
-            const text_extract_request = new TextExtractReqDTO(
-                save_photos_response.photo_front,
-                save_photos_response.photo_back ? save_photos_response.photo_back : save_photos_response.photo_front
-            );
-            const text_extract_response = await new TextExtractUseCase(text_extract_request).execute();
-
-            formValue.goods = text_extract_response.goods.value;
-            formValue.discount = text_extract_response.discount.value;
-            formValue.store = text_extract_response.store.value;
-            formValue.deadline = text_extract_response.deadline.value;
-            formValue.category = text_extract_response.category.value;
-        } catch (e) {
-            fetcher.error = true;
-            fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
-
-            if (formValue.photo_front && formValue.photo_back) {
-                await toRetakeHandler();
-            }
-        } finally {
-            fetcher.loading = false;
-        }
+        extractHandler();
     } else {
         navigateTo('/coupon_camera/front');
     }
 })
 
+const extractHandler = () => fetcherHandler(async () => {
+    const save_photos_request = new SavePhotosReqDTO(buffer_saver.value.photo_front_buffer, buffer_saver.value.photo_back_buffer);
+    const save_photos_response = await new SavePhotosUseCase(new UploadToS3Service(client, config.public.S3Base), save_photos_request).execute();
+    formValue.photo_front = save_photos_response.photo_front.value;
+    formValue.photo_back = save_photos_response.photo_back ? save_photos_response.photo_back.value : save_photos_response.photo_front.value;
+    buffer_saver.value = {} as SavePhotosReqJson;
 
-const toRetakeHandler = async () => {
-    try {
-        const delete_photos_request = new DeletePhotosReqDTO(
-            new CouponPhoto(formValue.photo_front),
-            new CouponPhoto(formValue.photo_back),
-        );
-        await new DeletePhotosUseCase(delete_photos_request).execute();
-        navigateTo('/coupon_camera/front')
-    } catch (e) {
-        fetcher.error = true;
-        fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
-    } finally {
-        fetcher.loading = false;
-    }
-}
+    const text_extract_request = new TextExtractReqDTO(
+        save_photos_response.photo_front,
+        save_photos_response.photo_back ? save_photos_response.photo_back : save_photos_response.photo_front
+    );
+    const text_extract_response = await new TextExtractUseCase(text_extract_request).execute();
 
-const registerHandler = async () => {
-    try {
-        const request = new CouponRegisterReqDTO(
-            new Id            (formValue.user_id),
-            new CouponGoods   (formValue.goods),
-            new CouponDiscount(formValue.discount),
-            new CouponStore   (formValue.store),
-            new CouponDeadline(formValue.deadline),
-            new CouponPhoto   (formValue.photo_front),
-            new CouponPhoto   (formValue.photo_back),
-            new CouponCategory(formValue.category)
-        )
-        const response = await new CouponRegisterUseCase(request).execute();
-        if (!response.message) throw new Error('クーポンの登録に失敗しました');
-        navigateTo('/coupons');
-    } catch (e) {
-        fetcher.error = true;
-        fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
-    } finally {
-        fetcher.loading = false;
-    }
-}
+    formValue.goods = text_extract_response.goods.value;
+    formValue.discount = text_extract_response.discount.value;
+    formValue.store = text_extract_response.store.value;
+    formValue.deadline = text_extract_response.deadline.value;
+    formValue.category = text_extract_response.category.value;
+});
+
+
+const toRetakeHandler = () => fetcherHandler(async () => {
+    const delete_photos_request = new DeletePhotosReqDTO(
+        new CouponPhoto(formValue.photo_front),
+        new CouponPhoto(formValue.photo_back),
+    );
+    await new DeletePhotosUseCase(delete_photos_request).execute();
+    navigateTo('/coupon_camera/front')
+})
+
+const registerHandler = () => fetcherHandler(async () => {
+    const request = new CouponRegisterReqDTO(
+        new Id            (formValue.user_id),
+        new CouponGoods   (formValue.goods),
+        new CouponDiscount(formValue.discount),
+        new CouponStore   (formValue.store),
+        new CouponDeadline(formValue.deadline),
+        new CouponPhoto   (formValue.photo_front),
+        new CouponPhoto   (formValue.photo_back),
+        new CouponCategory(formValue.category)
+    )
+    const response = await new CouponRegisterUseCase(request).execute();
+    if (!response.message) throw new Error('クーポンの登録に失敗しました');
+    navigateTo('/coupons');
+})
 
 </script>
 

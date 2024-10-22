@@ -44,31 +44,23 @@ import UserLoginUseCase from '~/models/usecase/login/userLogin';
 import { UserLoginReqDTO } from '~/models/dto/login';
 import { UserEmail, UserPassword } from '~/models/value_object/user';
 
-const fetcher = useFetcher().value;
+const { fetcher, fetcherHandler } = useFetcher()
 
 const formValues = reactive({
     e_mail: '',
     password: ''
 });
 
-const loginHandler = async () => {
-    fetcher.loading = true;
-    try {
-        const request = new UserLoginReqDTO(
-            new UserEmail   (formValues.e_mail),
-            new UserPassword(formValues.password)
-        );
+const loginHandler = () => fetcherHandler(async () => {
+    const request = new UserLoginReqDTO(
+        new UserEmail   (formValues.e_mail),
+        new UserPassword(formValues.password)
+    );
 
-        const response = await new UserLoginUseCase(request).execute();
-        authManager.setToken(JSON.stringify(response.toJson()));
-        navigateTo('/coupons');
-    } catch (e) {
-        fetcher.error = true;
-        fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
-    } finally {
-        fetcher.loading = false;
-    }
-}
+    const response = await new UserLoginUseCase(request).execute();
+    authManager.setToken(JSON.stringify(response.toJson()));
+    navigateTo('/coupons');
+});
 
 </script>
 

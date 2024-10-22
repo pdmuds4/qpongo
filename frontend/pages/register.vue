@@ -49,32 +49,24 @@ import UserRegisterUseCase from '~/models/usecase/register/userRegister';
 import { UserRegisterReqDTO } from '~/models/dto/register';
 import { UserEmail, UserPassword } from '~/models/value_object/user';
 
-const fetcher = useFetcher().value;
+const {fetcher, fetcherHandler} = useFetcher()
 const formValues = reactive({
     e_mail: '',
     secondly_e_mail: '',
     password: ''
 });
 
-const registerHandler = async () => {
-    fetcher.loading = true;
-    try {
-        if (formValues.e_mail !== formValues.secondly_e_mail) throw new Error('メールアドレスが一致しません');
+const registerHandler = () => fetcherHandler(async () => {
+    if (formValues.e_mail !== formValues.secondly_e_mail) throw new Error('メールアドレスが一致しません');
 
-        const request = new UserRegisterReqDTO(
-            new UserEmail   (formValues.e_mail),
-            new UserPassword(formValues.password)
-        );
-        const response = await new UserRegisterUseCase(request).execute();
-        authManager.setToken(JSON.stringify(response.toJson()));
-        navigateTo('/coupons');
-    } catch (e) {
-        fetcher.error = true;
-        fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
-    } finally {
-        fetcher.loading = false;
-    }
-}
+    const request = new UserRegisterReqDTO(
+        new UserEmail   (formValues.e_mail),
+        new UserPassword(formValues.password)
+    );
+    const response = await new UserRegisterUseCase(request).execute();
+    authManager.setToken(JSON.stringify(response.toJson()));
+    navigateTo('/coupons');
+});
 
 </script>
 

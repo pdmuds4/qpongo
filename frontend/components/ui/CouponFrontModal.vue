@@ -26,26 +26,18 @@ const props = defineProps<{
     takeSrc?: string,
 }>();
 
-const fetcher = useFetcher().value;
+const {fetcher, fetcherHandler} = useFetcher()
 const buffer_saver = useBufferSaver();
 
-const saveHandler = async (navigate_to: string) => {
-    fetcher.loading = true;
-    try {
-        if (!props.takeSrc) throw new Error('写真の撮影に失敗しました');
-        const matches = props.takeSrc.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
-        if (!matches || matches.length !== 3) throw new Error('写真のバイナリデータが不正です');
-        const front_photo_buffer = Buffer.from(matches[2], 'base64');
+const saveHandler = (navigate_to: string) => fetcherHandler(async (navigate_to: string) => {
+    if (!props.takeSrc) throw new Error('写真の撮影に失敗しました');
+    const matches = props.takeSrc.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) throw new Error('写真のバイナリデータが不正です');
+    const front_photo_buffer = Buffer.from(matches[2], 'base64');
 
-        buffer_saver.value.photo_front_buffer = front_photo_buffer
-        navigateTo(navigate_to);
-    } catch (e) {
-        fetcher.error = true;
-        fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
-    } finally {
-        fetcher.loading = false;
-    }
-}
+    buffer_saver.value.photo_front_buffer = front_photo_buffer
+    navigateTo(navigate_to);
+}, navigate_to);
 
 </script>
 

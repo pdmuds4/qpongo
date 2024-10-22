@@ -55,8 +55,8 @@ const startCamera = () =>
 navigator.mediaDevices.getUserMedia(
 {
     video: {
-        width: { ideal: 1920 },
-        height: { ideal: 1080 },
+        width: { ideal: window.innerWidth },
+        height: { ideal: window.innerHeight },
         facingMode: "environment",
     },
     audio: false,
@@ -79,28 +79,28 @@ const capturePhoto = () => {
         canvas.value.width = video.value.videoWidth
         canvas.value.height = video.value.videoHeight
         context.drawImage(video.value, 0, 0, canvas.value.width, canvas.value.height)
-        photo_src.value = canvas.value.toDataURL('image/png')
+        // photo_src.value = canvas.value.toDataURL('image/png')
         
         // [TODO] カメラの映像をキャンバスに描画し、クリップする //
-        // const cropX      = frame.value.getBoundingClientRect().left;
-        // const cropY      = frame.value.getBoundingClientRect().top;
-        // const cropWidth  = frame.value.offsetWidth;
-        // const cropHeight = frame.value.offsetHeight;
+        const cropX      = frame.value.getBoundingClientRect().left;
+        const cropY      = frame.value.getBoundingClientRect().top;
+        const cropWidth  = frame.value.offsetWidth;
+        const cropHeight = frame.value.offsetHeight;
 
-        // // 切り取った部分を新しいキャンバスに描画
-        // const croppedCanvas = document.createElement('canvas')
-        // croppedCanvas.width = cropWidth
-        // croppedCanvas.height = cropHeight
-        // const croppedContext = croppedCanvas.getContext('2d') as CanvasRenderingContext2D;
+        // 切り取った部分を新しいキャンバスに描画
+        const croppedCanvas = document.createElement('canvas')
+        croppedCanvas.width = cropWidth
+        croppedCanvas.height = cropHeight
+        const croppedContext = croppedCanvas.getContext('2d') as CanvasRenderingContext2D;
         
-        // croppedContext.drawImage(
-        //     canvas.value,
-        //     cropX, cropY, cropWidth, cropHeight, // 元画像の切り取る位置とサイズ
-        //     0, 0, cropWidth, cropHeight // 新しいキャンバス上での描画位置とサイズ
-        // )
+        croppedContext.drawImage(
+            canvas.value,
+            cropX, cropY, cropWidth, cropHeight, // 元画像の切り取る位置とサイズ
+            0, 0, cropWidth, cropHeight // 新しいキャンバス上での描画位置とサイズ
+        )
 
-        // // 切り取った画像をbase64形式に変換して表示
-        // photo_src.value = croppedCanvas.toDataURL('image/png')
+        // 切り取った画像をbase64形式に変換して表示
+        photo_src.value = croppedCanvas.toDataURL('image/png')
     }
 }
 
@@ -155,9 +155,11 @@ video {
 
 .coupon-camera-frame {
     border: 3px solid white;
-    width: 50vw;
-    aspect-ratio: 4/3;
+    width: 60vw;
+    height: 70vh;
+    aspect-ratio: 1/1;
     max-width: 500px;
+    max-height: 500px;
     border-radius: 15px;
     mix-blend-mode: difference;
 }
@@ -187,7 +189,6 @@ video {
 @media screen and (max-width: 580px) {
     .coupon-camera-frame {
         width: 90vw;
-        aspect-ratio: 1/1;
     }
 }
 

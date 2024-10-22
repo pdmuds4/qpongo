@@ -27,7 +27,7 @@ const props = defineProps<{
     takeSrc?: string,
 }>();
 
-const fetcher = useFetcher().value;
+const { fetcher, fetcherHandler } = useFetcher();
 const buffer_saver = useBufferSaver();
 
 const cancelHandler = () => {
@@ -35,23 +35,15 @@ const cancelHandler = () => {
     navigateTo('/coupons');
 }
 
-const toRegisterHandler = () => {
-    fetcher.loading = true;
-    try {
-        if (!props.takeSrc) throw new Error('写真の撮影に失敗しました');
-        const matches = props.takeSrc.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
-        if (!matches || matches.length !== 3) throw new Error('写真のバイナリデータが不正です');
-        const back_photo_buffer = Buffer.from(matches[2], 'base64');
+const toRegisterHandler = () => fetcherHandler(async()=>{
+    if (!props.takeSrc) throw new Error('写真の撮影に失敗しました');
+    const matches = props.takeSrc.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) throw new Error('写真のバイナリデータが不正です');
+    const back_photo_buffer = Buffer.from(matches[2], 'base64');
 
-        buffer_saver.value.photo_back_buffer = back_photo_buffer;
-        navigateTo('/coupon/register');
-    } catch (e) {
-        fetcher.error = true;
-        fetcher.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
-    } finally {
-        fetcher.loading = false;
-    }
-}
+    buffer_saver.value.photo_back_buffer = back_photo_buffer;
+    navigateTo('/coupon/register');
+});
 
 onBeforeMount(() => {
     if (!buffer_saver.value.photo_front_buffer) {
