@@ -6,13 +6,13 @@ import type UserEmail from "~/models/value_object/user/e_mail";
 import type UserGender from "~/models/value_object/user/gender";
 import type UserAge from "~/models/value_object/user/age";
 import type CreateDate from "~/models/value_object/create_date";
+import type { userGenderEnums } from "~/models/value_object/enums";
 
 export type GetUserInfoResJson = {
     id: number;
     name: string;
-    password: string;
     e_mail: string;
-    gender: string;
+    gender: userGenderEnums;
     age: number;
     create_date: Date;
 }
@@ -20,7 +20,6 @@ export type GetUserInfoResJson = {
 export default class GetUserInfoResDTO extends AbsDTO<GetUserInfoResJson> {
     id: Id;
     name: UserName;
-    password: UserPassword;
     e_mail: UserEmail;
     gender: UserGender;
     age: UserAge;
@@ -29,7 +28,6 @@ export default class GetUserInfoResDTO extends AbsDTO<GetUserInfoResJson> {
     constructor(
         id: Id,
         name: UserName,
-        password: UserPassword,
         e_mail: UserEmail,
         gender: UserGender,
         age: UserAge,
@@ -38,7 +36,6 @@ export default class GetUserInfoResDTO extends AbsDTO<GetUserInfoResJson> {
         super();
         this.id = id;
         this.name = name;
-        this.password = password;
         this.e_mail = e_mail;
         this.gender = gender;
         this.age = age;
@@ -49,7 +46,6 @@ export default class GetUserInfoResDTO extends AbsDTO<GetUserInfoResJson> {
         return {
             id: this.id.value,
             name: this.name.value,
-            password: this.password.value,
             e_mail: this.e_mail.value,
             gender: this.gender.value,
             age: this.age.value,

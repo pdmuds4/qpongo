@@ -197,7 +197,7 @@ const getHandler = () => fetcherHandler(async()=>{
     const response = await new GetCouponUseCase(request).execute();
 
     if (!response) throw new Error('クーポンの取得に失敗しました');
-        
+
     editFormValue.id = response.id.value;
     editFormValue.goods = response.goods.value;
     editFormValue.discount = response.discount.value;
@@ -212,8 +212,8 @@ const getHandler = () => fetcherHandler(async()=>{
 
 const editHandler = () => fetcherHandler(async () => {
     const request = new CouponEditReqDTO(
-        new Id            (editFormValue.user_id),
         new Id            (editFormValue.id),
+        new Id            (editFormValue.user_id),
         new CouponGoods   (editFormValue.goods),
         new CouponDiscount(editFormValue.discount),
         new CouponStore   (editFormValue.store),
