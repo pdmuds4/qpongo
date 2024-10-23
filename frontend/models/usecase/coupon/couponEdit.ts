@@ -1,6 +1,6 @@
-import type CouponEditReqDTO from "~/models/dto/coupon_edit/req_coupon_edit";
-import type CouponEditResDTO from "~/models/dto/coupon_edit/res_coupon_edit";
+import { CouponEditReqDTO, CouponEditResDTO, type CouponEditResJson } from "~/models/dto/coupon";
 import type AbsUseCase from "~/models/_abstruct/usecase";
+import Message from "~/models/value_object/message";
 
 export default class CouponEditUseCase implements AbsUseCase<CouponEditReqDTO, CouponEditResDTO> {
     request: CouponEditReqDTO;
@@ -10,6 +10,15 @@ export default class CouponEditUseCase implements AbsUseCase<CouponEditReqDTO, C
     }
 
     async execute() {
-        return;
+        const response = await callApi(
+            'PUT',
+            '/api/coupons',
+            this.request.toJson()
+        ) as CouponEditResJson;
+
+
+        return new CouponEditResDTO(
+            new Message(response.message)
+        )
     }
 }

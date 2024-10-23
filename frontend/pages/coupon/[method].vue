@@ -5,45 +5,57 @@
                 <NuxtImg 
                     class="coupon-img"
                     alt="front"
-                    :src="formValue.photo_front"
+                    :src="registerFormValue.photo_front || editFormValue.photo_front"
                 />
                 <NuxtImg 
-                    v-if="formValue.photo_back !== formValue.photo_front"
+                    v-if="registerFormValue.photo_back !== registerFormValue.photo_front || editFormValue.photo_back !== editFormValue.photo_front"
                     class="coupon-img"
                     alt="back"
-                    :src="formValue.photo_back"
+                    :src="registerFormValue.photo_back || editFormValue.photo_back"
                 />
             </div>
             <Heading v-if="method=='register'" class="coupon-message">登録内容をご確認ください</Heading>
             <div class="coupon-card">
                 <UiCouponInfoListItem title="有効期限">
                     <Calendar 
-                        :default-value="formValue.deadline"
-                        @change="(e) => formValue.deadline = new Date(e.target.value)"
+                        :defaultValue="registerFormValue.deadline || editFormValue.deadline"
+                        @change="(e) => {
+                            if(method=='register') registerFormValue.deadline = new Date(e.target.value)
+                            if(method=='edit')     editFormValue.deadline     = new Date(e.target.value)
+                        }"
                     />
                 </UiCouponInfoListItem>
                 <UiCouponInfoListItem title="発行店名">
                     <TextField
                         inputType="text" 
                         placeHolder="ここに入力"
-                        :default-value="formValue.store"
-                        @change="(e) => formValue.store = e.target.value"
+                        :defaultValue="registerFormValue.store || editFormValue.store"
+                        @change="(e) => {
+                            if(method=='register') registerFormValue.store = e.target.value
+                            if(method=='edit')     editFormValue.store     = e.target.value
+                        }"
                     />
                 </UiCouponInfoListItem>
                 <UiCouponInfoListItem title="割引内容">
                     <TextField 
                         inputType="text" 
                         placeHolder="ここに入力"
-                        :defaultValue="formValue.discount"
-                        @change="(e) => formValue.discount = e.target.value"
+                        :defaultValue="registerFormValue.discount || editFormValue.discount"
+                        @change="(e) => {
+                            if(method=='register') registerFormValue.discount = e.target.value
+                            if(method=='edit')     editFormValue.discount     = e.target.value
+                        }"
                     />
                 </UiCouponInfoListItem>
                 <UiCouponInfoListItem title="対象商品">
                     <TextField 
                         inputType="text" 
                         placeHolder="ここに入力"
-                        :defaultValue="formValue.goods"
-                        @change="(e) => formValue.goods = e.target.value"
+                        :defaultValue="registerFormValue.goods || editFormValue.goods"
+                        @change="(e) => {
+                            if(method=='register') registerFormValue.goods = e.target.value
+                            if(method=='edit')     editFormValue.goods     = e.target.value
+                        }"
                     />
                 </UiCouponInfoListItem>
             </div>
@@ -51,14 +63,14 @@
                 <Button 
                     class="coupon-btn" 
                     error 
-                    @click="() => method==='register' ? toRetakeHandler() : navigateTo('/coupos')"
+                    @click="() => method == 'register' ? toRetakeHandler() : navigateTo('/coupos')"
                 >
                     {{method==='register' ? "撮り直す" : "キャンセル"}}
                 </Button>
                 <Button 
                     class="coupon-btn" 
                     fill
-                    @click="registerHandler"
+                    @click="() => method == 'register' ? registerHandler() : editHandler()"
                 >
                     {{method==='register' ? "登録する" : "更新する"  }}
                 </Button>
@@ -92,13 +104,14 @@ import { DeletePhotosReqDTO, SavePhotosReqDTO, TextExtractReqDTO, type SavePhoto
 import AwsS3Client from '~/models/client/awsS3';
 import UploadToS3Service from '~/models/service/uploadToS3';
 
-import { CouponRegisterUseCase, CouponEditUseCase } from '~/models/usecase/coupon';
-import { CouponRegisterReqDTO, type CouponRegisterReqJson } from '~/models/dto/coupon';
+import { CouponRegisterUseCase, GetCouponUseCase, CouponEditUseCase } from '~/models/usecase/coupon';
+import { CouponRegisterReqDTO, GetCouponReqDTO, CouponEditReqDTO, type CouponEditReqJson, type CouponRegisterReqJson } from '~/models/dto/coupon';
 
 import Id from '~/models/value_object/id';
 import { CouponDiscount, CouponGoods, CouponPhoto, CouponStore, CouponDeadline, CouponCategory } from '~/models/value_object/coupon';
+import CreateDate from '~/models/value_object/create_date';
 
-const {fetcher, fetcherHandler} = useFetcher()
+const {fetcherHandler} = useFetcher()
 const buffer_saver = useBufferSaver();
 
 const config = useRuntimeConfig();
@@ -110,11 +123,15 @@ const client = new AwsS3Client(
     config.public.awsS3Bucket
 );
 
-const formValue = reactive<CouponRegisterReqJson>({} as CouponRegisterReqJson)
+const registerFormValue = reactive<CouponRegisterReqJson>({} as CouponRegisterReqJson)
+const editFormValue = reactive<CouponEditReqJson>({} as CouponEditReqJson)
 
 onBeforeMount(async ()=>{
     const auth_info = authManager.getToken()
-    if (auth_info) formValue.user_id = auth_info.user_id;
+    if (auth_info) {
+        registerFormValue.user_id = auth_info.user_id
+        editFormValue.user_id = auth_info.user_id
+    };
     
     if (method == 'register') {
         buffer_saver.value.photo_front_buffer ? extractHandler() : navigateTo('/coupon_camera/front');
@@ -127,8 +144,8 @@ onBeforeMount(async ()=>{
 const extractHandler = () => fetcherHandler(async () => {
     const save_photos_request = new SavePhotosReqDTO(buffer_saver.value.photo_front_buffer, buffer_saver.value.photo_back_buffer);
     const save_photos_response = await new SavePhotosUseCase(new UploadToS3Service(client, config.public.S3Base), save_photos_request).execute();
-    formValue.photo_front = save_photos_response.photo_front.value;
-    formValue.photo_back = save_photos_response.photo_back ? save_photos_response.photo_back.value : save_photos_response.photo_front.value;
+    registerFormValue.photo_front = save_photos_response.photo_front.value;
+    registerFormValue.photo_back = save_photos_response.photo_back ? save_photos_response.photo_back.value : save_photos_response.photo_front.value;
     buffer_saver.value = {} as SavePhotosReqJson;
 
     const text_extract_request = new TextExtractReqDTO(
@@ -137,18 +154,18 @@ const extractHandler = () => fetcherHandler(async () => {
     );
     const text_extract_response = await new TextExtractUseCase(text_extract_request).execute();
 
-    formValue.goods = text_extract_response.goods.value;
-    formValue.discount = text_extract_response.discount.value;
-    formValue.store = text_extract_response.store.value;
-    formValue.deadline = text_extract_response.deadline.value;
-    formValue.category = text_extract_response.category.value;
+    registerFormValue.goods = text_extract_response.goods.value;
+    registerFormValue.discount = text_extract_response.discount.value;
+    registerFormValue.store = text_extract_response.store.value;
+    registerFormValue.deadline = text_extract_response.deadline.value;
+    registerFormValue.category = text_extract_response.category.value;
 });
 
 
 const toRetakeHandler = () => fetcherHandler(async () => {
     const delete_photos_request = new DeletePhotosReqDTO(
-        new CouponPhoto(formValue.photo_front),
-        new CouponPhoto(formValue.photo_back),
+        new CouponPhoto(registerFormValue.photo_front),
+        new CouponPhoto(registerFormValue.photo_back),
     );
     await new DeletePhotosUseCase(delete_photos_request).execute();
     navigateTo('/coupon_camera/front')
@@ -156,14 +173,14 @@ const toRetakeHandler = () => fetcherHandler(async () => {
 
 const registerHandler = () => fetcherHandler(async () => {
     const request = new CouponRegisterReqDTO(
-        new Id            (formValue.user_id),
-        new CouponGoods   (formValue.goods),
-        new CouponDiscount(formValue.discount),
-        new CouponStore   (formValue.store),
-        new CouponDeadline(formValue.deadline),
-        new CouponPhoto   (formValue.photo_front),
-        new CouponPhoto   (formValue.photo_back),
-        new CouponCategory(formValue.category)
+        new Id            (registerFormValue.user_id),
+        new CouponGoods   (registerFormValue.goods),
+        new CouponDiscount(registerFormValue.discount),
+        new CouponStore   (registerFormValue.store),
+        new CouponDeadline(registerFormValue.deadline),
+        new CouponPhoto   (registerFormValue.photo_front),
+        new CouponPhoto   (registerFormValue.photo_back),
+        new CouponCategory(registerFormValue.category)
     )
     const response = await new CouponRegisterUseCase(request).execute();
     if (!response.message) throw new Error('クーポンの登録に失敗しました');
@@ -176,9 +193,43 @@ const getHandler = () => fetcherHandler(async()=>{
     const query = route.query as { id: string };
     if (!query.id) navigateTo('/coupons');
 
+    const request = new GetCouponReqDTO(new Id(parseInt(query.id)));
+    const response = await new GetCouponUseCase(request).execute();
+
+    if (!response) throw new Error('クーポンの取得に失敗しました');
     
-    
+    editFormValue.id = response.id.value;
+    editFormValue.goods = response.goods.value;
+    editFormValue.discount = response.discount.value;
+    editFormValue.store = response.store.value;
+    editFormValue.deadline = response.deadline.value;
+    editFormValue.photo_front = response.photo_front.value;
+    editFormValue.photo_back = response.photo_back.value;
+    editFormValue.is_used = response.is_used;
+    editFormValue.category = response.category.value;
+    editFormValue.create_date = response.create_date.value;
 })
+
+const editHandler = () => fetcherHandler(async () => {
+    const request = new CouponEditReqDTO(
+        new Id            (editFormValue.user_id),
+        new Id            (editFormValue.id),
+        new CouponGoods   (editFormValue.goods),
+        new CouponDiscount(editFormValue.discount),
+        new CouponStore   (editFormValue.store),
+        new CouponDeadline(editFormValue.deadline),
+        new CouponPhoto   (editFormValue.photo_front),
+        new CouponPhoto   (editFormValue.photo_back),
+        editFormValue.is_used,
+        new CouponCategory(editFormValue.category),
+        new CreateDate   (editFormValue.create_date)
+
+    )
+    const response = await new CouponEditUseCase(request).execute();
+    if (!response.message) throw new Error('クーポンの更新に失敗しました');
+    navigateTo('/coupons');
+})
+
 
 </script>
 

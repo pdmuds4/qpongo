@@ -1,4 +1,4 @@
-import { CouponRegisterReqDTO, CouponRegisterResDTO, type CouponRegisterResJson } from "~/models/dto/coupon_register";
+import { CouponRegisterReqDTO, CouponRegisterResDTO, type CouponRegisterResJson } from "~/models/dto/coupon";
 import type AbsUseCase from "~/models/_abstruct/usecase";
 import Message from "~/models/value_object/message";
 
