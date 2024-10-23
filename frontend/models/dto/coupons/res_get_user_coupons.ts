@@ -8,6 +8,8 @@ import type CouponStore from "~/models/value_object/coupon/store";
 import type CreateDate from "~/models/value_object/create_date";
 import type Id from "~/models/value_object/id";
 
+import type { couponCategoryEnums } from "~/models/value_object/enums";
+
 export type GetUserCouponsResJson = {
     id: number;
     user_id: number;

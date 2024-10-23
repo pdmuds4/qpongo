@@ -20,7 +20,7 @@
         <div class="toggleimage-front">
             <NuxtImg class="toggleimage-image" :src="frontImage" />
         </div>
-        <button class="toggleimage-btn" @click="toggleImage">
+        <button v-if="frontImage!==backImage" class="toggleimage-btn" @click="toggleImage">
             <NuxtImg class="toggleimage-btn-icon" src="img/components/ToggleImage/toggleimage-turn.svg" />
         </button>
     </div>
@@ -44,6 +44,12 @@ const toggleImage = () => {
     width: 200px;
     height: 133px;
     position: relative;
+}
+
+.toggleimage-image {
+    width: 200px;
+    height: 133px;
+    object-fit: cover;
 }
 
 .toggleimage-body::before {

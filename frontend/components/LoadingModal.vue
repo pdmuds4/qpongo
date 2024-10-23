@@ -25,7 +25,7 @@ defineProps<{
 .loading-override {
     position: fixed;
     z-index: 5000;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
     top: 0;
     left: 0;
     width: 100vw;

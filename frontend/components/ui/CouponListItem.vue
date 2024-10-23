@@ -3,23 +3,27 @@
         <Accordion>
             <template #show-contents>
                 <div class="coupon-show-contents">
-                    <Chiptag status="alert" chip="あと0日" text="2020/12/31まで有効" />
+                    <Chiptag 
+                        :status="tagStatus" 
+                        :chip="coupon_info.is_used ? '使用済み' : `あと${remainDate}日`"
+                        :text="coupon_info.is_used ? '' : `${formattedDate}まで有効`"
+                    />
                     <div class="coupon-info-contents">
                         <div class="coupon-info-text">
                             <h3 class="coupon-store-text">
-                                クーポン発行店名
+                                {{ props.coupon_info.store }}
                             </h3>
                             <h1 class="coupon-discount-text">
-                                割引内容
+                                {{ props.coupon_info.discount }}
                             </h1>
                             <h4 class="coupon-goods-text">
-                                対象商品
+                                {{ props.coupon_info.goods }}
                             </h4>
                         </div>
                         <div class="coupon-photo">
                             <ToggleImage
-                                frontImage="https://thumb.photo-ac.com/9a/9a7f0b2c38647151d0d9ea27fa1afe70_t.jpeg"
-                                backImage="https://thumb.photo-ac.com/9a/9a7f0b2c38647151d0d9ea27fa1afe70_t.jpeg"
+                                :frontImage="props.coupon_info.photo_front"
+                                :backImage="props.coupon_info.photo_back"
                             />
                         </div>
                     </div>
@@ -60,9 +64,34 @@
 </template>
 
 <script setup lang="ts">
-const modal_open = ref(false);
+import type { GetUserCouponsResJson } from '~/models/dto/coupons';
+import type { GetUserSettingsResJson } from '~/models/dto/settings';
+const props = defineProps<{
+    coupon_info: GetUserCouponsResJson
+    user_setting: GetUserSettingsResJson
+}>();
 
+const modal_open = ref(false);
 const toggleModal = () => modal_open.value = !modal_open.value;
+
+const formattedDate = computed(()=>{
+    const date = new Date(props.coupon_info.deadline);
+    return `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
+})
+
+const remainDate = computed(()=>{
+    const date = new Date(props.coupon_info.deadline);
+    const now = new Date();
+    const time_diff = date.getTime() - now.getTime();
+
+    return Math.floor(time_diff / (1000 * 60 * 60 * 24));
+})
+
+const tagStatus = computed(() => {
+    if (remainDate.value < props.user_setting.notice) return 'alert';
+    if (remainDate.value < 0 || props.coupon_info.is_used) return 'done';
+    return 'info';
+})
 
 </script>
 

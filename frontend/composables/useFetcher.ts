@@ -5,19 +5,34 @@ export default function () {
         error_message: ''
     }));
 
-    const fetcherHandler = (callback: (...arg: any[]) => Promise<void>, ...arg: any[]) => {
-        fetcher.value.loading = true;
+    const fetcherHandler = async (callback: (...arg: any[]) => Promise<void>, ...arg: any[]) => {
+        fetcher.value = { 
+            ...fetcher.value, 
+            loading: true, 
+            error: false, 
+            error_message: '' 
+        };
+
         try {
-            return callback(...arg);
+            return await callback(...arg);
         } catch (e) {
-            fetcher.value.error = true;
-            fetcher.value.error_message = e instanceof Error ? e.message : 'エラーが発生しました';
+            fetcher.value = {
+                ...fetcher.value,
+                error: true,
+                error_message: e instanceof Error ? e.message : 'エラーが発生しました'
+            };
             setInterval(() => {
-                fetcher.value.error = false;
-                fetcher.value.error_message = '';
+                fetcher.value = { 
+                    ...fetcher.value, 
+                    error: false, 
+                    error_message: '' 
+                };
             }, 5000);
         } finally {
-            fetcher.value.loading = false;
+            fetcher.value = { 
+                ...fetcher.value, 
+                loading: false 
+            };
         }
     }
 

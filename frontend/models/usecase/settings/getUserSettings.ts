@@ -1,6 +1,8 @@
-import GetUserSettingsReqDTO from "~/models/dto/settings/req_get_user_settings";
-import GetUserSettingsResDTO from "~/models/dto/settings/res_get_user_settings";
+import { GetUserSettingsReqDTO, GetUserSettingsResDTO, type GetUserSettingsResJson } from "~/models/dto/settings";
 import type AbsUseCase from "~/models/_abstruct/usecase";
+
+import Id from "~/models/value_object/id";
+import { SettingNotice } from "~/models/value_object/setting";
 
 export default class GetUserSettingsUsecase implements AbsUseCase<GetUserSettingsReqDTO, GetUserSettingsResDTO> {
     request: GetUserSettingsReqDTO;
@@ -10,6 +12,14 @@ export default class GetUserSettingsUsecase implements AbsUseCase<GetUserSetting
     }
 
     async execute() {
-        return;
+        const response = await callApi(
+            'GET',
+            `/api/settings/${this.request.user_id.value}`,
+        ) as GetUserSettingsResJson;
+
+        return new GetUserSettingsResDTO(
+            new Id(response.user_id),
+            new SettingNotice(response.notice),
+        )
     }
 }
