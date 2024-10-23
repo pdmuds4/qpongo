@@ -48,7 +48,7 @@ import { GetUserSettingsUseCase } from '~/models/usecase/settings';
 import { GetUserSettingsReqDTO, type GetUserSettingsResJson } from '~/models/dto/settings';
 import Id from '~/models/value_object/id';
 
-const {fetcher, fetcherHandler} = useFetcher();
+const {fetcherHandler} = useFetcher();
 const resouces = reactive<{
     coupons: GetUserCouponsResJson[],
     user_setting: GetUserSettingsResJson,

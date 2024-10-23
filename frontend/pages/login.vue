@@ -44,7 +44,7 @@ import UserLoginUseCase from '~/models/usecase/login/userLogin';
 import { UserLoginReqDTO } from '~/models/dto/login';
 import { UserEmail, UserPassword } from '~/models/value_object/user';
 
-const { fetcher, fetcherHandler } = useFetcher()
+const {fetcherHandler} = useFetcher()
 
 const formValues = reactive({
     e_mail: '',

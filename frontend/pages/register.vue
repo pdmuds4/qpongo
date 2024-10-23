@@ -49,7 +49,7 @@ import UserRegisterUseCase from '~/models/usecase/register/userRegister';
 import { UserRegisterReqDTO } from '~/models/dto/register';
 import { UserEmail, UserPassword } from '~/models/value_object/user';
 
-const {fetcher, fetcherHandler} = useFetcher()
+const {fetcherHandler} = useFetcher()
 const formValues = reactive({
     e_mail: '',
     secondly_e_mail: '',

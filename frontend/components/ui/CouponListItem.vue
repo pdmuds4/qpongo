@@ -93,6 +93,9 @@ const tagStatus = computed(() => {
     return 'info';
 })
 
+const { fetcherHandler } = useFetcher();
+
+
 </script>
 
 <style scoped>

@@ -26,7 +26,7 @@ const props = defineProps<{
     takeSrc?: string,
 }>();
 
-const {fetcher, fetcherHandler} = useFetcher()
+const {fetcherHandler} = useFetcher()
 const buffer_saver = useBufferSaver();
 
 const saveHandler = (navigate_to: string) => fetcherHandler(async (navigate_to: string) => {
