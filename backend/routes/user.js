@@ -14,7 +14,14 @@ user_route.get('/:user_id', async(req, res) => {
 
     const user = new UserGetInfoUseCase(repository, request_json);
     const user_data = await user.execute();
-    const user_json = user_data.toJson();
+    const user_json = {
+        "id": user_data.id.value,
+        "name": user_data.name.value,
+        "e_mail": user_data.e_mail.value,
+        "gender": user_data.gender.value,
+        "age": user_data.age.value,
+        "create_date": user_data.create_date.value
+    }
     return res.send(user_json);
 });
 
