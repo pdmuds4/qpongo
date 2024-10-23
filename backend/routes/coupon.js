@@ -1,4 +1,4 @@
-const {CouponPhotosDeleteUseCase, CouponTextExtractUseCase, CouponEditUseCase, CouponRegisterUseCase, CouponGetUserCouponsUseCase, CouponDeleteUseCase} = require('../application/usecase/coupon');
+const {CouponPhotosDeleteUseCase, CouponTextExtractUseCase, CouponEditUseCase, CouponRegisterUseCase, CouponGetUserCouponsUseCase, CouponDeleteUseCase, CouponGetCouponsUseCase} = require('../application/usecase/coupon');
 const {CouponRepository} = require('../application/repository');
 const {CreateNewIDService} = require('../application/service');
 const dynamoDBDocumentClient = require('../client/aws/dynamodb');
@@ -17,6 +17,16 @@ coupon_route.get('/:user_id', async(req, res) => {
     const coupons = await user_coupons.execute();
     const coupons_json = coupons.map(coupon => coupon.toJson());
     return res.send(coupons_json);
+});
+
+coupon_route.get('/coupon/:coupon_id', async(req, res) => {
+    const repository = new CouponRepository(dynamoDBDocumentClient);
+    const request_json = {"coupon_id": Number(req.params.coupon_id)}
+
+    const coupon = new CouponGetCouponsUseCase(repository, request_json);
+    const get_coupon = await coupon.execute();
+    const coupon_json = get_coupon.toJson();
+    return res.send(coupon_json);
 });
 
 coupon_route.post('/', async(req, res) => {
