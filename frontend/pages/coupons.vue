@@ -24,7 +24,7 @@
             <div class="coupons-list">
                 <UiCouponListItem 
                     v-for="coupon in filterdCoupons"
-                    :key="coupon.id"
+                    :key="coupon.id.value"
                     :coupon_info="coupon"
                     :user_setting="resouces.user_setting"
                 />
@@ -43,14 +43,14 @@
 
 <script setup lang="ts">
 import { GetUserCouponsUseCase } from '~/models/usecase/coupons';
-import { GetUserCouponsReqDTO, type GetUserCouponsResJson } from '~/models/dto/coupons';
+import { GetUserCouponsReqDTO, GetUserCouponsResDTO } from '~/models/dto/coupons';
 import { GetUserSettingsUseCase } from '~/models/usecase/settings';
 import { GetUserSettingsReqDTO, type GetUserSettingsResJson } from '~/models/dto/settings';
 import Id from '~/models/value_object/id';
 
 const {fetcherHandler} = useFetcher();
 const resouces = reactive<{
-    coupons: GetUserCouponsResJson[],
+    coupons: GetUserCouponsResDTO[],
     user_setting: GetUserSettingsResJson,
     filter: {
         status: 0 | 1 | 2 | 3,
@@ -77,7 +77,7 @@ const getCouponsHandler = () => fetcherHandler(async()=>{
 
     const request = new GetUserCouponsReqDTO(new Id(user_id));
     const response = await new GetUserCouponsUseCase(request).execute();
-    if (response) resouces.coupons = response.map(coupon => coupon.toJson());
+    if (response) resouces.coupons = response
 })
 
 const getSettingHandler = () => fetcherHandler(async()=>{
@@ -94,16 +94,16 @@ const getSettingHandler = () => fetcherHandler(async()=>{
 const filterdCoupons = computed(()=>{
     return resouces.coupons.filter(coupon => {
         if (resouces.filter.status === 0) return true;
-        if (resouces.filter.status === 1) return coupon.deadline.getTime() > new Date().getTime();
-        if (resouces.filter.status === 2) return coupon.deadline.getTime() < new Date().getTime();
+        if (resouces.filter.status === 1) return coupon.deadline.value.getTime() > new Date().getTime();
+        if (resouces.filter.status === 2) return coupon.deadline.value.getTime() < new Date().getTime();
         if (resouces.filter.status === 3) return coupon.is_used;
     }).sort((a, b) => {
         if (resouces.filter.order === 1) {
-            return a.deadline.getTime() - b.deadline.getTime();
+            return new Date(a.deadline.value).getTime() - new Date(b.deadline.value).getTime();
         } else {
-            return a.create_date.getTime() - b.create_date.getTime();
+            return new Date(a.create_date.value).getTime() - new Date(b.create_date.value).getTime();
         }
-    });
+    }) as GetUserCouponsResDTO[];
 })
 </script>
 

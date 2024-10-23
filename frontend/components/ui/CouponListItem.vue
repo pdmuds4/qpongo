@@ -11,19 +11,19 @@
                     <div class="coupon-info-contents">
                         <div class="coupon-info-text">
                             <h3 class="coupon-store-text">
-                                {{ props.coupon_info.store }}
+                                {{ props.coupon_info.store.value }}
                             </h3>
                             <h1 class="coupon-discount-text">
-                                {{ props.coupon_info.discount }}
+                                {{ props.coupon_info.discount.value }}
                             </h1>
                             <h4 class="coupon-goods-text">
-                                {{ props.coupon_info.goods }}
+                                {{ props.coupon_info.goods.value }}
                             </h4>
                         </div>
                         <div class="coupon-photo">
                             <ToggleImage
-                                :frontImage="props.coupon_info.photo_front"
-                                :backImage="props.coupon_info.photo_back"
+                                :frontImage="props.coupon_info.photo_front.value"
+                                :backImage="props.coupon_info.photo_back.value"
                             />
                         </div>
                     </div>
@@ -31,10 +31,10 @@
             </template>
             <template #hidden-contents>
                 <div class="coupon-edit-contents">
-                    <Button class="coupon-edit-btn" fill>
+                    <Button class="coupon-edit-btn" fill @click="toggleUsedHandler">
                         使用済み
                     </Button>
-                    <Button class="coupon-edit-btn" @click="navigateTo('/coupon/edit')">
+                    <Button class="coupon-edit-btn" @click="navigateTo(`/coupon/edit?id=${props.coupon_info.id.value}`)">
                         編集
                     </Button>
                     <Button class="coupon-edit-btn" error @click="toggleModal">
@@ -54,7 +54,7 @@
                     <Button class="coupon-modal-btn" @click="toggleModal">
                         キャンセル
                     </Button>
-                    <Button class="coupon-modal-btn" error>
+                    <Button class="coupon-modal-btn" error @click="deleteHandler">
                         削除
                     </Button>
                 </div>
@@ -64,10 +64,12 @@
 </template>
 
 <script setup lang="ts">
-import type { GetUserCouponsResJson } from '~/models/dto/coupons';
+import { ToggleUsedUseCase, DeleteCouponUseCase } from '~/models/usecase/coupons';
+import { DeleteCouponReqDTO, GetUserCouponsResDTO, ToggleUsedReqDTO } from '~/models/dto/coupons';
 import type { GetUserSettingsResJson } from '~/models/dto/settings';
+
 const props = defineProps<{
-    coupon_info: GetUserCouponsResJson
+    coupon_info: GetUserCouponsResDTO
     user_setting: GetUserSettingsResJson
 }>();
 
@@ -75,12 +77,12 @@ const modal_open = ref(false);
 const toggleModal = () => modal_open.value = !modal_open.value;
 
 const formattedDate = computed(()=>{
-    const date = new Date(props.coupon_info.deadline);
+    const date = new Date(props.coupon_info.deadline.value);
     return `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
 })
 
 const remainDate = computed(()=>{
-    const date = new Date(props.coupon_info.deadline);
+    const date = new Date(props.coupon_info.deadline.value);
     const now = new Date();
     const time_diff = date.getTime() - now.getTime();
 
@@ -93,8 +95,35 @@ const tagStatus = computed(() => {
     return 'info';
 })
 
+
 const { fetcherHandler } = useFetcher();
 
+const toggleUsedHandler = () => fetcherHandler(async()=>{
+    props.coupon_info.is_used = !props.coupon_info.is_used;
+
+    const request = new ToggleUsedReqDTO(
+        props.coupon_info.id,
+        props.coupon_info.user_id,
+        props.coupon_info.goods,
+        props.coupon_info.discount,
+        props.coupon_info.store,
+        props.coupon_info.deadline,
+        props.coupon_info.photo_front,
+        props.coupon_info.photo_back,
+        props.coupon_info.is_used,
+        props.coupon_info.category,
+        props.coupon_info.create_date
+    );
+    const response = await new ToggleUsedUseCase(request).execute();
+    if (!response.message) throw new Error('クーポンの使用済み切り替えに失敗しました');
+});
+
+const deleteHandler = () => fetcherHandler(async()=>{
+    const request = new DeleteCouponReqDTO(props.coupon_info.id);
+    const response = await new DeleteCouponUseCase(request).execute();
+    if (!response.message) throw new Error('クーポンの削除に失敗しました');
+    location.reload();
+});
 
 </script>
 
