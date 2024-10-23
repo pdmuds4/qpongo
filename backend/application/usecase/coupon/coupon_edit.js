@@ -21,7 +21,7 @@ class CouponEditUseCase {
             new DeadlineValueObject(new Date(japan_deadline)),
             new PhotoValueObject(this.request.photo_front),
             new PhotoValueObject(this.request.photo_back),
-            new IsUseValueObject(this.request.is_use),
+            new IsUseValueObject(this.request.is_used),
             new CategoryValueObject(this.request.category),
             new CreateDateValueObject(new Date(japan_time))
         );
