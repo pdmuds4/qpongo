@@ -88,16 +88,15 @@ const page_title = computed(() => {
 
 import { DeletePhotosUseCase, SavePhotosUseCase, TextExtractUseCase } from '~/models/usecase/coupon_camera';
 import { DeletePhotosReqDTO, SavePhotosReqDTO, TextExtractReqDTO, type SavePhotosReqJson } from '~/models/dto/coupon_camera';
-import type { CouponRegisterReqJson } from '~/models/dto/coupon_register/req_coupon_register';
 
 import AwsS3Client from '~/models/client/awsS3';
 import UploadToS3Service from '~/models/service/uploadToS3';
 
-import CouponRegisterUseCase from '~/models/usecase/coupon/couponRegister';
-import CouponRegisterReqDTO from '~/models/dto/coupon_register/req_coupon_register';
+import { CouponRegisterUseCase, CouponEditUseCase } from '~/models/usecase/coupon';
+import { CouponRegisterReqDTO, type CouponRegisterReqJson } from '~/models/dto/coupon';
+
 import Id from '~/models/value_object/id';
 import { CouponDiscount, CouponGoods, CouponPhoto, CouponStore, CouponDeadline, CouponCategory } from '~/models/value_object/coupon';
-
 
 const {fetcher, fetcherHandler} = useFetcher()
 const buffer_saver = useBufferSaver();
@@ -116,14 +115,15 @@ const formValue = reactive<CouponRegisterReqJson>({} as CouponRegisterReqJson)
 onBeforeMount(async ()=>{
     const auth_info = authManager.getToken()
     if (auth_info) formValue.user_id = auth_info.user_id;
-
-    if (method == 'register' && buffer_saver.value.photo_front_buffer) {
-        extractHandler();
-    } else {
-        navigateTo('/coupon_camera/front');
+    
+    if (method == 'register') {
+        buffer_saver.value.photo_front_buffer ? extractHandler() : navigateTo('/coupon_camera/front');
+    } else if (method == 'edit') {
+        getHandler();
     }
 })
 
+// ### /register handlers ### //
 const extractHandler = () => fetcherHandler(async () => {
     const save_photos_request = new SavePhotosReqDTO(buffer_saver.value.photo_front_buffer, buffer_saver.value.photo_back_buffer);
     const save_photos_response = await new SavePhotosUseCase(new UploadToS3Service(client, config.public.S3Base), save_photos_request).execute();
@@ -168,6 +168,16 @@ const registerHandler = () => fetcherHandler(async () => {
     const response = await new CouponRegisterUseCase(request).execute();
     if (!response.message) throw new Error('クーポンの登録に失敗しました');
     navigateTo('/coupons');
+})
+
+
+// ### /editor handlers ### //
+const getHandler = () => fetcherHandler(async()=>{
+    const query = route.query as { id: string };
+    if (!query.id) navigateTo('/coupons');
+
+    
+    
 })
 
 </script>
