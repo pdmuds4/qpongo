@@ -12,17 +12,18 @@
                 <!-- [TODO]: UIを用意していないので今回は割愛、そのうちモーダルで編集できるように実装 -->
                 <div class="settings-user-edit">
                     <Button class="settings-user-btn" disabled>変更</Button>
-                    <Button class="settings-user-btn" fill @click="userLogout">ログアウト</Button>
+                    <Button class="settings-user-btn" fill @click="logoutHandler">ログアウト</Button>
                 </div>
             </div>
 
-            <UiSettingsDivider />
+            <!-- <UiSettingsDivider />
 
+            [TODO]: 通知のタイミングを設定できるようにする
             <div class="settings-list">
                 <UiSettingsListItem title="通知のタイミング">
                     ここにフォーム
                 </UiSettingsListItem>
-            </div>
+            </div> -->
 
             <UiSettingsDivider />
 
@@ -36,8 +37,9 @@
 </template>
 
 <script setup lang="ts">
-const userLogout = () => {
-    navigateTo('/')
+const logoutHandler = () => {
+    authManager.deleteToken()
+    navigateTo('/login')
 }
 
 </script>

@@ -11,4 +11,8 @@ export default class AuthManager {
             navigateTo('/login');
         }
     }
+
+    static deleteToken() {
+        localStorage.removeItem('auth_info')
+    }
 }

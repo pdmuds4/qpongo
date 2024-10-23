@@ -1,14 +1,9 @@
 import AbsDTO from "~/models/_abstruct/dto";
-import type CouponCategory from "~/models/value_object/coupon/category";
-import type CouponDeadLine from "~/models/value_object/coupon/deadline";
-import type CouponDiscount from "~/models/value_object/coupon/discount";
-import type CouponGoods from "~/models/value_object/coupon/goods";
-import type CouponPhoto from "~/models/value_object/coupon/photo";
-import type CouponStore from "~/models/value_object/coupon/store";
-import type CreateDate from "~/models/value_object/create_date";
+import { CouponCategory, CouponDeadline, CouponDiscount, CouponGoods, CouponPhoto, CouponStore } from "~/models/value_object/coupon";
 
 import Id from "~/models/value_object/id";
 import type { couponCategoryEnums } from "~/models/value_object/enums";
+import CreateDate from "~/models/value_object/create_date";
 
 export type GetCouponResJson = {
     id: number;
@@ -30,7 +25,7 @@ export default class GetCouponResDTO extends AbsDTO<GetCouponResJson> {
     goods: CouponGoods;
     discount: CouponDiscount;
     store: CouponStore;
-    deadline: CouponDeadLine;
+    deadline: CouponDeadline;
     photo_front: CouponPhoto;
     photo_back: CouponPhoto;
     is_used: boolean;
@@ -43,7 +38,7 @@ export default class GetCouponResDTO extends AbsDTO<GetCouponResJson> {
         goods: CouponGoods,
         discount: CouponDiscount,
         store: CouponStore,
-        deadline: CouponDeadLine,
+        deadline: CouponDeadline,
         photo_front: CouponPhoto,
         photo_back: CouponPhoto,
         is_used: boolean,
@@ -64,7 +59,7 @@ export default class GetCouponResDTO extends AbsDTO<GetCouponResJson> {
         this.create_date = create_date;
     }
     
-    toJson(): ToggleUsedReqJson {
+    toJson(): GetCouponResJson {
         return {
             id: this.id.value,
             user_id: this.user_id.value,
