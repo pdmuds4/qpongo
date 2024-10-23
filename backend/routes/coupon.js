@@ -23,7 +23,7 @@ coupon_route.post('/', async(req, res) => {
     const repository = new CouponRepository(dynamoDBDocumentClient);
 
     const coupon_id = await new CreateNewIDService(dynamoDBDocumentClient, 'coupon', 'id').execute();
-    const default_is_use = false
+    const default_is_used = false
 
     const coupon =  {
         id: coupon_id,
@@ -34,7 +34,7 @@ coupon_route.post('/', async(req, res) => {
         deadline: req.body.deadline,
         photo_front: req.body.photo_front,
         photo_back: req.body.photo_back,
-        is_use: default_is_use,
+        is_used: default_is_used,
         category: req.body.category
     }
 
@@ -55,7 +55,7 @@ coupon_route.put('/', async(req, res) => {
         deadline: req.body.deadline,
         photo_front: req.body.photo_front,
         photo_back: req.body.photo_back,
-        is_use: req.body.is_use,
+        is_used: req.body.is_used,
         category: req.body.category
     }
 

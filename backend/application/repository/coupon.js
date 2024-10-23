@@ -47,7 +47,7 @@ class CouponRepository {
                 new CreateDateValueObject(new Date(data.Item.deadline)),
                 new PhotoValueObject(data.Item.photo_front),
                 new PhotoValueObject(data.Item.photo_back),
-                new IsUseValueObject(data.Item.is_use),
+                new IsUseValueObject(data.Item.is_used),
                 new CategoryValueObject(data.Item.category),
                 new CreateDateValueObject(new Date(data.Item.create_date))
             );
@@ -81,7 +81,7 @@ class CouponRepository {
                 new CreateDateValueObject(new Date(item.deadline)),
                 new PhotoValueObject(item.photo_front),
                 new PhotoValueObject(item.photo_back),
-                new IsUseValueObject(item.is_use),
+                new IsUseValueObject(item.is_used),
                 new CategoryValueObject(item.category),
                 new CreateDateValueObject(new Date(item.create_date))
             ));
@@ -97,7 +97,7 @@ class CouponRepository {
             Key: {
                 id: coupon.id.value
             },
-            UpdateExpression: 'set #goods = :goods, #discount = :discount, #store = :store, #deadline = :deadline, #photo_front = :photo_front, #photo_back = :photo_back, #is_use = :is_use, #category = :category, #create_date = :create_date',
+            UpdateExpression: 'set #goods = :goods, #discount = :discount, #store = :store, #deadline = :deadline, #photo_front = :photo_front, #photo_back = :photo_back, #is_used = :is_used, #category = :category, #create_date = :create_date',
             ExpressionAttributeNames: {
                 '#goods': 'goods',
                 '#discount': 'discount',
@@ -105,7 +105,7 @@ class CouponRepository {
                 '#deadline': 'deadline',
                 '#photo_front': 'photo_front',
                 '#photo_back': 'photo_back',
-                '#is_use': 'is_use',
+                '#is_used': 'is_used',
                 '#category': 'category',
                 '#create_date': 'create_date'
             },
@@ -116,7 +116,7 @@ class CouponRepository {
                 ':deadline': coupon.deadline.value.toISOString(),
                 ':photo_front': coupon.photo_front.value,
                 ':photo_back': coupon.photo_back.value,
-                ':is_use': coupon.is_use.value,
+                ':is_used': coupon.is_used.value,
                 ':category': coupon.category.value,
                 ':create_date': coupon.create_date.value.toISOString()
             }
