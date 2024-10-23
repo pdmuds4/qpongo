@@ -5,9 +5,9 @@
                 <Selector 
                     class="coupons-filter-selector"
                     bgImage="img/components/Selector/selector-filter.svg"
-                    @change-handler="(e:Event)=>console.log(e.target)"
+                    @change-handler="(e) => resouces.filter.status = e.target.value"
                 >
-                    <option value="" selected>なし</option>
+                    <option value="0" selected>なし</option>
                     <option value="1">期間中</option>
                     <option value="2">期間終了</option>
                     <option value="3">使用済み</option>
@@ -15,7 +15,7 @@
                 <Selector 
                     class="coupons-filter-selector"
                     bgImage="img/components/Selector/selector-list.svg"
-                    @change-handler="(e:Event)=>console.log(e.target)"
+                    @change-handler="(e) => resouces.filter.order = e.target.value"
                 >
                     <option value="" selected>期限順</option>
                     <option value="1">登録順</option>
@@ -23,7 +23,7 @@
             </div>
             <div class="coupons-list">
                 <UiCouponListItem 
-                    v-for="coupon in resouces.coupons"
+                    v-for="coupon in filterdCoupons"
                     :key="coupon.id"
                     :coupon_info="coupon"
                     :user_setting="resouces.user_setting"
@@ -52,9 +52,17 @@ const {fetcher, fetcherHandler} = useFetcher();
 const resouces = reactive<{
     coupons: GetUserCouponsResJson[],
     user_setting: GetUserSettingsResJson,
+    filter: {
+        status: 0 | 1 | 2 | 3,
+        order: 1 | 2,
+    }
 }>({
     coupons: [],
     user_setting: {} as GetUserSettingsResJson,
+    filter: {
+        status: 0,
+        order: 1,
+    }
 });
 
 onBeforeMount(async()=>{
@@ -82,6 +90,21 @@ const getSettingHandler = () => fetcherHandler(async()=>{
     resouces.user_setting = response.toJson();
 })
 
+
+const filterdCoupons = computed(()=>{
+    return resouces.coupons.filter(coupon => {
+        if (resouces.filter.status === 0) return true;
+        if (resouces.filter.status === 1) return coupon.deadline.getTime() > new Date().getTime();
+        if (resouces.filter.status === 2) return coupon.deadline.getTime() < new Date().getTime();
+        if (resouces.filter.status === 3) return coupon.is_used;
+    }).sort((a, b) => {
+        if (resouces.filter.order === 1) {
+            return a.deadline.getTime() - b.deadline.getTime();
+        } else {
+            return a.create_date.getTime() - b.create_date.getTime();
+        }
+    });
+})
 </script>
 
 <style scoped>
