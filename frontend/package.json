@@ -1,0 +1,31 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.667.0",
+    "axios": "^1.7.7",
+    "buffer": "^6.0.3",
+    "nuxt": "^3.13.0",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@nuxt/image": "^1.8.0",
+    "@nuxt/test-utils": "^3.14.3",
+    "@nuxtjs/google-fonts": "^3.2.0",
+    "@nuxtjs/tailwindcss": "^6.12.1",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^15.7.4",
+    "playwright-core": "^1.48.0",
+    "vitest": "^2.1.2"
+  }
+}
