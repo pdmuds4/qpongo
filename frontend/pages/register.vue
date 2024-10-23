@@ -3,29 +3,33 @@
         <div class="register-content">
             <div class="register-section left">
                 <Heading class="register-title">アカウント登録</Heading>
-                <form class="register-form-body">
+                <div class="register-form-body">
                     <TextField
                         class="register-form"
                         inputType="email"
-                        defaultValue=""
-                        placeHolder="メールアドレス" 
+                        :defaultValue="formValues.e_mail"
+                        @change="(e) => formValues.e_mail = e.target.value"
+                        placeHolder="メールアドレス"
                     />
                     <TextField
                         class="register-form"
                         inputType="email"
-                        defaultValue=""
-                        placeHolder="メールアドレス（確認用）" 
+                        :defaultValue="formValues.secondly_e_mail"
+                        @change="(e) => formValues.secondly_e_mail = e.target.value"
+                        placeHolder="メールアドレス（確認用）"
+                        
                     />
                     <TextField
                         class="register-form"
                         inputType="password"
-                        defaultValue=""
+                        :defaultValue="formValues.password"
+                        @change="(e) => formValues.password = e.target.value"
                         placeHolder="パスワード" 
                     />
-                    <Button class="register-form-submit">
+                    <Button class="register-form-submit" @click="registerHandler">
                         アカウント登録
                     </Button>
-                </form>
+                </div>
                 <div class="register-to-login">
                     <p>アカウントをお持ちの方はこちら</p>
                     <Button class="register-to-login-btn" fill @click="navigateTo('/login')">
@@ -41,6 +45,28 @@
 </template>
 
 <script setup lang="ts">
+import UserRegisterUseCase from '~/models/usecase/register/userRegister';
+import { UserRegisterReqDTO } from '~/models/dto/register';
+import { UserEmail, UserPassword } from '~/models/value_object/user';
+
+const {fetcherHandler} = useFetcher()
+const formValues = reactive({
+    e_mail: '',
+    secondly_e_mail: '',
+    password: ''
+});
+
+const registerHandler = () => fetcherHandler(async () => {
+    if (formValues.e_mail !== formValues.secondly_e_mail) throw new Error('メールアドレスが一致しません');
+
+    const request = new UserRegisterReqDTO(
+        new UserEmail   (formValues.e_mail),
+        new UserPassword(formValues.password)
+    );
+    const response = await new UserRegisterUseCase(request).execute();
+    authManager.setToken(JSON.stringify(response.toJson()));
+    navigateTo('/coupons');
+});
 
 </script>
 

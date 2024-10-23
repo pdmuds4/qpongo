@@ -3,23 +3,28 @@
         <div class="login-content">
             <div class="login-section left">
                 <Heading class="login-title">ログイン</Heading>
-                <form class="login-form-body">
+                <div class="login-form-body">
                     <TextField
                         class="login-form"
                         inputType="email"
-                        defaultValue=""
+                        :defaultValue="formValues.e_mail"
+                        @change="(e) => formValues.e_mail = e.target.value"
                         placeHolder="メールアドレス" 
                     />
                     <TextField
                         class="login-form"
                         inputType="password"
-                        defaultValue=""
-                        placeHolder="パスワード" 
+                        :defaultValue="formValues.password"
+                        @change="(e) => formValues.password = e.target.value"
+                        placeHolder="パスワード"
                     />
-                    <Button class="login-form-submit">
+                    <Button 
+                        class="login-form-submit" 
+                        @click="loginHandler"
+                    >
                         ログイン
                     </Button>
-                </form>
+                </div>
                 <div class="login-to-register">
                     <p>アカウントをお持ちでない方</p>
                     <Button class="login-to-register-btn" fill @click="navigateTo('/register')">
@@ -35,6 +40,27 @@
 </template>
 
 <script setup lang="ts">
+import UserLoginUseCase from '~/models/usecase/login/userLogin';
+import { UserLoginReqDTO } from '~/models/dto/login';
+import { UserEmail, UserPassword } from '~/models/value_object/user';
+
+const {fetcherHandler} = useFetcher()
+
+const formValues = reactive({
+    e_mail: '',
+    password: ''
+});
+
+const loginHandler = () => fetcherHandler(async () => {
+    const request = new UserLoginReqDTO(
+        new UserEmail   (formValues.e_mail),
+        new UserPassword(formValues.password)
+    );
+
+    const response = await new UserLoginUseCase(request).execute();
+    authManager.setToken(JSON.stringify(response.toJson()));
+    navigateTo('/coupons');
+});
 
 </script>
 

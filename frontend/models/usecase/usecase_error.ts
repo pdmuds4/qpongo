@@ -2,7 +2,7 @@ export default class UseCaseError extends customError {
     constructor(message: string) {
         super(
             message,
-            "valueObject",
+            "usecase",
             400
         );
     }

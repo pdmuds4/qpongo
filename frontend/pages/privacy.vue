@@ -1,6 +1,6 @@
 <template>
     <ProviderPolicyContent title="プライバシーポリシー">
-
+        Comming Soon...
     </ProviderPolicyContent>
 </template>
 

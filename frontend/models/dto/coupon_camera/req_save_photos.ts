@@ -2,16 +2,16 @@ import AbsDTO from "~/models/_abstruct/dto";
 
 export type SavePhotosReqJson = {
     photo_front_buffer: Buffer;
-    photo_back_buffer: Buffer;
+    photo_back_buffer: Buffer | null;
 }
 
 export default class SavePhotosReqDTO extends AbsDTO<SavePhotosReqJson> {
     photo_front_buffer: Buffer;
-    photo_back_buffer: Buffer;
+    photo_back_buffer: Buffer | null;
 
     constructor(
         photo_front_buffer: Buffer,
-        photo_back_buffer: Buffer
+        photo_back_buffer: Buffer | null
     ) {
         super();
         this.photo_front_buffer = photo_front_buffer;

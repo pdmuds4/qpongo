@@ -3,26 +3,31 @@
         <div class="settings-card">
             <div class="settings-user">
                 <div class="settings-user-info">
-                    <NuxtImg class="setting-user-avator" src="https://qiita-user-profile-images.imgix.net/https%3A%2F%2Fqiita-image-store.s3.ap-northeast-1.amazonaws.com%2F0%2F3092163%2Fprofile-images%2F1699178784?ixlib=rb-4.0.0&auto=compress%2Cformat&lossless=0&w=128&s=ad7531a58e73b87899fbc55437c34274" />
+                    <!-- [TODO]: ユーザーのアバターを表示する -->
+                    <!-- <NuxtImg 
+                        class="setting-user-avator" 
+                        src="" 
+                    /> -->
                     <div class="settings-user-text">
-                        <Heading>ユーザー名</Heading>
-                        <p>~@example.com</p>
+                        <Heading>{{ resources.user_info.name }}</Heading>
+                        <p>{{ resources.user_info.e_mail }}</p>
                     </div>
                 </div>
                 <!-- [TODO]: UIを用意していないので今回は割愛、そのうちモーダルで編集できるように実装 -->
                 <div class="settings-user-edit">
                     <Button class="settings-user-btn" disabled>変更</Button>
-                    <Button class="settings-user-btn" fill @click="userLogout">ログアウト</Button>
+                    <Button class="settings-user-btn" fill @click="logoutHandler">ログアウト</Button>
                 </div>
             </div>
 
-            <UiSettingsDivider />
+            <!-- <UiSettingsDivider />
 
+            [TODO]: 通知のタイミングを設定できるようにする
             <div class="settings-list">
                 <UiSettingsListItem title="通知のタイミング">
                     ここにフォーム
                 </UiSettingsListItem>
-            </div>
+            </div> -->
 
             <UiSettingsDivider />
 
@@ -36,9 +41,37 @@
 </template>
 
 <script setup lang="ts">
-const userLogout = () => {
-    navigateTo('/')
+import { GetUserInfoReqDTO, type GetUserInfoResJson } from '~/models/dto/settings';
+import { GetUserInfoUseCase } from '~/models/usecase/settings';
+import Id from '~/models/value_object/id';
+
+const resources = reactive<{
+    user_info: GetUserInfoResJson
+}>({
+    user_info: {} as GetUserInfoResJson
+})
+
+const { fetcherHandler } = useFetcher()
+
+onBeforeMount(() => {
+    fetcherHandler(async () => {
+        const auth_info = authManager.getToken();
+        if (!auth_info) throw new Error('ユーザー情報がありません');
+
+        const request = new GetUserInfoReqDTO(new Id(auth_info.user_id))
+        const response = await new GetUserInfoUseCase(request).execute()
+
+        resources.user_info = response.toJson();
+    })
+})
+
+
+const logoutHandler = () => {
+    authManager.deleteToken()
+    navigateTo('/login')
 }
+
+
 
 </script>
 
@@ -70,6 +103,9 @@ const userLogout = () => {
 }
 
 .setting-user-avator {
+    object-fit: cover;
+    height: 90px;
+    width: 90px;
     border-radius: 50%;
     box-shadow: 1px 4px 4px 1px rgba(0, 0, 0, 0.3);
 }

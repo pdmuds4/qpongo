@@ -55,8 +55,8 @@ const startCamera = () =>
 navigator.mediaDevices.getUserMedia(
 {
     video: {
-        width: { ideal: 1920 },
-        height: { ideal: 1080 },
+        width: { ideal: window.innerWidth },
+        height: { ideal: window.innerHeight },
         facingMode: "environment",
     },
     audio: false,
@@ -74,12 +74,14 @@ onMounted(() => {
 
 // 写真の撮影
 const capturePhoto = () => {
-    if (canvas.value && video.value && frame.value) {
+    if (canvas.value && video.value && frame.value) {    
         const context = canvas.value.getContext('2d') as CanvasRenderingContext2D;
         canvas.value.width = video.value.videoWidth
         canvas.value.height = video.value.videoHeight
         context.drawImage(video.value, 0, 0, canvas.value.width, canvas.value.height)
+        // photo_src.value = canvas.value.toDataURL('image/png')
         
+        // [TODO] カメラの映像をキャンバスに描画し、クリップする //
         const cropX      = frame.value.getBoundingClientRect().left;
         const cropY      = frame.value.getBoundingClientRect().top;
         const cropWidth  = frame.value.offsetWidth;
@@ -153,9 +155,11 @@ video {
 
 .coupon-camera-frame {
     border: 3px solid white;
-    width: 50vw;
-    aspect-ratio: 4/3;
+    width: 60vw;
+    height: 70vh;
+    aspect-ratio: 1/1;
     max-width: 500px;
+    max-height: 500px;
     border-radius: 15px;
     mix-blend-mode: difference;
 }
@@ -185,7 +189,6 @@ video {
 @media screen and (max-width: 580px) {
     .coupon-camera-frame {
         width: 90vw;
-        aspect-ratio: 1/1;
     }
 }
 

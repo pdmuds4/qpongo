@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <ProviderFetch>
     <NuxtPage />
-  </div>
+  </ProviderFetch>
 </template>

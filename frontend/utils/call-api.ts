@@ -6,11 +6,12 @@ export default async function <ReqT>(
     req_body?: ReqT
 ) {
     try {
+        const config = useRuntimeConfig();
         const response = await axios({
             headers: {
                 'Allow-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json',                  
-                'X-API-Key': process.env.API_KEY,
+                'X-API-Key': config.public.apiKey,
             },
             method: method,
             url: endpoint,

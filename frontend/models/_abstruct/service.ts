@@ -1,3 +1,3 @@
 export default interface AbsService<ResponseT> {
-    execute(): Promise<ResponseT|void>;
+    execute(request: any): Promise<ResponseT|void>;
 }

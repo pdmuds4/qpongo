@@ -1,15 +1,24 @@
-import SavePhotosReqDTO from "~/models/dto/coupon_camera/req_save_photos";
-import SavePhotosResDTO from "~/models/dto/coupon_camera/res_save_photos";
+import { DeletePhotosReqDTO, DeletePhotosResDTO, type DeletePhotosResJson } from "~/models/dto/coupon_camera";
 import type AbsUsecase from "~/models/_abstruct/usecase";
 
-export default class SavePhotosUseCase implements AbsUsecase<SavePhotosReqDTO, SavePhotosResDTO> {
-    request: SavePhotosReqDTO;
+import Message from "~/models/value_object/message";
 
-    constructor(request: SavePhotosReqDTO) {
+export default class DeletePhotosUseCase implements AbsUsecase<DeletePhotosReqDTO, DeletePhotosResDTO> {
+    request: DeletePhotosReqDTO;
+
+    constructor(request: DeletePhotosReqDTO) {
         this.request = request;
     }
 
     async execute() {
-        return;
+        const response = await callApi(
+            'DELETE',
+            '/api/photos',
+            this.request.toJson()
+        ) as DeletePhotosResJson;
+
+        return new DeletePhotosResDTO(
+            new Message(response.message)
+        );
     }
 }

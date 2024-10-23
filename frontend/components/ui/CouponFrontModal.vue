@@ -7,10 +7,10 @@
             </div>
             <img class="front-modal-image" :src="takeSrc" alt="表面の画像" />
             <div class="front-modal-btngroup">
-                <Button class="front-modal-btn" @click="navigateTo('/coupon/register')">
+                <Button class="front-modal-btn" @click="saveHandler('/coupon/register')">
                     表面だけ
                 </Button>
-                <Button class="front-modal-btn" fill @click="navigateTo('/coupon_camera/back')">
+                <Button class="front-modal-btn" fill @click="saveHandler('/coupon_camera/back')">
                     裏面も撮る
                 </Button>
             </div>
@@ -19,10 +19,26 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { Buffer } from 'buffer';
+
+const props = defineProps<{
     open: boolean,
     takeSrc?: string,
 }>();
+
+const {fetcherHandler} = useFetcher()
+const buffer_saver = useBufferSaver();
+
+const saveHandler = (navigate_to: string) => fetcherHandler(async (navigate_to: string) => {
+    if (!props.takeSrc) throw new Error('写真の撮影に失敗しました');
+    const matches = props.takeSrc.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) throw new Error('写真のバイナリデータが不正です');
+    const front_photo_buffer = Buffer.from(matches[2], 'base64');
+
+    buffer_saver.value.photo_front_buffer = front_photo_buffer
+    navigateTo(navigate_to);
+}, navigate_to);
+
 </script>
 
 <style scoped>

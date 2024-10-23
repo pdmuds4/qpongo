@@ -7,10 +7,10 @@
             </div>
             <img class="back-modal-image" :src="takeSrc" alt="裏面の画像" />
             <div class="back-modal-btngroup">
-                <Button class="back-modal-btn" error @click="navigateTo('/coupons')">
+                <Button class="back-modal-btn" error @click="cancelHandler">
                     登録しない
                 </Button>
-                <Button class="back-modal-btn" fill @click="navigateTo('/coupon/register')">
+                <Button class="back-modal-btn" fill @click="toRegisterHandler">
                     読み取る
                 </Button>
             </div>
@@ -19,10 +19,38 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { Buffer } from 'buffer';
+import type { SavePhotosReqJson } from '~/models/dto/coupon_camera';
+
+const props = defineProps<{
     open: boolean,
     takeSrc?: string,
 }>();
+
+const { fetcherHandler } = useFetcher();
+const buffer_saver = useBufferSaver();
+
+const cancelHandler = () => {
+    buffer_saver.value = {} as SavePhotosReqJson;
+    navigateTo('/coupons');
+}
+
+const toRegisterHandler = () => fetcherHandler(async()=>{
+    if (!props.takeSrc) throw new Error('写真の撮影に失敗しました');
+    const matches = props.takeSrc.match(/^data:([A-Za-z-+/]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) throw new Error('写真のバイナリデータが不正です');
+    const back_photo_buffer = Buffer.from(matches[2], 'base64');
+
+    buffer_saver.value.photo_back_buffer = back_photo_buffer;
+    navigateTo('/coupon/register');
+});
+
+onBeforeMount(() => {
+    if (!buffer_saver.value.photo_front_buffer) {
+        navigateTo('/coupon_camera/front');
+    }
+})
+
 </script>
 
 <style scoped>

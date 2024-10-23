@@ -5,31 +5,33 @@ import ServiceError from "./service_error";
 
 export default class UploadToS3Service implements AbsService<string>{
     client: AwsS3Client;
-    file_buffer: Buffer;
-    save_path: string;
+    s3_baseurl: string;
 
     constructor(
         client: AwsS3Client,
-        file_buffer: Buffer,
-        save_path: string
+        s3_baseurl: string
     ){
         this.client = client;
-        this.file_buffer = file_buffer;
-        this.save_path = save_path;
+        this.s3_baseurl = s3_baseurl;
     }
 
-    async execute() {
+    async execute(file_buffer: Buffer){
         try {
+            const filename = `${Date.now()}.png`;
             const command = new PutObjectCommand({
                 Bucket: this.client.bucketName,
-                Key:    this.save_path,
-                Body:   this.file_buffer,
+                Key:    filename,
+                Body:   file_buffer,
             });
 
             await this.client.send(command);
-            return `https://${this.client.bucketName}.s3.${this.client.region}.amazonaws.com/${this.save_path}`;
+            return `${this.s3_baseurl}/${filename}`;
         } catch (error) {
-            if (error instanceof Error) throw new ServiceError(error.message, 500);
+            if (error instanceof Error) {
+                throw new ServiceError(error.message, 500)
+            } else {
+                throw new ServiceError("不明なエラー", 500);
+            }
         }
     }
 }

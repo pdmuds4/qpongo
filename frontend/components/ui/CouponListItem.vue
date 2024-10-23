@@ -3,23 +3,27 @@
         <Accordion>
             <template #show-contents>
                 <div class="coupon-show-contents">
-                    <Chiptag status="alert" chip="あと0日" text="2020/12/31まで有効" />
+                    <Chiptag 
+                        :status="tagStatus" 
+                        :chip="coupon_info.is_used ? '使用済み' : `あと${remainDate}日`"
+                        :text="coupon_info.is_used ? '' : `${formattedDate}まで有効`"
+                    />
                     <div class="coupon-info-contents">
                         <div class="coupon-info-text">
                             <h3 class="coupon-store-text">
-                                クーポン発行店名
+                                {{ props.coupon_info.store.value }}
                             </h3>
                             <h1 class="coupon-discount-text">
-                                割引内容
+                                {{ props.coupon_info.discount.value }}
                             </h1>
                             <h4 class="coupon-goods-text">
-                                対象商品
+                                {{ props.coupon_info.goods.value }}
                             </h4>
                         </div>
                         <div class="coupon-photo">
                             <ToggleImage
-                                frontImage="https://thumb.photo-ac.com/9a/9a7f0b2c38647151d0d9ea27fa1afe70_t.jpeg"
-                                backImage="https://thumb.photo-ac.com/9a/9a7f0b2c38647151d0d9ea27fa1afe70_t.jpeg"
+                                :frontImage="props.coupon_info.photo_front.value"
+                                :backImage="props.coupon_info.photo_back.value"
                             />
                         </div>
                     </div>
@@ -27,10 +31,10 @@
             </template>
             <template #hidden-contents>
                 <div class="coupon-edit-contents">
-                    <Button class="coupon-edit-btn" fill>
+                    <Button class="coupon-edit-btn" fill @click="toggleUsedHandler">
                         使用済み
                     </Button>
-                    <Button class="coupon-edit-btn" @click="navigateTo('/coupon/edit')">
+                    <Button class="coupon-edit-btn" @click="navigateTo(`/coupon/edit?id=${props.coupon_info.id.value}`)">
                         編集
                     </Button>
                     <Button class="coupon-edit-btn" error @click="toggleModal">
@@ -50,7 +54,7 @@
                     <Button class="coupon-modal-btn" @click="toggleModal">
                         キャンセル
                     </Button>
-                    <Button class="coupon-modal-btn" error>
+                    <Button class="coupon-modal-btn" error @click="deleteHandler">
                         削除
                     </Button>
                 </div>
@@ -60,9 +64,66 @@
 </template>
 
 <script setup lang="ts">
-const modal_open = ref(false);
+import { ToggleUsedUseCase, DeleteCouponUseCase } from '~/models/usecase/coupons';
+import { DeleteCouponReqDTO, GetUserCouponsResDTO, ToggleUsedReqDTO } from '~/models/dto/coupons';
+import type { GetUserSettingsResJson } from '~/models/dto/settings';
 
+const props = defineProps<{
+    coupon_info: GetUserCouponsResDTO
+    user_setting: GetUserSettingsResJson
+}>();
+
+const modal_open = ref(false);
 const toggleModal = () => modal_open.value = !modal_open.value;
+
+const formattedDate = computed(()=>{
+    const date = new Date(props.coupon_info.deadline.value);
+    return `${date.getFullYear()}/${date.getMonth()}/${date.getDate()}`;
+})
+
+const remainDate = computed(()=>{
+    const date = new Date(props.coupon_info.deadline.value);
+    const now = new Date();
+    const time_diff = date.getTime() - now.getTime();
+
+    return Math.floor(time_diff / (1000 * 60 * 60 * 24));
+})
+
+const tagStatus = computed(() => {
+    if (remainDate.value < props.user_setting.notice) return 'alert';
+    if (remainDate.value < 0 || props.coupon_info.is_used) return 'done';
+    return 'info';
+})
+
+
+const { fetcherHandler } = useFetcher();
+
+const toggleUsedHandler = () => fetcherHandler(async()=>{
+    props.coupon_info.is_used = !props.coupon_info.is_used;
+
+    const request = new ToggleUsedReqDTO(
+        props.coupon_info.id,
+        props.coupon_info.user_id,
+        props.coupon_info.goods,
+        props.coupon_info.discount,
+        props.coupon_info.store,
+        props.coupon_info.deadline,
+        props.coupon_info.photo_front,
+        props.coupon_info.photo_back,
+        props.coupon_info.is_used,
+        props.coupon_info.category,
+        props.coupon_info.create_date
+    );
+    const response = await new ToggleUsedUseCase(request).execute();
+    if (!response.message) throw new Error('クーポンの使用済み切り替えに失敗しました');
+});
+
+const deleteHandler = () => fetcherHandler(async()=>{
+    const request = new DeleteCouponReqDTO(props.coupon_info.id);
+    const response = await new DeleteCouponUseCase(request).execute();
+    if (!response.message) throw new Error('クーポンの削除に失敗しました');
+    location.reload();
+});
 
 </script>
 
