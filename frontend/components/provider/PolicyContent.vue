@@ -26,6 +26,9 @@ defineProps<{
     title: string
 }>()
 
+const { fetcherHandler } = useFetcher()
+onBeforeMount(() => {fetcherHandler(async()=>{})})
+
 const backPage = () => window.history.back()
 
 </script>

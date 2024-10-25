@@ -26,6 +26,9 @@
 defineProps<{
     headerBtn: 'register' | 'login'
 }>()
+
+const { fetcherHandler } = useFetcher()
+onBeforeMount(() => {fetcherHandler(async()=>{})})
 </script>
 
 <style scoped>

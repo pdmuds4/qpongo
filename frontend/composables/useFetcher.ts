@@ -1,6 +1,6 @@
 export default function () {
     const fetcher = useState('fetch-provider-context', ()=>({
-        loading: false,
+        loading: true,
         error: false,
         error_message: ''
     }));
