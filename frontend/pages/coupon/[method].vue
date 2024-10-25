@@ -63,7 +63,7 @@
                 <Button 
                     class="coupon-btn" 
                     error 
-                    @click="() => method == 'register' ? toRetakeHandler() : navigateTo('/coupos')"
+                    @click="() => method == 'register' ? toRetakeHandler() : navigateTo('/coupons')"
                 >
                     {{method==='register' ? "撮り直す" : "キャンセル"}}
                 </Button>
